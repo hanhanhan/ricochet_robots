@@ -1,7 +1,10 @@
-import React, {useState} from "react"
+import React from "react"
 import styled from 'styled-components'
-import { FaRobot } from "react-icons/fa"
+import { DragDropContextProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
+import {GameContext} from './Game'
+import GamePiece from './gamepiece'
 // Game board dimensions
 const DIMENSIONS = {x: 6, y: 6}
 
@@ -13,19 +16,11 @@ child component onclick, drag, moves component
 */
 
 let tileLocations = []
-
-let initialGamePieceLocation = {
-  x: Math.floor(Math.random() * (DIMENSIONS.x+1)),
-  y: Math.floor(Math.random() * (DIMENSIONS.y+1))
-}
-
 for (let iX = 0; iX < DIMENSIONS.x; iX++){
-  
   for (let iY = 0; iY < DIMENSIONS.y; iY++) {
     tileLocations.push({
       x:iX, 
       y:iY, 
-      occupied: iX === initialGamePieceLocation.x && iY === initialGamePieceLocation.y
     })
   }
 
@@ -40,53 +35,54 @@ const TileStyle = styled.div`
   align-items: center;
 `
 
-function GamePiece(props){
-  // const robotEventHandler = (e) => { console.log(e) }
-  console.log(`gamepiece ${props}`)
-  // return <FaRobot color="blue" onClick={props.updateRobotPosition} />
-  return <FaRobot color="blue"  />
-}
-
-// const tileOccupied = {
-//   empty: () => <h1>N</h1>,
-//   robot: (props) => GamePiece(props),
-// }
-
-let tileOccupied = {
-  empty: <h1>N</h1>,
-  robot: (props) => <GamePiece {...props} />,
-}
 
 
 function Tile(props) {
-  const [tileState, setTileState] = useState(
-    props.occupied ? tileOccupied.robot : tileOccupied.empty
-    )
-
+  // const [tileState, setTileState] = useState(
+  //   props.occupied ? tileOccupied.robot : tileOccupied.empty
+  //   )
   const updateRobotPosition = (e) => {console.log(`update robot position tile ${props.x} ${props.y}`)}
 
   // const handleTileOccupied = () => setTileState(tileOccupied.robot(props))
 
-  return (<TileStyle updateRobotPosition={updateRobotPosition}>
-    {props.occupied ? <GamePiece updateRobotPosition={updateRobotPosition} /> : <p>nope</p>}
+  return (
+    <TileStyle updateRobotPosition={updateRobotPosition}  data-x={props.x} data-y={props.y} {...props}>
+      {props.occupied ? <GamePiece updateRobotPosition={updateRobotPosition} /> : null}
     </TileStyle>)
 }
 
 const BoardStyle = styled.div`
+  width: 80vh;
   height: 80vh;
   display: grid; 
   grid-template-columns: repeat(${DIMENSIONS.x}, 1fr);
   grid-template-rows: repeat(${DIMENSIONS.y}, 1fr);
 `
 
-function Board(){
-    
+function Board(props){
+  // let {x,y} = props.gamepieceLocation
+  
     return (
-    <BoardStyle>
-        {tileLocations.map(({x,y, occupied}, i) => (
-          <Tile key={i} x={x} y={y} occupied={occupied}>
-          </Tile>))}
-    </BoardStyle>
+      <DragDropContextProvider backend={HTML5Backend}>
+        <BoardStyle>
+          <GameContext.Consumer>
+          {
+            ({gamepiecePosition, setGamepiecePosition}) => {
+            return tileLocations.map(({x,y}, i) => {
+              let occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
+              return <Tile 
+                key={i} occupied={occupied} 
+                onClick={(e) => setGamepiecePosition(
+                  s => { 
+                    let x = parseInt(e.target.dataset.x); 
+                    let y = parseInt(e.target.dataset.y); 
+                    return {x,y} 
+                  })} />})
+            }
+          }
+          </GameContext.Consumer>
+        </BoardStyle>
+      </DragDropContextProvider>
     )
 }
 

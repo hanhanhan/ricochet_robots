@@ -5,21 +5,13 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 // import Image from "../components/image"
 import SEO from "../components/seo"
-import Board from "../components/board"
-
-
-
+import {Game} from "../components/Game"
 
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-
-    <Board>
-
-    </Board>
-    
-
+    <Game />
     <Link to="/page-2/">Go to page 2</Link>
   </Layout>
 )
