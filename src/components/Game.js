@@ -20,7 +20,7 @@ function Game(){
 
     return (
         <GameContext.Provider value={{gamepiecePosition, setGamepiecePosition: setGamepiecePosition}}>
-            <Board gamepiecePosition={gamepiecePosition} />
+            <Board gamepiecePosition={gamepiecePosition} setGamepiecePosition={setGamepiecePosition}/>
         </GameContext.Provider>)
 }
 

@@ -46,7 +46,7 @@ function Tile(props) {
   // const handleTileOccupied = () => setTileState(tileOccupied.robot(props))
 
   return (
-    <TileStyle updateRobotPosition={updateRobotPosition}  data-x={props.x} data-y={props.y} {...props}>
+    <TileStyle {...props}>
       {props.occupied ? <GamePiece updateRobotPosition={updateRobotPosition} /> : null}
     </TileStyle>)
 }
@@ -60,8 +60,15 @@ const BoardStyle = styled.div`
 `
 
 function Board(props){
-  // let {x,y} = props.gamepieceLocation
-  
+
+    let handleClick = (e) => {
+      return props.setGamepiecePosition(
+        s => { 
+          let x = parseInt(e.target.dataset.x); 
+          let y = parseInt(e.target.dataset.y); 
+          return {x,y} 
+        })
+    }
     return (
       <DragDropContextProvider backend={HTML5Backend}>
         <BoardStyle>
@@ -71,13 +78,12 @@ function Board(props){
             return tileLocations.map(({x,y}, i) => {
               let occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
               return <Tile 
-                key={i} occupied={occupied} 
-                onClick={(e) => setGamepiecePosition(
-                  s => { 
-                    let x = parseInt(e.target.dataset.x); 
-                    let y = parseInt(e.target.dataset.y); 
-                    return {x,y} 
-                  })} />})
+                key={i} 
+                occupied={occupied} 
+                onClick={handleClick} 
+                data-x={x} 
+                data-y={y}
+                />})
             }
           }
           </GameContext.Consumer>
