@@ -1,10 +1,9 @@
 import React from 'react'
 import { FaRobot } from "react-icons/fa"
 import { DragSource } from 'react-dnd'
-
-export const gamepieceTypes = {
-    ROBOT: 'robot',
-  }
+import { DragTypes } from './Constants'
+// NOTE: CSS issue for dragging
+// http://react-dnd.github.io/react-dnd/docs/api/drag-source
 
 const gamepieceSource = {
     beginDrag(props) {
@@ -25,7 +24,7 @@ function Gamepiece({ connectDragSource, isDragging, ...props }){
     return connectDragSource(
     <div
     style={{
-        opacity: isDragging ? 0.5 : 1,
+        boxShadow: isDragging? "0 0 10px 5px #0ff" : "none", 
         fontSize: 25,
         fontWeight: 'bold',
         cursor: 'move',
@@ -35,4 +34,4 @@ function Gamepiece({ connectDragSource, isDragging, ...props }){
     )
 }
 
-export default DragSource(gamepieceTypes.ROBOT, gamepieceSource, collect)(Gamepiece)
+export default DragSource(DragTypes.GAMEPIECE, gamepieceSource, collect)(Gamepiece)

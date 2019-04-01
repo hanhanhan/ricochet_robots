@@ -4,7 +4,7 @@ import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import {GameContext} from './Game'
-import GamePiece from './gamepiece'
+import Gamepiece from './Gamepiece'
 // Game board dimensions
 const DIMENSIONS = {x: 6, y: 6}
 
@@ -24,31 +24,6 @@ for (let iX = 0; iX < DIMENSIONS.x; iX++){
     })
   }
 
-}
-
-const TileStyle = styled.div`
-  background-color: linen;
-  margin: 2px;
-  padding: 0.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-
-
-function Tile(props) {
-  // const [tileState, setTileState] = useState(
-  //   props.occupied ? tileOccupied.robot : tileOccupied.empty
-  //   )
-  const updateRobotPosition = (e) => {console.log(`update robot position tile ${props.x} ${props.y}`)}
-
-  // const handleTileOccupied = () => setTileState(tileOccupied.robot(props))
-
-  return (
-    <TileStyle {...props}>
-      {props.occupied ? <GamePiece updateRobotPosition={updateRobotPosition} /> : null}
-    </TileStyle>)
 }
 
 const BoardStyle = styled.div`

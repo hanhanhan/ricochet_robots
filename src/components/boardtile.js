@@ -1,6 +1,6 @@
-// import React, {useState} from "react"
-// import styled from 'styled-components'
-// import { FaRobot } from "react-icons/fa"
+import React, {useState} from "react"
+import styled from 'styled-components'
+import { FaRobot } from "react-icons/fa"
 
 // // Game board dimensions
 // const DIMENSIONS = {x: 8, y: 8}
@@ -38,3 +38,28 @@
 // }
 
 // export default Tile
+
+const TileStyle = styled.div`
+  background-color: linen;
+  margin: 2px;
+  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+
+
+function Tile(props) {
+  // const [tileState, setTileState] = useState(
+  //   props.occupied ? tileOccupied.robot : tileOccupied.empty
+  //   )
+  const updateRobotPosition = (e) => {console.log(`update robot position tile ${props.x} ${props.y}`)}
+
+  // const handleTileOccupied = () => setTileState(tileOccupied.robot(props))
+
+  return (
+    <TileStyle {...props}>
+      {props.occupied ? <Gamepiece updateRobotPosition={updateRobotPosition} /> : null}
+    </TileStyle>)
+}
