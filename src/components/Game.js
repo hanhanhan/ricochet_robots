@@ -12,15 +12,14 @@ let updatePosition = () => {
 }
 
 const initialGameState = {initialGamepiecePosition, updatePosition}
-
 let GameContext = createContext(initialGameState)
 
 function Game(){
-    const [gamepiecePosition, setGamepiecePosition] = useState(initialGamepiecePosition)
+    const [gamepiecePosition, setGamepiecePosition] = useState({x: 0, y: 1})
 
     return (
         <GameContext.Provider value={{gamepiecePosition, setGamepiecePosition: setGamepiecePosition}}>
-            <Board gamepiecePosition={gamepiecePosition} setGamepiecePosition={setGamepiecePosition}/>
+            <Board />
         </GameContext.Provider>)
 }
 

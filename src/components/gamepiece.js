@@ -14,23 +14,20 @@ const gamepieceSource = {
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
   }
 }
 
-function Gamepiece({ connectDragSource, isDragging, ...props }){
-    // const robotEventHandler = (e) => { console.log(e) }
-    // return <FaRobot color="blue" onClick={props.updateRobotPosition} />
+function Gamepiece({ connectDragSource, ...props }){
     return connectDragSource(
-    <div
-    style={{
-        boxShadow: isDragging? "0 0 10px 5px #0ff" : "none", 
-        fontSize: 25,
-        fontWeight: 'bold',
-        cursor: 'move',
-      }}>
-      <FaRobot color="blue" size={62} />
-    </div>,
+        <div
+        style={{
+            boxShadow: "0 0 10px 5px #0ff",
+            fontSize: 25,
+            fontWeight: 'bold',
+            cursor: 'move',
+          }}>
+          <FaRobot color="blue" size={62} />
+        </div>,
     )
 }
 
