@@ -1,27 +1,15 @@
-import React, {useState, createContext} from 'react'
-
+import React, {useState} from 'react'
 import Board from "./board"
-
+import { DragDropContextProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 let initialGamepiecePosition = {x: 0, y: 0}
 
-let updatePosition = () => { 
-    console.log(`update the location!`)
-    // gamepiecePosition.x = 5
-    // console.log(`now update the location! ${gamepiecePosition.x}`)
-}
+function Game(props){
+    let [gamepiecePosition, setGamepiecePosition] = useState(initialGamepiecePosition)
 
-const initialGameState = {initialGamepiecePosition, updatePosition}
-let GameContext = createContext(initialGameState)
-
-function Game(){
-    const [gamepiecePosition, setGamepiecePosition] = useState({x: 0, y: 1})
-
-    return (
-        <GameContext.Provider value={{gamepiecePosition, setGamepiecePosition: setGamepiecePosition}}>
-            <Board />
-        </GameContext.Provider>)
+    return <DragDropContextProvider backend={HTML5Backend}><Board gamepiecePosition={gamepiecePosition} setGamepiecePosition={()=>{setGamepiecePosition({x:5, y:4})}} /></DragDropContextProvider>
 }
 
 
-export {Game, GameContext}
+export {Game}

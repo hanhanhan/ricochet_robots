@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import styled from 'styled-components'
 import { DropTarget } from "react-dnd"
 
@@ -10,7 +10,7 @@ import Gamepiece from "./gamepiece"
 const spec = {
     drop: (props) => {
         console.log(props)
-        props.setGamepiecePosition({x:3,y:3})
+        props.setGamepiecePosition()
         console.log("drop called")
     },
   }

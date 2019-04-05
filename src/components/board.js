@@ -1,10 +1,8 @@
 import React from "react"
 import styled from 'styled-components'
-import { DragDropContextProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+
 
 import BoardTile from "./boardtile"
-import { GameContext } from "./Game"
 
 // Game board dimensions
 const DIMENSIONS = {x: 6, y: 6}
@@ -36,27 +34,23 @@ const BoardStyle = styled.div`
 `
 
 function Board(props){
+  let {gamepiecePosition, setGamepiecePosition} = props
+
+  const tiles = tileLocations.map(({x,y}, i) => {
+    let occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
+    return <BoardTile 
+      key={i} 
+      x={x} 
+      y={y}
+      occupied={occupied}
+      setGamepiecePosition={setGamepiecePosition}
+    />})
 
     return (
-      <DragDropContextProvider backend={HTML5Backend}>
-        <BoardStyle>
-          <GameContext.Consumer>
-          {
-            ({gamepiecePosition, setGamepiecePosition}) => {
-            return tileLocations.map(({x,y}, i) => {
-              let occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
-              return <BoardTile 
-                key={i} 
-                x={x} 
-                y={y}
-                occupied={occupied}
-                setGamepiecePosition={setGamepiecePosition}
-              />})
-            }
-          }
-          </GameContext.Consumer>
+      <BoardStyle>
+          {tiles}
         </BoardStyle>
-      </DragDropContextProvider>
+
     )
 }
 
