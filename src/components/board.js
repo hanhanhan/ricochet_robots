@@ -13,8 +13,8 @@ child component onclick, drag, moves component
 */
 
 const tileLocations = []
-for (let iX = 0; iX < DIMENSIONS.x; iX++) {
-  for (let iY = 0; iY < DIMENSIONS.y; iY++) {
+for (let iY = 0; iY < DIMENSIONS.y; iY++) {
+  for (let iX = 0; iX < DIMENSIONS.x; iX++) {
     tileLocations.push({
       x: iX,
       y: iY,
@@ -32,7 +32,6 @@ const BoardStyle = styled.div`
 
 function Board(props) {
   const { gamepiecePosition, setGamepiecePosition } = props
-  console.log('board props', props)
   const tiles = tileLocations.map(({ x, y }, i) => {
     const occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
     return (

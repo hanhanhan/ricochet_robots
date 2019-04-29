@@ -7,9 +7,7 @@ import Gamepiece from './gamepiece'
 // React Drag n Drop Setup
 const spec = {
   drop: props => {
-    console.log(props)
-    // props.setGamepiecePosition()
-    console.log('drop called')
+    props.setGamepiecePosition({ x: props.x, y: props.y })
   },
 }
 
