@@ -9,6 +9,10 @@ const spec = {
   drop: props => {
     props.setGamepiecePosition({ x: props.x, y: props.y })
   },
+  canDrop: props => {
+    console.log('can drop?', props)
+    return props.x < 3
+  },
 }
 
 function collect(connect, monitor) {
