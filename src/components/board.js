@@ -32,7 +32,7 @@ const BoardStyle = styled.div`
 
 function Board(props) {
   const { gamepiecePosition, setGamepiecePosition } = props
-
+  console.log('board props', props)
   const tiles = tileLocations.map(({ x, y }, i) => {
     const occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
     return (

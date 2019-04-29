@@ -1,16 +1,14 @@
 import React from 'react'
-import styled from 'styled-components'
 import { DropTarget } from 'react-dnd'
 
 import { DragTypes } from './Constants'
 import Gamepiece from './gamepiece'
 
 // React Drag n Drop Setup
-
 const spec = {
   drop: props => {
     console.log(props)
-    props.setGamepiecePosition()
+    // props.setGamepiecePosition()
     console.log('drop called')
   },
 }
@@ -22,19 +20,20 @@ function collect(connect, monitor) {
   }
 }
 
-const TileStyle = styled.div`
-  background-color: linen;
-  margin: 2px;
-  padding: 0.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
 function BoardTile(props) {
   return props.connectDropTarget(
-    <div>
-      <TileStyle {...props}>{props.occupied ? <Gamepiece /> : null}</TileStyle>
+    <div
+      style={{
+        backgroundColor: 'linen',
+        margin: '2px',
+        padding: '0.5em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexGrow: '1',
+      }}
+    >
+      {props.occupied ? <Gamepiece /> : null}
     </div>
   )
 }
