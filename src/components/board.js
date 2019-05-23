@@ -71,15 +71,35 @@ tile has occupied state/component: empty, robot a/b/c/d
 child component onclick, drag, moves component
 */
 
-const tileLocations = []
-for (let iY = 0; iY < DIMENSIONS.y; iY++) {
-  for (let iX = 0; iX < DIMENSIONS.x; iX++) {
-    tileLocations.push({
-      x: iX,
-      y: iY,
+const tileArray = []
+for (let col = 0; col < DIMENSIONS.y; col++) {
+  const rowLocations = []
+  for (let row = 0; row < DIMENSIONS.x; row++) {
+    rowLocations.push({
+      x: row,
+      y: col,
+      north: false,
+      south: false,
+      east: false,
+      west: false,
     })
   }
+  tileArray.push(rowLocations)
 }
+
+for (const indices of verticalBarriers) {
+  const [col, row] = indices
+  tileArray[col - 1][row].south = true
+  tileArray[col - 1][row + 1].north = true
+}
+
+for (const indices of horizontalBarriers) {
+  const [col, row] = indices
+  tileArray[col - 1][row].east = true
+  tileArray[col][row].west = true
+}
+
+const tileLocations = tileArray.flat()
 
 // Can travel
 // same x or same y and wall
@@ -88,19 +108,21 @@ const BoardStyle = styled.div`
   width: 80vh;
   height: 80vh;
   display: grid;
+  gap: 0;
   grid-template-columns: repeat(${DIMENSIONS.x}, 2em);
   grid-template-rows: repeat(${DIMENSIONS.y}, 2em);
 `
 
 function Board(props) {
   const { gamepiecePosition, setGamepiecePosition } = props
-  const tiles = tileLocations.map(({ x, y }, i) => {
+  const tiles = tileLocations.map(({ x, y, north, south, east, west }, i) => {
     const occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
     return (
       <BoardTile
         key={i}
         x={x}
         y={y}
+        walls={{ north, east, south, west }}
         occupied={occupied}
         setGamepiecePosition={setGamepiecePosition}
       />
