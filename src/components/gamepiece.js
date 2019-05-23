@@ -22,12 +22,13 @@ function Gamepiece({ connectDragSource, ...props }) {
     <div
       style={{
         boxShadow: '0 0 10px 5px #0ff',
-        fontSize: 25,
+        fontSize: '1em',
         fontWeight: 'bold',
         cursor: 'move',
       }}
     >
-      <FaRobot color="blue" size={62} />
+      {/* <FaRobot color="blue" size={12} /> */}
+      🤖
     </div>
   )
 }
