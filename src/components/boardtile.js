@@ -3,13 +3,13 @@ import { DropTarget } from 'react-dnd'
 
 import { DragTypes } from './Constants'
 import Gamepiece from './gamepiece'
-import { tileLocations } from './BoardSetup'
+import { tiles } from './BoardSetup'
 
 const checkEast = () => true
 
 const checkWest = () => true
 
-const checkNorth = () => true
+const checkNorth = (x, y) => true
 
 const checkSouth = () => true
 
@@ -19,12 +19,22 @@ const spec = {
     props.setGamepiecePosition({ x: props.x, y: props.y })
   },
   canDrop: props => {
-    const [x, y] = props.gamepiecePosition
+    // NOTE: props.x and props.y are drop tile positions
+    const { x, y } = props.gamepiecePosition
+
     // Check game piece is in same row or column as drop target location
-    // if (!(x === props.x || y === props.y)) {
-    //   console.log('false!')
-    //   return false
-    // }
+    // If not, early return!
+    if (!(x === props.x || y === props.y)) {
+      return false
+    }
+
+    // find nearest wall to the south,
+    // for a drop target to south (in same column)
+    if (x === props.x && props.y > y) {
+      checkNorth(x, y)
+    }
+
+    console.log('can drop?')
     console.log('tile x y', props.x, ' ', props.y)
     console.log(x, y)
 
@@ -53,7 +63,7 @@ function BoardTile(props) {
         borderRight: props.walls.east ? wallStyle : boardGridStyle,
         borderBottom: props.walls.south ? wallStyle : boardGridStyle,
         borderLeft: props.walls.west ? wallStyle : boardGridStyle,
-        padding: '0.5em',
+        padding: '0em',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

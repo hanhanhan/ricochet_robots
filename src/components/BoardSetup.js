@@ -66,7 +66,7 @@ tile has occupied state/component: empty, robot a/b/c/d
 child component onclick, drag, moves component
 */
 
-const tileArray = []
+const tiles = []
 for (let col = 0; col < dimensions.y; col++) {
   const rowLocations = []
   for (let row = 0; row < dimensions.x; row++) {
@@ -79,41 +79,41 @@ for (let col = 0; col < dimensions.y; col++) {
       west: false,
     })
   }
-  tileArray.push(rowLocations)
+  tiles.push(rowLocations)
 }
 
 for (const indices of verticalBarriers) {
   const [row, col] = indices
-  tileArray[row][col - 1].east = true
-  tileArray[row][col].west = true
+  tiles[row][col - 1].east = true
+  tiles[row][col].west = true
 }
 
 for (const indices of horizontalBarriers) {
   const [row, col] = indices
-  tileArray[row - 1][col].south = true
-  tileArray[row][col].north = true
+  tiles[row - 1][col].south = true
+  tiles[row][col].north = true
 }
 
 // North Wall
 for (let row = 0, col = 0; col < dimensions.x; col++) {
-  tileArray[row][col].north = true
+  tiles[row][col].north = true
 }
 
 // South Wall
 for (let row = dimensions.y - 1, col = 0; col < dimensions.x; col++) {
-  tileArray[row][col].south = true
+  tiles[row][col].south = true
 }
 
 // East Wall
 for (let row = 0, col = dimensions.x - 1; row < dimensions.y; row++) {
-  tileArray[row][col].east = true
+  tiles[row][col].east = true
 }
 
 // West Wall
 for (let row = 0, col = 0; row < dimensions.y; row++) {
-  tileArray[row][col].west = true
+  tiles[row][col].west = true
 }
 
-const tileLocations = tileArray.flat()
+const tileLocations = tiles.flat()
 
-export { dimensions, tileLocations, tileArray }
+export { dimensions, tileLocations, tiles }
