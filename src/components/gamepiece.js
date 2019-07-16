@@ -17,7 +17,7 @@ function collect(connect, monitor) {
   }
 }
 
-function Gamepiece({ connectDragSource, ...props }) {
+function Gamepiece({ connectDragSource }) {
   return connectDragSource(
     <div
       style={{
