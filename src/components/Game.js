@@ -1,5 +1,5 @@
 import React, { useState, createContext } from 'react'
-import { DragDropContext } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import Board from './board'
 
@@ -20,11 +20,13 @@ function Game(props) {
   )
 
   return (
-    <Board
-      gamepiecePosition={gamepiecePosition}
-      setGamepiecePosition={setGamepiecePosition}
-    />
+    <DndProvider backend={HTML5Backend}>
+      <Board
+        gamepiecePosition={gamepiecePosition}
+        setGamepiecePosition={setGamepiecePosition}
+      />
+    </DndProvider>
   )
 }
 
-export default DragDropContext(HTML5Backend)(Game)
+export default Game

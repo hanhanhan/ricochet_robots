@@ -114,6 +114,10 @@ for (let row = 0, col = 0; row < dimensions.y; row++) {
   tiles[row][col].west = true
 }
 
+/* 
+Tile at walls are starting/ending points.
+*/  
+
 const tileLocations = tiles.flat()
 
 export { dimensions, tileLocations, tiles }
