@@ -1,11 +1,25 @@
 import React from 'react'
 import { useDrop } from 'react-dnd'
-
+import styled from 'styled-components'
 import { DragTypes } from './Constants'
 import Gamepiece from './gamepiece'
 import { tiles } from './BoardSetup'
 
-// const BoardStyle =
+const wallStyle = '3px solid thistle'
+const boardGridStyle = '2px solid snow'
+
+const TileStyle = styled.div`
+  background-color: aliceblue;
+  border-top: ${props => (props.walls.north ? wallStyle : boardGridStyle)};
+  border-right: ${props => (props.walls.east ? wallStyle : boardGridStyle)};
+  border-bottom: ${props => (props.walls.south ? wallStyle : boardGridStyle)}; 
+  border-left: ${props => (props.walls.west ? wallStyle : boardGridStyle)};
+  padding: 0em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+`
 
 const checkEast = () => true
 
@@ -52,8 +66,6 @@ function collect(connect, monitor) {
   }
 }
 
-const wallStyle = '3px solid thistle'
-const boardGridStyle = '2px solid snow'
 
 function BoardTile({
   x,y, // tile position
@@ -70,24 +82,9 @@ function BoardTile({
   })
 
   return (
-    <div
-      ref={drop}
-      // Note: don't use a styled component here -- React DND needs to wrap a native html element
-      style={{
-        backgroundColor: 'aliceblue',
-        borderTop: walls.north ? wallStyle : boardGridStyle,
-        borderRight: walls.east ? wallStyle : boardGridStyle,
-        borderBottom: walls.south ? wallStyle : boardGridStyle,
-        borderLeft: walls.west ? wallStyle : boardGridStyle,
-        padding: '0em',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexGrow: '1',
-      }}
-    >
+    <TileStyle walls={walls} ref={drop}>
       {occupied ? <Gamepiece /> : null}
-    </div>
+    </TileStyle>
   )
 }
 
