@@ -22,7 +22,11 @@ const TileStyle = styled.div`
   flex-grow: 1;
 `
 
-
+const isEqualLocation = (A, B) => {
+  let [xA, yA] = A
+  let [xB, yB] = B
+  return xA == xB && yA == yB
+}
 
 const sameRowOrCol = (startX, startY, destX, destY) => {
   // Check game piece is in same row or column as drop target location
@@ -46,18 +50,17 @@ function BoardTile({
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: dropProp => {
-      console.log(graph)
       setGamepiecePosition({ x, y })
     },
     canDrop: () => {
+
       if (!sameRowOrCol(pieceX, pieceY, x, y)) {
         return false
       }
-      // check walls to East
-      // if (tileX > pieceX && tileY === pieceY){
-      // checkEast(pieceX, pieceY, tileX, tileY)
-      // }
-      return true
+      // TypeError: Cannot read property '0' of undefined
+      let { north, south, east, west } = graph[y][x]
+      let directions = graph[y][x]
+      return directions.some(isEqualLocation.bind(null, [x, y]))
     },
   })
 
