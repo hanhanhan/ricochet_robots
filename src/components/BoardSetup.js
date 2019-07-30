@@ -1,10 +1,12 @@
 // Game board dimensions
 const dimensions = { x: 16, y: 16 }
+
 /*
  Board configuration specific barrier locations are defined here.
  Indices refer to lines between tiles (0 is left edge of board). 
  Barrier locations are taken from page 3 of DriftingDroids user documentation.
 */
+
 const horizontalBarriers = [
   [1, 4], // row, col or y, x
   [3, 1],
@@ -67,9 +69,9 @@ child component onclick, drag, moves component
 */
 
 const tiles = []
-for (let col = 0; col < dimensions.y; col++) {
+for (let col = 0; col < dimensions.y; col += 1) {
   const rowLocations = []
-  for (let row = 0; row < dimensions.x; row++) {
+  for (let row = 0; row < dimensions.x; row += 1) {
     rowLocations.push({
       x: row,
       y: col,
@@ -94,6 +96,10 @@ for (const indices of horizontalBarriers) {
   tiles[row][col].north = true
 }
 
+/* 
+Tile at walls are starting/ending points.
+*/
+
 // North Wall
 for (let row = 0, col = 0; col < dimensions.x; col++) {
   tiles[row][col].north = true
@@ -113,10 +119,6 @@ for (let row = 0, col = dimensions.x - 1; row < dimensions.y; row++) {
 for (let row = 0, col = 0; row < dimensions.y; row++) {
   tiles[row][col].west = true
 }
-
-/* 
-Tile at walls are starting/ending points.
-*/  
 
 const tileLocations = tiles.flat()
 
