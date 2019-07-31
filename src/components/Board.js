@@ -6,8 +6,8 @@ import BoardTile from './BoardTile'
 import { dimensions, tiles } from './BoardSetup'
 
 const BoardStyle = styled.div`
-  width: 80vh;
-  height: 80vh;
+  width: 95vmin;
+  height: 95vmin;
   display: grid;
   border: 5px solid thistle;
   gap: 0;
