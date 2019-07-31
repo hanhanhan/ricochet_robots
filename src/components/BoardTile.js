@@ -23,8 +23,8 @@ const TileStyle = styled.div`
 `
 
 const isEqualLocation = (A, B) => {
-  let [xA, yA] = A
-  let [xB, yB] = B
+  const [xA, yA] = A
+  const [xB, yB] = B
   return xA == xB && yA == yB
 }
 
@@ -60,10 +60,12 @@ function BoardTile({
       // Get valid locations gamepiece can travel to from current location.
       const { north, south, east, west } = graph[pieceY][pieceX]
       const compareTargetLocation = isEqualLocation.bind(null, [y, x])
-      // Check if robot can travel to any direction
+      // Check if any of 4 possible travel directions is drop target.
       return [north, south, east, west].some(compareTargetLocation)
-
     },
+    end: (item, monitor) => {
+      // update graph here
+    }
   })
 
   return (
