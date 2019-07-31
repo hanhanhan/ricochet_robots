@@ -53,6 +53,7 @@ const buildAdjacency = tiles => {
       })
     }
   }
+  return adjacency
 }
 
 export default buildAdjacency(tiles)

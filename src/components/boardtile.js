@@ -49,18 +49,20 @@ function BoardTile({
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
-    drop: dropProp => {
+    drop: (item, monitor) => {
       setGamepiecePosition({ x, y })
     },
-    canDrop: () => {
-
+    canDrop: (item, monitor) => {
+      // Early return
       if (!sameRowOrCol(pieceX, pieceY, x, y)) {
         return false
       }
-      // TypeError: Cannot read property '0' of undefined
-      let { north, south, east, west } = graph[y][x]
-      let directions = graph[y][x]
-      return directions.some(isEqualLocation.bind(null, [x, y]))
+      // Get valid locations gamepiece can travel to from current location.
+      const { north, south, east, west } = graph[pieceY][pieceX]
+      const compareTargetLocation = isEqualLocation.bind(null, [y, x])
+      // Check if robot can travel to any direction
+      return [north, south, east, west].some(compareTargetLocation)
+
     },
   })
 
