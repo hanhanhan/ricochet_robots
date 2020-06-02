@@ -1,20 +1,20 @@
-import React from 'react'
-import { useDrop } from 'react-dnd'
-import styled from 'styled-components'
-import { DragTypes } from './Constants'
-import Gamepiece from './gamepiece'
-import { tiles, dimensions } from './BoardSetup'
-import graph from './BoardGraph'
+import React from "react"
+import { useDrop } from "react-dnd"
+import styled from "styled-components"
+import { DragTypes } from "./Constants"
+import Gamepiece from "./gamepiece"
+import { tiles, target, dimensions } from "./BoardSetup"
+import graph from "./BoardGraph"
 
-const wallStyle = '3px solid thistle'
-const boardGridStyle = '2px solid snow'
+const wallStyle = "3px solid thistle"
+const boardGridStyle = "2px solid snow"
 
 const TileStyle = styled.div`
-  background-color: aliceblue;
-  border-top: ${props => (props.walls.north ? wallStyle : boardGridStyle)};
-  border-right: ${props => (props.walls.east ? wallStyle : boardGridStyle)};
-  border-bottom: ${props => (props.walls.south ? wallStyle : boardGridStyle)};
-  border-left: ${props => (props.walls.west ? wallStyle : boardGridStyle)};
+  background-color: ${(props) => (props.isTarget ? `orange` : `aliceblue`)};
+  border-top: ${(props) => (props.walls.north ? wallStyle : boardGridStyle)};
+  border-right: ${(props) => (props.walls.east ? wallStyle : boardGridStyle)};
+  border-bottom: ${(props) => (props.walls.south ? wallStyle : boardGridStyle)};
+  border-left: ${(props) => (props.walls.west ? wallStyle : boardGridStyle)};
   padding: 0em;
   display: flex;
   justify-content: center;
@@ -25,7 +25,7 @@ const TileStyle = styled.div`
 const isEqualLocation = (A, B) => {
   const [xA, yA] = A
   const [xB, yB] = B
-  return xA == xB && yA == yB
+  return xA === xB && yA === yB
 }
 
 const sameRowOrCol = (startX, startY, destX, destY) => {
@@ -44,6 +44,7 @@ function BoardTile({
   setGamepiecePosition,
   walls,
   occupied,
+  isTarget,
 }) {
   const { x: pieceX, y: pieceY } = gamepiecePosition
 
@@ -65,11 +66,11 @@ function BoardTile({
     },
     end: (item, monitor) => {
       // update graph here
-    }
+    },
   })
 
   return (
-    <TileStyle walls={walls} ref={drop}>
+    <TileStyle walls={walls} isTarget={isTarget} ref={drop}>
       {occupied ? <Gamepiece /> : null}
     </TileStyle>
   )

@@ -1,5 +1,8 @@
 // Game board dimensions
 const dimensions = { x: 16, y: 16 }
+// Move your player to this tile location to win!
+const getTarget = () => ({ x: 3, y: 0 })
+const target = getTarget()
 
 /*
  Board configuration specific barrier locations are defined here.
@@ -122,4 +125,4 @@ for (let row = 0, col = 0; row < dimensions.y; row++) {
 
 const tileLocations = tiles.flat()
 
-export { dimensions, tileLocations, tiles }
+export { dimensions, target, tileLocations, tiles }

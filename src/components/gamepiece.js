@@ -1,8 +1,7 @@
-import React from 'react'
-import { FaRobot } from 'react-icons/fa'
-import { DragSource } from 'react-dnd'
-import { useDrag } from 'react-dnd'
-import { DragTypes } from './Constants'
+import React from "react"
+import { FaRobot } from "react-icons/fa"
+import { useDrag } from "react-dnd"
+import { DragTypes } from "./Constants"
 // NOTE: CSS issue for dragging
 // http://react-dnd.github.io/react-dnd/docs/api/drag-source
 
@@ -28,10 +27,10 @@ function Gamepiece(props) {
     <div
       ref={drag}
       style={{
-        boxShadow: '0 0 10px 5px #0ff',
-        fontSize: '1em',
-        fontWeight: 'bold',
-        cursor: 'move',
+        boxShadow: "0 0 10px 5px #0ff",
+        fontSize: "1em",
+        fontWeight: "bold",
+        cursor: "move",
       }}
     >
       🤖

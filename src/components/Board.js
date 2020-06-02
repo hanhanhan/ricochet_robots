@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
+import React from "react"
+import styled from "styled-components"
+import PropTypes from "prop-types"
 
-import BoardTile from './BoardTile'
-import { dimensions, tiles } from './BoardSetup'
+import BoardTile from "./BoardTile"
+import { dimensions, target, tiles } from "./BoardSetup"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -21,9 +21,11 @@ export default function Board(props) {
     .flat()
     .map(({ x, y, north, south, east, west }, i) => {
       const occupied = x === gamepiecePosition.x && y === gamepiecePosition.y
+      const isTarget = x === target.x && y === target.y
       return (
         <BoardTile
           key={`${x} ${y} ${occupied}`}
+          isTarget={isTarget}
           x={x}
           y={y}
           walls={{ north, east, south, west }}
