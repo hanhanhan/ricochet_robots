@@ -1,7 +1,7 @@
-import React, { useState, createContext } from 'react'
-import { DndProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import Board from './board'
+import React, { useState, createContext } from "react"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
+import Board from "./board"
 
 const initialGamepiecePosition = { x: 0, y: 0 }
 const BoardStateContext = createContext({
