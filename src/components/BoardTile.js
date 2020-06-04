@@ -3,14 +3,14 @@ import { useDrop } from "react-dnd"
 import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
-import { tiles, target, dimensions } from "./BoardSetup"
+import { tiles, dimensions } from "./BoardSetup"
 import graph from "./BoardGraph"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
 
 const TileStyle = styled.div`
-  background-color: ${(props) => (props.isTarget ? `orange` : `aliceblue`)};
+  background-color: ${(props) => (props.target ? `orange` : `aliceblue`)};
   border-top: ${(props) => (props.walls.north ? wallStyle : boardGridStyle)};
   border-right: ${(props) => (props.walls.east ? wallStyle : boardGridStyle)};
   border-bottom: ${(props) => (props.walls.south ? wallStyle : boardGridStyle)};
@@ -44,7 +44,7 @@ function BoardTile({
   setGamepiecePosition,
   walls,
   occupied,
-  isTarget,
+  target,
 }) {
   const { x: pieceX, y: pieceY } = gamepiecePosition
 
@@ -60,9 +60,9 @@ function BoardTile({
       }
       // Get valid locations gamepiece can travel to from current location.
       const { north, south, east, west } = graph[pieceY][pieceX]
-      const compareTargetLocation = isEqualLocation.bind(null, [y, x])
-      // Check if any of 4 possible travel directions is drop target.
-      return [north, south, east, west].some(compareTargetLocation)
+      const compareDestLocation = isEqualLocation.bind(null, [y, x])
+      // Check if any of 4 possible travel directions is a valid drop.
+      return [north, south, east, west].some(compareDestLocation)
     },
     end: (item, monitor) => {
       // update graph here
@@ -70,7 +70,9 @@ function BoardTile({
   })
 
   return (
-    <TileStyle walls={walls} isTarget={isTarget} ref={drop}>
+    // target converted due to this issue (becomes string instead of bool):
+    // https://github.com/styled-components/styled-components/issues/1198
+    <TileStyle walls={walls} target={target ? 1 : 0} ref={drop}>
       {occupied ? <Gamepiece /> : null}
     </TileStyle>
   )

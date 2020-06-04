@@ -1,7 +1,7 @@
 // Game board dimensions
 const dimensions = { x: 16, y: 16 }
 // Move your player to this tile location to win!
-const getTarget = () => ({ x: 3, y: 0 })
+const getTarget = () => ({ col: 3, row: 0 })
 const target = getTarget()
 
 /*
@@ -78,14 +78,19 @@ for (let col = 0; col < dimensions.y; col += 1) {
     rowLocations.push({
       x: row,
       y: col,
+      // walls
       north: false,
       south: false,
       east: false,
       west: false,
+      // move robot here to win
+      target: false,
     })
   }
   tiles.push(rowLocations)
 }
+
+tiles[target.col][target.row].target = true
 
 for (const indices of verticalBarriers) {
   const [row, col] = indices
