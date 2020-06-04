@@ -1,5 +1,8 @@
 {
-    "extends": [
-      "wesbos"
-    ]
+  "extends": ["prettier"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
   }
+}
