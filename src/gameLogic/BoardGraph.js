@@ -60,4 +60,5 @@ const buildAdjacency = (tiles) => {
   return adjacency
 }
 
-export default buildAdjacency(tiles)
+const graph = buildAdjacency(tiles)
+export default graph

@@ -23,28 +23,37 @@ let gamepieces = {
 function canReachTarget(startRow, startCol) {
   // dependency inject target? tiles?
 
-  const tile = tiles[startRow][startCol]
+  const destinations = graph[startRow][startCol]
 
   // check if gamepiece can travel to target in same row
   if (startRow === targetRow) {
-    if (startCol <= destCol && tile.east >= targetCol) {
+    // get col of tile that defines east boundary of travel
+    const east = destinations.east[1]
+    // look right - make sure target isn't past another boundary
+    if (startCol <= targetCol && east >= targetCol) {
       return true
     }
-    if (startCol >= destCol && tile.west <= targetCol) {
+    const west = destinations.west[1]
+    if (startCol >= targetCol && west <= targetCol) {
       return true
     }
   }
 
   // check if gamepiece can travel to target in same column
   if (startCol === targetCol) {
-    if (startRow <= destRow && tile.north >= targetRow) {
+    // get row of tile that defines north boundary of travel
+    const north = destinations.north[0]
+    // look north - make sure target isn't past a boundary
+    if (startRow <= targetRow && north >= targetRow) {
       return true
     }
-    if (startRow >= destRow && tile.south <= targetRow) {
+    // get row of tile that defines south boundary of travel
+    const south = destinations.south[0]
+    // look south
+    if (startRow >= targetRow && south <= targetRow) {
       return true
     }
   }
-
   return false
 }
 

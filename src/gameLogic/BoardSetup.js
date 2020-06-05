@@ -2,7 +2,7 @@
 const dimensions = { x: 16, y: 16 }
 
 // Move your player to this tile location to win!
-const getTarget = () => ({ col: 3, row: 1 })
+const getTarget = () => ({ col: 2, row: 0 })
 const target = getTarget()
 
 /*
