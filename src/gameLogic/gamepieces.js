@@ -24,16 +24,19 @@ function canReachTarget(startRow, startCol) {
   // dependency inject target? tiles?
 
   const destinations = graph[startRow][startCol]
+  // console.log("start row", startRow, "target row", targetRow)
 
   // check if gamepiece can travel to target in same row
   if (startRow === targetRow) {
     // get col of tile that defines east boundary of travel
     const east = destinations.east[1]
+
     // look right - make sure target isn't past another boundary
     if (startCol <= targetCol && east >= targetCol) {
       return true
     }
     const west = destinations.west[1]
+
     if (startCol >= targetCol && west <= targetCol) {
       return true
     }
@@ -43,14 +46,16 @@ function canReachTarget(startRow, startCol) {
   if (startCol === targetCol) {
     // get row of tile that defines north boundary of travel
     const north = destinations.north[0]
+
     // look north - make sure target isn't past a boundary
-    if (startRow <= targetRow && north >= targetRow) {
+    if (startRow >= targetRow && north <= targetRow) {
       return true
     }
     // get row of tile that defines south boundary of travel
     const south = destinations.south[0]
+
     // look south
-    if (startRow >= targetRow && south <= targetRow) {
+    if (startRow <= targetRow && south >= targetRow) {
       return true
     }
   }
@@ -102,21 +107,21 @@ const sameRowOrCol = (startX, startY, destX, destY) => {
  * @returns boolean
  */
 function isValidMove(gamepiecePosition, destX, destY) {
-  const { x: pieceX, y: pieceY } = gamepiecePosition
+  const { x: pieceCol, y: pieceRow } = gamepiecePosition
 
   // Early return
   // if in the same row or col -> false
-  if (!sameRowOrCol(pieceX, pieceY, destX, destY)) {
+  if (!sameRowOrCol(pieceCol, pieceRow, destX, destY)) {
     return false
   }
 
   // if (gamepiece.isPlayer && isEqualLocation({ destX, destY }, target)) {
   if (isEqualLocation([destX, destY], [targetCol, targetRow])) {
-    return canReachTarget(pieceX, pieceY)
+    return canReachTarget(pieceRow, pieceCol)
   }
 
   // Get valid locations gamepiece can travel to from current location.
-  const { north, south, east, west } = graph[pieceY][pieceX]
+  const { north, south, east, west } = graph[pieceRow][pieceCol]
   const compareDestLocation = isEqualLocation.bind(null, [destY, destX])
   // Check if any of 4 possible travel directions is a valid drop.
   return [north, south, east, west].some(compareDestLocation)

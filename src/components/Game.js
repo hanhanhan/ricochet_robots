@@ -5,7 +5,7 @@ import Board from "./board"
 // Required ? deleting this makes dnd not work -- no errors -- why?
 import gamepieces from "../gameLogic/gamepieces"
 
-const initialGamepiecePosition = { x: 0, y: 0 }
+const initialGamepiecePosition = { x: 2, y: 0 }
 const BoardStateContext = createContext()
 
 // Positions of each of 4  robots
