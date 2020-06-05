@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
 
-import BoardTile from "../gameLogic/BoardTile"
+import BoardTile from "./BoardTile"
 import { dimensions, tiles } from "../gameLogic/BoardSetup"
 
 const BoardStyle = styled.div`
