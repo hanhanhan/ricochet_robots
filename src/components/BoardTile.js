@@ -3,6 +3,7 @@ import { useDrop } from "react-dnd"
 import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
+import { isValidMove } from "../gameLogic/gamepieces"
 import { tiles, dimensions } from "../gameLogic/BoardSetup"
 import graph from "../gameLogic/BoardGraph"
 

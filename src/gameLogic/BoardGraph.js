@@ -1,18 +1,7 @@
-import { tiles, target, dimensions } from "./BoardSetup"
+import { tiles, dimensions } from "./BoardSetup"
 
-const { x: targetCol, y: targetRow } = target
-
-// const checkTarget = (startRow, startCol, destRow = 0, destCol) => {
-//   if (startCol === destCol && startCol <= destCol) {
-
-//   }
-// }
-
-// target north
-
-// target south
-// target east
-// target west
+// --------------------------------------------------------------------
+// Find indices that can be reached from each tile, in each direction.
 
 const checkNorth = (startRow, startCol, destRow = 0, destCol) => {
   for (let row = startRow; row >= destRow; row -= 1) {
@@ -52,8 +41,9 @@ const checkWest = (startRow, startCol, destRow, destCol = 0) => {
   }
   return [startRow, startCol]
 }
-
+// --------------------------------------------------------------------
 // Build directional adjacency object to represent graph
+
 const buildAdjacency = (tiles) => {
   const adjacency = []
   for (let row = 0; row < dimensions.x; row += 1) {
