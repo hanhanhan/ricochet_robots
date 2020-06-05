@@ -7,9 +7,9 @@ import { tiles, target } from "./BoardSetup"
 const { col: targetCol, row: targetRow } = target
 
 let gamepieces = {
-  gamepieceA: { x: 0, y: 0 },
-  gamepieceB: { x: 0, y: 0 },
-  gamepieceC: { x: 0, y: 0 },
+  gamepieceA: { col: 0, row: 0 },
+  gamepieceB: { col: 0, row: 0 },
+  gamepieceC: { col: 0, row: 0 },
 }
 
 // -----------------------------------------------------------
@@ -73,24 +73,15 @@ function canReachTarget(startRow, startCol) {
  * @returns boolean
  */
 function isEqualLocation(A, B) {
-  const [xA, yA] = A
-  const [xB, yB] = B
-  return xA === xB && yA === yB
+  const [colA, rowA] = A
+  const [colB, rowB] = B
+  return colA === colB && rowA === rowB
 }
 
-// function sameRowOrCol(startX, startY, destX, destY) {
-//   // Check game piece is in same row or column as drop target location
-//   // If not, early return!
-//   if (startX === destX || startY === destY) {
-//     return true
-//   }
-//   return false
-// }
-
-const sameRowOrCol = (startX, startY, destX, destY) => {
+const sameRowOrCol = (startCol, startRow, destCol, destRow) => {
   // Check game piece is in same row or column as drop target location
   // If not, early return!
-  if (startX === destX || startY === destY) {
+  if (startCol === destCol || startRow === destRow) {
     return true
   }
   return false
@@ -102,27 +93,27 @@ const sameRowOrCol = (startX, startY, destX, destY) => {
  * Can you move the gamepiece to that other board tile?
  * used with React Drag N Drop's canDrop
  * @param {Object} gamepiece
- * @param {numer} destX
- * @param {number} destY
+ * @param {numer} destCol
+ * @param {number} destRow
  * @returns boolean
  */
-function isValidMove(gamepiecePosition, destX, destY) {
+function isValidMove(gamepiecePosition, destCol, destRow) {
   const { col: pieceCol, row: pieceRow } = gamepiecePosition
 
   // Early return
   // if in the same row or col -> false
-  if (!sameRowOrCol(pieceCol, pieceRow, destX, destY)) {
+  if (!sameRowOrCol(pieceCol, pieceRow, destCol, destRow)) {
     return false
   }
 
-  // if (gamepiece.isPlayer && isEqualLocation({ destX, destY }, target)) {
-  if (isEqualLocation([destX, destY], [targetCol, targetRow])) {
+  // if (gamepiece.isPlayer && isEqualLocation({ destCol, destRow }, target)) {
+  if (isEqualLocation([destCol, destRow], [targetCol, targetRow])) {
     return canReachTarget(pieceRow, pieceCol)
   }
 
   // Get valid locations gamepiece can travel to from current location.
   const { north, south, east, west } = graph[pieceRow][pieceCol]
-  const compareDestLocation = isEqualLocation.bind(null, [destY, destX])
+  const compareDestLocation = isEqualLocation.bind(null, [destRow, destCol])
   // Check if any of 4 possible travel directions is a valid drop.
   return [north, south, east, west].some(compareDestLocation)
 }
