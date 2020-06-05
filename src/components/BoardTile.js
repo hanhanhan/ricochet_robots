@@ -36,12 +36,12 @@ function BoardTile({
   occupied,
   target,
 }) {
-  const { x: pieceX, y: pieceY } = gamepiecePosition
+  const { col: pieceCol, row: pieceRow } = gamepiecePosition
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
-      setGamepiecePosition({ x, y })
+      setGamepiecePosition({ col: x, row: y })
     },
     canDrop: (item, monitor) => {
       return isValidMove(gamepiecePosition, x, y)

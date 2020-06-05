@@ -107,7 +107,7 @@ const sameRowOrCol = (startX, startY, destX, destY) => {
  * @returns boolean
  */
 function isValidMove(gamepiecePosition, destX, destY) {
-  const { x: pieceCol, y: pieceRow } = gamepiecePosition
+  const { col: pieceCol, row: pieceRow } = gamepiecePosition
 
   // Early return
   // if in the same row or col -> false
