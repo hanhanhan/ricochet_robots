@@ -51,13 +51,29 @@ function canReachTarget(startRow, startCol) {
 // ----------------------------------------------------------
 // Helpers
 
+/**
+ *
+ * Check if 2D coordinates / board position are same.
+ * @param {Array.<int>} A
+ * @param {Array.<int>} B
+ * @returns boolean
+ */
 function isEqualLocation(A, B) {
   const [xA, yA] = A
   const [xB, yB] = B
   return xA === xB && yA === yB
 }
 
-function sameRowOrCol(startX, startY, destX, destY) {
+// function sameRowOrCol(startX, startY, destX, destY) {
+//   // Check game piece is in same row or column as drop target location
+//   // If not, early return!
+//   if (startX === destX || startY === destY) {
+//     return true
+//   }
+//   return false
+// }
+
+const sameRowOrCol = (startX, startY, destX, destY) => {
   // Check game piece is in same row or column as drop target location
   // If not, early return!
   if (startX === destX || startY === destY) {
@@ -76,23 +92,25 @@ function sameRowOrCol(startX, startY, destX, destY) {
  * @param {number} destY
  * @returns boolean
  */
-function isValidMove(gamepiece, destX, destY) {
-  const { pieceX, pieceY } = gamepiece
+function isValidMove(gamepiecePosition, destX, destY) {
+  const { x: pieceX, y: pieceY } = gamepiecePosition
 
   // Early return
+  // if in the same row or col -> false
   if (!sameRowOrCol(pieceX, pieceY, destX, destY)) {
     return false
   }
 
-  if (gamepiece.isPlayer && isEqualLocation({ destX, destY }, target)) {
+  // if (gamepiece.isPlayer && isEqualLocation({ destX, destY }, target)) {
+  if (isEqualLocation([destX, destY], [targetCol, targetRow])) {
     return canReachTarget(pieceX, pieceY)
   }
 
   // Get valid locations gamepiece can travel to from current location.
   const { north, south, east, west } = graph[pieceY][pieceX]
-  const compareDestLocation = isEqualLocation.bind(null, [y, x])
+  const compareDestLocation = isEqualLocation.bind(null, [destY, destX])
   // Check if any of 4 possible travel directions is a valid drop.
   return [north, south, east, west].some(compareDestLocation)
 }
 
-export { gamepieces, isValidMove, isEqualLocation, target }
+export { gamepieces, sameRowOrCol, isValidMove, isEqualLocation, target }

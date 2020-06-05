@@ -3,7 +3,11 @@ import { useDrop } from "react-dnd"
 import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
-import { isValidMove } from "../gameLogic/gamepieces"
+import {
+  isValidMove,
+  isEqualLocation,
+  sameRowOrCol,
+} from "../gameLogic/gamepieces"
 import { tiles, dimensions } from "../gameLogic/BoardSetup"
 import graph from "../gameLogic/BoardGraph"
 
@@ -23,21 +27,6 @@ const TileStyle = styled.div`
   flex-grow: 1;
 `
 
-const isEqualLocation = (A, B) => {
-  const [xA, yA] = A
-  const [xB, yB] = B
-  return xA === xB && yA === yB
-}
-
-const sameRowOrCol = (startX, startY, destX, destY) => {
-  // Check game piece is in same row or column as drop target location
-  // If not, early return!
-  if (startX === destX || startY === destY) {
-    return true
-  }
-  return false
-}
-
 function BoardTile({
   x,
   y,
@@ -55,15 +44,7 @@ function BoardTile({
       setGamepiecePosition({ x, y })
     },
     canDrop: (item, monitor) => {
-      // Early return
-      if (!sameRowOrCol(pieceX, pieceY, x, y)) {
-        return false
-      }
-      // Get valid locations gamepiece can travel to from current location.
-      const { north, south, east, west } = graph[pieceY][pieceX]
-      const compareDestLocation = isEqualLocation.bind(null, [y, x])
-      // Check if any of 4 possible travel directions is a valid drop.
-      return [north, south, east, west].some(compareDestLocation)
+      return isValidMove(gamepiecePosition, x, y)
     },
     end: (item, monitor) => {
       // update graph here
