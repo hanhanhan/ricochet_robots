@@ -19,14 +19,14 @@ export default function Board(props) {
   const { gamepiecePosition, setGamepiecePosition } = props
   const tileComponents = tiles
     .flat()
-    .map(({ x, y, north, south, east, west, target }, i) => {
+    .map(({ col, row, north, south, east, west, target }, i) => {
       const occupied =
-        x === gamepiecePosition.col && y === gamepiecePosition.row
+        col === gamepiecePosition.col && row === gamepiecePosition.row
       return (
         <BoardTile
-          key={`${x} ${y} ${occupied}`}
-          x={x}
-          y={y}
+          key={`${col} ${row} ${occupied}`}
+          col={col}
+          row={row}
           target={target}
           walls={{ north, east, south, west }}
           occupied={occupied}

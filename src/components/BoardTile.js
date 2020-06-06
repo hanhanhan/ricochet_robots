@@ -28,23 +28,21 @@ const TileStyle = styled.div`
 `
 
 function BoardTile({
-  x,
-  y,
+  col,
+  row,
   gamepiecePosition,
   setGamepiecePosition,
   walls,
   occupied,
   target,
 }) {
-  const { col: pieceCol, row: pieceRow } = gamepiecePosition
-
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
-      setGamepiecePosition({ col: x, row: y })
+      setGamepiecePosition({ col, row })
     },
     canDrop: (item, monitor) => {
-      return isValidMove(gamepiecePosition, x, y)
+      return isValidMove(gamepiecePosition, col, row)
     },
     end: (item, monitor) => {
       // update graph here

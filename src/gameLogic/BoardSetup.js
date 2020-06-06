@@ -2,7 +2,7 @@
 const dimensions = { x: 16, y: 16 }
 
 // Move your player to this tile location to win!
-const getTarget = () => ({ col: 2, row: 2 })
+const getTarget = () => ({ col: 2, row: 0 })
 const target = getTarget()
 
 /*
@@ -73,12 +73,12 @@ child component onclick, drag, moves component
 */
 
 const tiles = []
-for (let col = 0; col < dimensions.y; col += 1) {
-  const rowLocations = []
-  for (let row = 0; row < dimensions.x; row += 1) {
-    rowLocations.push({
-      x: row,
-      y: col,
+for (let row = 0; row < dimensions.y; row += 1) {
+  const oneRow = []
+  for (let col = 0; col < dimensions.x; col += 1) {
+    oneRow.push({
+      row: row,
+      col: col,
       // walls
       north: false,
       south: false,
@@ -88,7 +88,7 @@ for (let col = 0; col < dimensions.y; col += 1) {
       target: false,
     })
   }
-  tiles.push(rowLocations)
+  tiles.push(oneRow)
 }
 
 tiles[target.row][target.col].target = true

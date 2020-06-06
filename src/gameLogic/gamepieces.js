@@ -20,11 +20,17 @@ let gamepieces = {
 // Note: Only the active player can land on the target
 // Other gamepieces pass through.
 
+/**
+ * Check whether gamepiece can reach the target.
+ *
+ * @param {number} startRow
+ * @param {number} startCol
+ * @returns {boolean}
+ */
 function canReachTarget(startRow, startCol) {
   // dependency inject target? tiles?
 
   const destinations = graph[startRow][startCol]
-  // console.log("start row", startRow, "target row", targetRow)
 
   // check if gamepiece can travel to target in same row
   if (startRow === targetRow) {
@@ -66,11 +72,11 @@ function canReachTarget(startRow, startCol) {
 // Helpers
 
 /**
+ * Check if 2D coordinates / board position are same between two locations.
  *
- * Check if 2D coordinates / board position are same.
- * @param {Array.<int>} A
- * @param {Array.<int>} B
- * @returns boolean
+ * @param {Array.<number>} A
+ * @param {Array.<number>} B
+ * @returns {boolean}
  */
 function isEqualLocation(A, B) {
   const [colA, rowA] = A
@@ -78,9 +84,17 @@ function isEqualLocation(A, B) {
   return colA === colB && rowA === rowB
 }
 
-const sameRowOrCol = (startCol, startRow, destCol, destRow) => {
-  // Check game piece is in same row or column as drop target location
-  // If not, early return!
+/**
+ * Check game piece is in same row or column as drop target location
+ * If not, early return!
+ *
+ * @param {number} startCol
+ * @param {number} startRow
+ * @param {number} destCol
+ * @param {number} destRow
+ * @returns {boolean}
+ */
+function sameRowOrCol(startCol, startRow, destCol, destRow) {
   if (startCol === destCol || startRow === destRow) {
     return true
   }
@@ -93,9 +107,9 @@ const sameRowOrCol = (startCol, startRow, destCol, destRow) => {
  * Can you move the gamepiece to that other board tile?
  * used with React Drag N Drop's canDrop
  * @param {Object} gamepiece
- * @param {numer} destCol
+ * @param {number} destCol
  * @param {number} destRow
- * @returns boolean
+ * @returns {boolean}
  */
 function isValidMove(gamepiecePosition, destCol, destRow) {
   const { col: pieceCol, row: pieceRow } = gamepiecePosition
