@@ -105,9 +105,9 @@ for (const indices of horizontalBarriers) {
   tiles[row][col].north = true
 }
 
-/* 
-Tile at walls are starting/ending points.
-*/
+/*
+ * Tile at walls are starting/ending points.
+ */
 
 // North Wall
 for (let row = 0, col = 0; col < dimensions.x; col++) {

@@ -30,30 +30,39 @@ const TileStyle = styled.div`
 function BoardTile({
   col,
   row,
-  gamepiecePosition,
-  setGamepiecePosition,
+  gamepiecePositions,
+  setGamepiecePositions,
   walls,
-  occupied,
+  gamepieceId,
   target,
 }) {
-  const [{ isOver, canDrop }, drop] = useDrop({
+  console.log("outside gamepieceId ", gamepieceId)
+  const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
-      setGamepiecePosition({ col, row })
+      console.log("drop item", item)
+      console.log("gamepieceId", gamepieceId)
+      setGamepiecePositions({ gamepieceId: { col, row } })
     },
     canDrop: (item, monitor) => {
-      return isValidMove(gamepiecePosition, col, row)
+      return true
+      // return isValidMove(gamepiecePositions, col, row)
     },
     end: (item, monitor) => {
       // update graph here
     },
+    collect: (monitor) => ({
+      id: monitor.getItem(),
+    }),
   })
-
+  // if (collectedProps.id) {
+  //   // console.log("collectedProps", collectedProps)
+  // }
   return (
     // target converted due to this issue (becomes string instead of bool):
     // https://github.com/styled-components/styled-components/issues/1198
     <TileStyle walls={walls} target={target ? 1 : 0} ref={drop}>
-      {occupied ? <Gamepiece /> : null}
+      {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
     </TileStyle>
   )
 }

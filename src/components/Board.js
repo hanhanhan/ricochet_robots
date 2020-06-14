@@ -4,6 +4,10 @@ import PropTypes from "prop-types"
 
 import BoardTile from "./BoardTile"
 import { dimensions, tiles } from "../gameLogic/BoardSetup"
+import {
+  lookupGamepieceFromPosition,
+  gamepieceLocationKey,
+} from "../gameLogic/gamepieces"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -15,23 +19,40 @@ const BoardStyle = styled.div`
   grid-template-rows: repeat(${dimensions.y}, 1fr);
 `
 
+/**
+ *
+ * @param {int} col
+ * @param {int} row
+ * @param {Object} gamepiecePositions
+ * @returns { int|null } id - id of gamepiece at that location
+ */
+function hasOccupyingGamepiece(col, row, gamepiecePositions) {
+  if (col === 0 && row === 3) {
+    return 1
+  } else {
+    return null
+  }
+}
+
 export default function Board(props) {
-  const { gamepiecePosition, setGamepiecePosition } = props
+  const { gamepiecePositions, setGamepiecePositions } = props
+  const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
   const tileComponents = tiles
     .flat()
     .map(({ col, row, north, south, east, west, target }, i) => {
-      const occupied =
-        col === gamepiecePosition.col && row === gamepiecePosition.row
+      const key = gamepieceLocationKey(col, row)
+      const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
+      const gamepieceId = positionToId.get(key)
       return (
         <BoardTile
-          key={`${col} ${row} ${occupied}`}
+          key={`${col} ${row} ${gamepieceId}`}
           col={col}
           row={row}
           target={target}
           walls={{ north, east, south, west }}
-          occupied={occupied}
-          setGamepiecePosition={setGamepiecePosition}
-          gamepiecePosition={gamepiecePosition}
+          gamepieceId={gamepieceId}
+          setGamepiecePositions={setGamepiecePositions}
+          gamepiecePositions={gamepiecePositions}
         />
       )
     })
@@ -39,7 +60,7 @@ export default function Board(props) {
   return <BoardStyle>{tileComponents}</BoardStyle>
 }
 
-Board.propTypes = {
-  gamepiecePosition: PropTypes.object.isRequired,
-  setGamepiecePosition: PropTypes.func.isRequired,
-}
+// Board.propTypes = {
+//   gamepiecePositions: PropTypes.object.isRequired,
+//   setGamepiecePositions: PropTypes.func.isRequired,
+// }

@@ -2,12 +2,13 @@ import React from "react"
 import { FaRobot } from "react-icons/fa"
 import { useDrag } from "react-dnd"
 import { DragTypes } from "./Constants"
+import { gamepieces } from "../gameLogic/gamepieces"
 // NOTE: CSS issue for dragging
 // http://react-dnd.github.io/react-dnd/docs/api/drag-source
 
 const gamepieceSource = {
   beginDrag(props) {
-    return {}
+    return { hopskotch: "mole" }
   },
 }
 
@@ -17,10 +18,14 @@ function collect(connect, monitor) {
   }
 }
 
-function Gamepiece(props) {
-  const id = 1
+function Gamepiece({ id, ...props }) {
   const [collectedProps, drag] = useDrag({
     item: { id, type: DragTypes.GAMEPIECE },
+    collect: (monitor, props) => ({
+      exampley: "moledcollectgamepiece",
+      mon: monitor.getItem(),
+      collProps: props,
+    }),
   })
 
   return (
@@ -33,7 +38,7 @@ function Gamepiece(props) {
         cursor: "move",
       }}
     >
-      🤖
+      {gamepieces[id].icon}
     </div>
   )
 }

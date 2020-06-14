@@ -7,9 +7,9 @@ import { tiles, target } from "./BoardSetup"
 const { col: targetCol, row: targetRow } = target
 
 let gamepieces = {
-  gamepieceA: { col: 0, row: 0 },
-  gamepieceB: { col: 0, row: 0 },
-  gamepieceC: { col: 0, row: 0 },
+  1: { id: 1, icon: "🤖", col: 0, row: 0 },
+  2: { id: 2, icon: "🎱", col: 1, row: 0 },
+  3: { id: 3, icon: "🦘", col: 2, row: 0 },
 }
 
 // -----------------------------------------------------------
@@ -69,7 +69,7 @@ function canReachTarget(startRow, startCol) {
 }
 
 // ----------------------------------------------------------
-// Helpers
+// Logic Helpers
 
 /**
  * Check if 2D coordinates / board position are same between two locations.
@@ -99,6 +99,38 @@ function sameRowOrCol(startCol, startRow, destCol, destRow) {
     return true
   }
   return false
+}
+
+// ----------------------------------------------------------
+// React State Helpers
+
+/**
+ * I should possibly turn this into an actual hash.
+ *
+ * @param {number} col
+ * @param {number} row
+ * @returns {string} Use as key to lookup gamepiece occupation
+ */
+function gamepieceLocationKey(col, row) {
+  return `${col} ${row}`
+}
+
+/**
+ * Convenience function to lookup gamepiece id from tile position.
+ * Yes, the data's there, but this is faster than making each tile location
+ * iterate through all of each object.
+ *
+ * @param {Object} gamepiecePositions
+ * @returns {Map}
+ */
+function lookupGamepieceFromPosition(gamepiecePositions) {
+  const positions = new Map()
+
+  for (const id in gamepiecePositions) {
+    const { col, row } = gamepiecePositions[id]
+    positions.set(gamepieceLocationKey(col, row), id)
+  }
+  return positions
 }
 
 // ----------------------------------------------------------
@@ -132,4 +164,12 @@ function isValidMove(gamepiecePosition, destCol, destRow) {
   return [north, south, east, west].some(compareDestLocation)
 }
 
-export { gamepieces, sameRowOrCol, isValidMove, isEqualLocation, target }
+export {
+  gamepieces,
+  sameRowOrCol,
+  isValidMove,
+  isEqualLocation,
+  target,
+  gamepieceLocationKey,
+  lookupGamepieceFromPosition,
+}
