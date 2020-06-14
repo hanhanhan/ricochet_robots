@@ -36,13 +36,13 @@ function BoardTile({
   gamepieceId,
   target,
 }) {
-  console.log("outside gamepieceId ", gamepieceId)
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
-      console.log("drop item", item)
-      console.log("gamepieceId", gamepieceId)
-      setGamepiecePositions({ gamepieceId: { col, row } })
+      const id = item.id
+      const nextState = {}
+      nextState[id] = { col, row }
+      setGamepiecePositions(nextState)
     },
     canDrop: (item, monitor) => {
       return true

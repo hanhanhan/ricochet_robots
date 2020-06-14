@@ -12,11 +12,8 @@ const initialGamepiecePositions = {
   3: { col: 8, row: 2 },
 }
 
-function reducer(state, action) {
-  console.log("reducer called")
-  console.log(state)
-  console.log(action)
-  return state
+function reducer(state, newState) {
+  return { ...state, ...newState }
 }
 
 function Game(props) {
