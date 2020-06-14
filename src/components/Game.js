@@ -17,8 +17,7 @@ function reducer(state, newState) {
 }
 
 function Game(props) {
-  const [gamepiecePositions, setGamepiecePositions] = useReducer(
-    reducer,
+  const [gamepiecePositions, setGamepiecePositions] = useState(
     initialGamepiecePositions
   )
 

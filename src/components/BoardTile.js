@@ -42,18 +42,15 @@ function BoardTile({
       const id = item.id
       const nextState = {}
       nextState[id] = { col, row }
-      setGamepiecePositions(nextState)
+      setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
-      return true
-      // return isValidMove(gamepiecePositions, col, row)
+      const gamepiecePosition = gamepiecePositions[item.id]
+      return isValidMove(gamepiecePosition, col, row)
     },
     end: (item, monitor) => {
       // update graph here
     },
-    collect: (monitor) => ({
-      id: monitor.getItem(),
-    }),
   })
   // if (collectedProps.id) {
   //   // console.log("collectedProps", collectedProps)
