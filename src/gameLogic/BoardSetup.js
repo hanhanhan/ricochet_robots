@@ -16,6 +16,7 @@ const initialGamepiecePositions = {
  Board configuration specific barrier locations are defined here.
  Indices refer to lines between tiles (0 is left edge of board). 
  Barrier locations are taken from page 3 of DriftingDroids user documentation.
+ This does not include gamepieces.
 */
 
 const horizontalBarriers = [

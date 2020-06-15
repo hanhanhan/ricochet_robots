@@ -43,6 +43,7 @@ const checkWest = (startRow, startCol, destRow, destCol = 0) => {
 }
 // --------------------------------------------------------------------
 // Build directional adjacency object to represent graph
+// Doesn't include target or other gamepieces
 
 const buildAdjacency = (tiles) => {
   const adjacency = []
