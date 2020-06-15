@@ -5,6 +5,13 @@ const dimensions = { x: 16, y: 16 }
 const getTarget = () => ({ col: 2, row: 0 })
 const target = getTarget()
 
+// ID and location for gamepieces for game start
+const initialGamepiecePositions = {
+  1: { col: 2, row: 0 },
+  2: { col: 5, row: 1 },
+  3: { col: 8, row: 2 },
+}
+
 /*
  Board configuration specific barrier locations are defined here.
  Indices refer to lines between tiles (0 is left edge of board). 
@@ -131,4 +138,4 @@ for (let row = 0, col = 0; row < dimensions.y; row++) {
 
 const tileLocations = tiles.flat()
 
-export { dimensions, target, tileLocations, tiles }
+export { dimensions, target, initialGamepiecePositions, tileLocations, tiles }

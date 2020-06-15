@@ -12,62 +12,6 @@ let gamepieces = {
   3: { id: 3, icon: "🦘", col: 2, row: 0 },
 }
 
-// -----------------------------------------------------------
-// Gamepiece movement
-
-// ----------------------------------------------------------
-// Movement related to landing on winning target
-// Note: Only the active player can land on the target
-// Other gamepieces pass through.
-
-/**
- * Check whether gamepiece can reach the target.
- *
- * @param {number} startRow
- * @param {number} startCol
- * @returns {boolean}
- */
-function canReachTarget(startRow, startCol) {
-  // dependency inject target? tiles?
-
-  const destinations = graph[startRow][startCol]
-
-  // check if gamepiece can travel to target in same row
-  if (startRow === targetRow) {
-    // get col of tile that defines east boundary of travel
-    const east = destinations.east[1]
-
-    // look right - make sure target isn't past another boundary
-    if (startCol <= targetCol && east >= targetCol) {
-      return true
-    }
-    const west = destinations.west[1]
-
-    if (startCol >= targetCol && west <= targetCol) {
-      return true
-    }
-  }
-
-  // check if gamepiece can travel to target in same column
-  if (startCol === targetCol) {
-    // get row of tile that defines north boundary of travel
-    const north = destinations.north[0]
-
-    // look north - make sure target isn't past a boundary
-    if (startRow >= targetRow && north <= targetRow) {
-      return true
-    }
-    // get row of tile that defines south boundary of travel
-    const south = destinations.south[0]
-
-    // look south
-    if (startRow <= targetRow && south >= targetRow) {
-      return true
-    }
-  }
-  return false
-}
-
 // ----------------------------------------------------------
 // Logic Helpers
 
@@ -133,6 +77,60 @@ function lookupGamepieceFromPosition(gamepiecePositions) {
   return positions
 }
 
+// -----------------------------------------------------------
+// Gamepiece movement
+
+// ----------------------------------------------------------
+
+/**
+ * Check whether gamepiece can reach the target.
+ * Note: Only the active player can land on the target
+ * Other gamepieces pass through.
+ *
+ * @param {number} startRow
+ * @param {number} startCol
+ * @returns {boolean}
+ */
+function canReachTarget(startRow, startCol) {
+  // dependency inject target? tiles?
+
+  const destinations = graph[startRow][startCol]
+
+  // check if gamepiece can travel to target in same row
+  if (startRow === targetRow) {
+    // get col of tile that defines east boundary of travel
+    const east = destinations.east[1]
+
+    // look right - make sure target isn't past another boundary
+    if (startCol <= targetCol && east >= targetCol) {
+      return true
+    }
+    const west = destinations.west[1]
+
+    if (startCol >= targetCol && west <= targetCol) {
+      return true
+    }
+  }
+
+  // check if gamepiece can travel to target in same column
+  if (startCol === targetCol) {
+    // get row of tile that defines north boundary of travel
+    const north = destinations.north[0]
+
+    // look north - make sure target isn't past a boundary
+    if (startRow >= targetRow && north <= targetRow) {
+      return true
+    }
+    // get row of tile that defines south boundary of travel
+    const south = destinations.south[0]
+
+    // look south
+    if (startRow <= targetRow && south >= targetRow) {
+      return true
+    }
+  }
+  return false
+}
 // ----------------------------------------------------------
 
 /**

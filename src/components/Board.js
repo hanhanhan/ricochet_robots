@@ -1,9 +1,13 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
 
 import BoardTile from "./BoardTile"
-import { dimensions, tiles } from "../gameLogic/BoardSetup"
+import {
+  dimensions,
+  tiles,
+  initialGamepiecePositions,
+} from "../gameLogic/BoardSetup"
 import {
   lookupGamepieceFromPosition,
   gamepieceLocationKey,
@@ -19,23 +23,20 @@ const BoardStyle = styled.div`
   grid-template-rows: repeat(${dimensions.y}, 1fr);
 `
 
-/**
- *
- * @param {int} col
- * @param {int} row
- * @param {Object} gamepiecePositions
- * @returns { int|null } id - id of gamepiece at that location
- */
-function hasOccupyingGamepiece(col, row, gamepiecePositions) {
-  if (col === 0 && row === 3) {
-    return 1
-  } else {
-    return null
-  }
+function useGamepiecePositions(
+  initialGamepiecePositions = initialGamepiecePositions
+) {
+  const [gamepiecePositions, setGamepiecePositions] = useState(
+    initialGamepiecePositions
+  )
+
+  return [gamepiecePositions, setGamepiecePositions]
 }
 
 export default function Board(props) {
-  const { gamepiecePositions, setGamepiecePositions } = props
+  const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions(
+    initialGamepiecePositions
+  )
   const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
   const tileComponents = tiles
     .flat()
