@@ -7,15 +7,16 @@ const target = getTarget()
 
 // ID and location for gamepieces for game start
 const initialGamepiecePositions = {
-  1: { col: 2, row: 0 },
-  2: { col: 5, row: 1 },
-  3: { col: 8, row: 2 },
+  1: { col: 2, row: 2 },
+  2: { col: 2, row: 5 },
+  3: { col: 7, row: 2 },
 }
 
 /*
  Board configuration specific barrier locations are defined here.
  Indices refer to lines between tiles (0 is left edge of board). 
  Barrier locations are taken from page 3 of DriftingDroids user documentation.
+ This does not include gamepieces.
 */
 
 const horizontalBarriers = [

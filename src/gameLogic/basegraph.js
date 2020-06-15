@@ -1,7 +1,9 @@
 import { tiles, dimensions } from "./BoardSetup"
+// Define the basic board graph depending on wall locations and dimensions
 
 // --------------------------------------------------------------------
 // Find indices that can be reached from each tile, in each direction.
+// Doesn't include target or other gamepieces
 
 const checkNorth = (startRow, startCol, destRow = 0, destCol) => {
   for (let row = startRow; row >= destRow; row -= 1) {
@@ -43,6 +45,7 @@ const checkWest = (startRow, startCol, destRow, destCol = 0) => {
 }
 // --------------------------------------------------------------------
 // Build directional adjacency object to represent graph
+// Doesn't include target or other gamepieces
 
 const buildAdjacency = (tiles) => {
   const adjacency = []
@@ -60,5 +63,5 @@ const buildAdjacency = (tiles) => {
   return adjacency
 }
 
-const graph = buildAdjacency(tiles)
+const graph = buildAdjacency.bind(null, tiles)
 export default graph

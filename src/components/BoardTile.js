@@ -3,7 +3,7 @@ import { useDrop } from "react-dnd"
 import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
-import { isValidMove } from "../gameLogic/gamepieces"
+import { isValidMove, getUpdatedGraph } from "../gameLogic/gamepieces"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
@@ -29,6 +29,8 @@ function BoardTile({
   walls,
   gamepieceId,
   target,
+  graph,
+  setGraph,
 }) {
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
@@ -39,11 +41,21 @@ function BoardTile({
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
-      const gamepiecePosition = gamepiecePositions[item.id]
-      return isValidMove(gamepiecePosition, col, row)
+      const playerId = item.id
+      const destCol = col
+      const destRow = row
+
+      return isValidMove({
+        playerId,
+        gamepiecePositions,
+        destCol,
+        destRow,
+        graph,
+      })
     },
     end: (item, monitor) => {
       // update graph here
+      // setGraph(getUpdatedGraph(gamepiecePositions))
     },
   })
   // if (collectedProps.id) {
