@@ -23,6 +23,14 @@ const BoardStyle = styled.div`
   grid-template-rows: repeat(${dimensions.y}, 1fr);
 `
 
+/**
+ * Hook to get + update gamepiece positions.
+ * Use location to look up gamepiece
+ * Or use gamepiece to lookup location
+ *
+ * @param {Object} [initialGamepiecePositions]
+ * @returns {Object}
+ */
 function useGamepiecePositions(
   initialGamepiecePositions = initialGamepiecePositions
 ) {
@@ -30,20 +38,29 @@ function useGamepiecePositions(
     initialGamepiecePositions
   )
 
-  return [gamepiecePositions, setGamepiecePositions]
+  // Create a map of (row, col) -> gamepiece ids
+  // Keys are "row col" strings
+  const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
+
+  // Function to lookup (row, col) -> gamepiece id
+  const getGamepieceAtLocation = (col, row) => {
+    const key = gamepieceLocationKey(col, row)
+    return positionToId.get(key)
+  }
+
+  return { gamepiecePositions, getGamepieceAtLocation, setGamepiecePositions }
 }
 
 export default function Board(props) {
-  const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions(
-    initialGamepiecePositions
-  )
-  const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
+  const {
+    gamepiecePositions,
+    getGamepieceAtLocation,
+    setGamepiecePositions,
+  } = useGamepiecePositions(initialGamepiecePositions)
   const tileComponents = tiles
     .flat()
     .map(({ col, row, north, south, east, west, target }, i) => {
-      const key = gamepieceLocationKey(col, row)
-      const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
-      const gamepieceId = positionToId.get(key)
+      const gamepieceId = getGamepieceAtLocation(col, row)
       return (
         <BoardTile
           key={`${col} ${row} ${gamepieceId}`}

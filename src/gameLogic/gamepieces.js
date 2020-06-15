@@ -1,9 +1,6 @@
 import graph from "../gameLogic/BoardGraph"
 import { tiles, target } from "./BoardSetup"
 
-// Move your player to this tile location to win!
-// const getTarget = () => ({ col: 3, row: 1 })
-// const target = getTarget()
 const { col: targetCol, row: targetRow } = target
 
 let gamepieces = {
