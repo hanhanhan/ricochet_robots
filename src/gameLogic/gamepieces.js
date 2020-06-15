@@ -133,13 +133,30 @@ function canReachTarget(startRow, startCol) {
 /**
  * Can you move the gamepiece to that other board tile?
  * used with React Drag N Drop's canDrop
+ *
  * @param {Object} gamepiece
  * @param {number} destCol
  * @param {number} destRow
  * @returns {boolean}
+ *
+ * Options:
+ * Create 3 graphs based on base graph.
+ * Update each one.
+ *
+ * Create special rules to check each gamepiece position.
+ * Check target is same row or col, and no walls or other gamepieces between
+ * Check wall is same row or col, and no gamepieces between
+ * Check gamepiece is acting as wall
+ *
  */
-function isValidMove(gamepiecePosition, destCol, destRow) {
-  const { col: pieceCol, row: pieceRow } = gamepiecePosition
+function isValidMove(
+  id,
+  gamepiecePositions,
+  getGamepieceAtLocation,
+  destCol,
+  destRow
+) {
+  const { col: pieceCol, row: pieceRow } = gamepiecePositions[id]
 
   // Early return
   // if in the same row or col -> false
@@ -147,6 +164,7 @@ function isValidMove(gamepiecePosition, destCol, destRow) {
     return false
   }
 
+  // Check if can reach target
   // if (gamepiece.isPlayer && isEqualLocation({ destCol, destRow }, target)) {
   if (isEqualLocation([destCol, destRow], [targetCol, targetRow])) {
     return canReachTarget(pieceRow, pieceCol)

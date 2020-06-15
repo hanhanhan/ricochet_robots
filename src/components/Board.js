@@ -1,3 +1,5 @@
+/** @module Board */
+
 import React, { useState } from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
@@ -12,6 +14,7 @@ import {
   lookupGamepieceFromPosition,
   gamepieceLocationKey,
 } from "../gameLogic/gamepieces"
+import { set } from "core-js/fn/dict"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -38,6 +41,9 @@ function useGamepiecePositions(
     initialGamepiecePositions
   )
 
+  // Helpers based on gamepiece state follow
+  // The data is already there, these just provide a way to look it up.
+
   // Create a map of (row, col) -> gamepiece ids
   // Keys are "row col" strings
   const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
@@ -48,15 +54,63 @@ function useGamepiecePositions(
     return positionToId.get(key)
   }
 
-  return { gamepiecePositions, getGamepieceAtLocation, setGamepiecePositions }
+  /**
+   * @func getOtherGamepiecesInRow
+   *
+   * Lookup other gamepieces that might be in North South travel path.
+   *
+   * @param {Number} destRow
+   * @param {Number} playerId
+   * @returns {Set} Gamepiece ids that are not the player, and are in same col
+   */
+  const getOtherGamepiecesInRow = (destRow, playerId) => {
+    const sameRowGamepieces = new Set()
+
+    for (const id in gamepiecePositions) {
+      if (id == playerId) {
+        continue
+      }
+
+      const { row } = gamepiecePositions[id]
+      if (row === destRow) {
+        sameRowGamepieces.add(id)
+      }
+    }
+    return sameRowGamepieces
+  }
+
+  /**
+   * @func getOtherGamepiecesInCol
+   *
+   * Lookup other gamepieces that might be in North South travel path.
+   *
+   * @param {Number} destCol
+   * @param {Number} playerId
+   * @returns {Set} Gamepiece ids that are not the player, and are in same col
+   */
+  const getOtherGamepiecesInCol = (destCol, playerId) => {
+    const sameColGamepieces = new Set()
+
+    for (const id in gamepiecePositions) {
+      if (id == playerId) {
+        continue
+      }
+
+      const { col } = gamepiecePositions[id]
+      if (col === colRow) {
+        sameColGamepieces.add(id)
+      }
+    }
+    return sameColGamepieces
+  }
+
+  return { gamepiecePositions, setGamepiecePositions, getGamepieceAtLocation }
 }
 
 export default function Board(props) {
-  const {
-    gamepiecePositions,
-    getGamepieceAtLocation,
-    setGamepiecePositions,
-  } = useGamepiecePositions(initialGamepiecePositions)
+  const { getGamepieceAtLocation, ...gamepieceInfo } = useGamepiecePositions(
+    initialGamepiecePositions
+  )
   const tileComponents = tiles
     .flat()
     .map(({ col, row, north, south, east, west, target }, i) => {
@@ -69,16 +123,10 @@ export default function Board(props) {
           target={target}
           walls={{ north, east, south, west }}
           gamepieceId={gamepieceId}
-          setGamepiecePositions={setGamepiecePositions}
-          gamepiecePositions={gamepiecePositions}
+          gamepieceInfo={gamepieceInfo}
         />
       )
     })
 
   return <BoardStyle>{tileComponents}</BoardStyle>
 }
-
-// Board.propTypes = {
-//   gamepiecePositions: PropTypes.object.isRequired,
-//   setGamepiecePositions: PropTypes.func.isRequired,
-// }

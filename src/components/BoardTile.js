@@ -39,8 +39,13 @@ function BoardTile({
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
-      const gamepiecePosition = gamepiecePositions[item.id]
-      return isValidMove(gamepiecePosition, col, row)
+      return isValidMove(
+        item.id,
+        gamepiecePositions,
+        getGamepieceAtLocation,
+        col,
+        row
+      )
     },
     end: (item, monitor) => {
       // update graph here
