@@ -16,6 +16,7 @@ let gamepieces = {
  * @returns {Object}
  */
 function getUpdatedGraph(gamepiecePositions) {
+  debugger
   // Create a 'fresh' graph object to mutate
   const graph = basegraph()
 
@@ -39,12 +40,12 @@ function getUpdatedGraph(gamepiecePositions) {
     }
 
     // Update East destinations for tiles west of gamepiece
-    for (let col = 0; col < gamepieceCol; col++) {
-      let [destRow, destCol] = graph[col][gamepieceRow].east
-      if (destCol >= gamepieceCol) {
-        graph[gamepieceRow][col] = [destRow, gamepieceCol - 1]
-      }
-    }
+    // for (let col = 0; col < gamepieceCol; col++) {
+    //   let [destRow, destCol] = graph[col][gamepieceRow].east
+    //   if (destCol >= gamepieceCol) {
+    //     graph[gamepieceRow][col] = [destRow, gamepieceCol - 1]
+    //   }
+    // }
 
     // Update West destinations
     for (let col = gamepieceCol + 1; col < dimensions.x; col++) {
@@ -136,7 +137,7 @@ function lookupGamepieceFromPosition(gamepiecePositions) {
  * @param {number} startCol
  * @returns {boolean}
  */
-function canReachTarget(startRow, startCol) {
+function canReachTarget(startRow, startCol, graph) {
   // dependency inject target? tiles?
 
   const destinations = graph[startRow][startCol]
@@ -245,7 +246,7 @@ function isValidMove({
   // Check if can reach target
   // if (gamepiece.isPlayer && isEqualLocation({ destCol, destRow }, target)) {
   if (isEqualLocation([destCol, destRow], [targetCol, targetRow])) {
-    return canReachTarget(pieceRow, pieceCol)
+    return canReachTarget(pieceRow, pieceCol, graph)
   }
 
   // Get valid locations gamepiece can travel to from current location.

@@ -36,8 +36,10 @@ const BoardStyle = styled.div`
  * @returns {Object}
  */
 function useGamepiecePositions(
-  initialGamepiecePositions = initialGamepiecePositions
+  initialGamepiecePositions = initialGamepiecePositions,
+  graph
 ) {
+  console.log("useGamepiecePositions hook called")
   const [gamepiecePositions, setGamepiecePositions] = useState(
     initialGamepiecePositions
   )
@@ -98,7 +100,7 @@ function useGamepiecePositions(
       }
 
       const { col } = gamepiecePositions[id]
-      if (col === colRow) {
+      if (col === destCol) {
         sameColGamepieces.add(id)
       }
     }
@@ -121,17 +123,18 @@ function useGamepiecePositions(
  *
  * @returns {Array<Object, func>}
  */
-function useGraph() {
+function useGraph(gamepiecePositions) {
+  console.log("useGraph hook called")
   const [graph, setGraph] = useState(getUpdatedGraph(initialGamepiecePositions))
   return [graph, setGraph]
 }
 
 export default function Board(props) {
+  const [graph, setGraph] = useGraph()
   const { getGamepieceAtLocation, ...gamepieceInfo } = useGamepiecePositions(
-    initialGamepiecePositions
+    initialGamepiecePositions,
+    graph
   )
-
-  const [graph, setGraph] = useGamepiecePositions()
 
   const tileComponents = tiles
     .flat()
