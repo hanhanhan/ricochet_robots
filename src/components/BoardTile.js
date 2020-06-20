@@ -3,7 +3,7 @@ import { useDrop } from "react-dnd"
 import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
-import { isValidMove } from "../gameLogic/gamepieces"
+import { isValidMove, getUpdatedGraph } from "../gameLogic/gamepieces"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
@@ -24,12 +24,23 @@ const TileStyle = styled.div`
 function BoardTile({
   col,
   row,
-  gamepiecePositions,
-  setGamepiecePositions,
+  // gamepiecePositions,
+  // setGamepiecePositions,
   walls,
   gamepieceId,
   target,
+  gamepieceInfo,
+  graph,
+  setGraph,
 }) {
+  const {
+    gamepiecePositions,
+    setGamepiecePositions,
+    getGamepieceAtLocation,
+    getOtherGamepiecesInCol,
+    getOtherGamepiecesInRow,
+  } = gamepieceInfo
+
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
@@ -39,16 +50,23 @@ function BoardTile({
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
-      return isValidMove(
-        item.id,
+      const playerId = item.id
+      const destCol = col
+      const destRow = row
+      return isValidMove({
+        playerId,
         gamepiecePositions,
         getGamepieceAtLocation,
-        col,
-        row
-      )
+        getOtherGamepiecesInCol,
+        getOtherGamepiecesInRow,
+        destCol,
+        destRow,
+        graph,
+      })
     },
     end: (item, monitor) => {
       // update graph here
+      setGraph(getUpdatedGraph(gamepiecePositions))
     },
   })
   // if (collectedProps.id) {

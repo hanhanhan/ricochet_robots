@@ -13,6 +13,7 @@ import {
 import {
   lookupGamepieceFromPosition,
   gamepieceLocationKey,
+  getUpdatedGraph,
 } from "../gameLogic/gamepieces"
 import { set } from "core-js/fn/dict"
 
@@ -104,13 +105,34 @@ function useGamepiecePositions(
     return sameColGamepieces
   }
 
-  return { gamepiecePositions, setGamepiecePositions, getGamepieceAtLocation }
+  return {
+    gamepiecePositions,
+    setGamepiecePositions,
+    getGamepieceAtLocation,
+    getOtherGamepiecesInCol,
+    getOtherGamepiecesInRow,
+  }
+}
+
+/**
+ * Hook to update graph.
+ * Not part of hook to update gamepiece positions
+ * because it is instead managed by React DND lifecycle.
+ *
+ * @returns {Array<Object, func>}
+ */
+function useGraph() {
+  const [graph, setGraph] = useState(getUpdatedGraph(initialGamepiecePositions))
+  return [graph, setGraph]
 }
 
 export default function Board(props) {
   const { getGamepieceAtLocation, ...gamepieceInfo } = useGamepiecePositions(
     initialGamepiecePositions
   )
+
+  const [graph, setGraph] = useGamepiecePositions()
+
   const tileComponents = tiles
     .flat()
     .map(({ col, row, north, south, east, west, target }, i) => {
@@ -124,6 +146,8 @@ export default function Board(props) {
           walls={{ north, east, south, west }}
           gamepieceId={gamepieceId}
           gamepieceInfo={gamepieceInfo}
+          graph={graph}
+          setGraph={setGraph}
         />
       )
     })

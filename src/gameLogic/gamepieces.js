@@ -1,5 +1,5 @@
-import graph from "../gameLogic/BoardGraph"
-import { tiles, target } from "./BoardSetup"
+import basegraph from "../gameLogic/basegraph"
+import { tiles, target, dimensions } from "./BoardSetup"
 
 const { col: targetCol, row: targetRow } = target
 
@@ -7,6 +7,54 @@ let gamepieces = {
   1: { id: 1, icon: "🤖", col: 0, row: 0 },
   2: { id: 2, icon: "🎱", col: 1, row: 0 },
   3: { id: 3, icon: "🦘", col: 2, row: 0 },
+}
+
+/**
+ * Update base graph based on gamepiece positions.
+ *
+ * @param {Object} gamepiecePositions
+ * @returns {Object}
+ */
+function getUpdatedGraph(gamepiecePositions) {
+  // Create a 'fresh' graph object to mutate
+  const graph = basegraph()
+
+  for (let [id, { col: gamepieceCol, row: gamepieceRow }] of Object.entries(
+    gamepiecePositions
+  )) {
+    // Update South destinations for tiles north of gamepiece
+    for (let row = 0; row < gamepieceRow; row++) {
+      let [destRow, destCol] = graph[gamepieceCol][row].south
+      if (destRow >= gamepieceRow) {
+        graph[row][gamepieceCol].south = [gamepieceRow - 1, destCol]
+      }
+    }
+
+    // Update North destinations for tiles south of gamepiece
+    for (let row = gamepieceRow + 1; row < dimensions.y; row++) {
+      let [destRow, destCol] = graph[gamepieceCol][row].north
+      if (destRow <= gamepieceRow) {
+        graph[row][gamepieceCol].south = [gamepieceRow + 1, destCol]
+      }
+    }
+
+    // Update East destinations for tiles west of gamepiece
+    for (let col = 0; col < gamepieceCol; col++) {
+      let [destRow, destCol] = graph[col][gamepieceRow].east
+      if (destCol >= gamepieceCol) {
+        graph[gamepieceRow][col] = [destRow, gamepieceCol - 1]
+      }
+    }
+
+    // Update West destinations
+    for (let col = gamepieceCol + 1; col < dimensions.x; col++) {
+      let [destRow, destCol] = graph[col][gamepieceRow].east
+      if (destCol <= gamepieceCol) {
+        graph[gamepieceRow][col] = [destRow, gamepieceCol + 1]
+      }
+    }
+  }
+  return graph
 }
 
 // ----------------------------------------------------------
@@ -149,21 +197,51 @@ function canReachTarget(startRow, startCol) {
  * Check gamepiece is acting as wall
  *
  */
-function isValidMove(
-  id,
+function isValidMove({
+  playerId,
   gamepiecePositions,
+  setGamepiecePositions,
   getGamepieceAtLocation,
+  getOtherGamepiecesInCol,
+  getOtherGamepiecesInRow,
   destCol,
-  destRow
-) {
-  const { col: pieceCol, row: pieceRow } = gamepiecePositions[id]
+  destRow,
+  graph,
+}) {
+  const { col: pieceCol, row: pieceRow } = gamepiecePositions[playerId]
+
+  const inSameCol = pieceCol === destCol
+  const inSameRow = pieceRow === destRow
 
   // Early return
-  // if in the same row or col -> false
-  if (!sameRowOrCol(pieceCol, pieceRow, destCol, destRow)) {
+  // Gamepiece must travel in same column or row (North/South East/West)
+  if (!(inSameCol || inSameRow) || (inSameCol && inSameRow)) {
     return false
   }
 
+  // get valid locations a gamepiece can travel to from destination
+  // build stateful graph for each gamepiece based on walls graph
+  //
+  // look in direction of travel for:
+  // other gamepieces
+  // walls
+  // target
+
+  if (inSameCol) {
+    const otherPlayersInCol = getOtherGamepiecesInCol(destCol)
+    const { north, south } = graph[pieceRow][pieceCol]
+    const sameTargetCol = targetCol === destCol
+
+    const locations = new Map()
+
+    if (!otherPlayersInCol.size === 0) {
+    }
+  }
+
+  const otherPlayersInRow = getOtherGamepiecesInRow(destRow)
+
+  //
+  //
   // Check if can reach target
   // if (gamepiece.isPlayer && isEqualLocation({ destCol, destRow }, target)) {
   if (isEqualLocation([destCol, destRow], [targetCol, targetRow])) {
@@ -179,6 +257,7 @@ function isValidMove(
 
 export {
   gamepieces,
+  getUpdatedGraph,
   sameRowOrCol,
   isValidMove,
   isEqualLocation,
