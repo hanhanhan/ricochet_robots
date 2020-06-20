@@ -1,5 +1,3 @@
-/** @module Board */
-
 import React, { useState } from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
@@ -11,11 +9,9 @@ import {
   initialGamepiecePositions,
 } from "../gameLogic/BoardSetup"
 import {
-  lookupGamepieceFromPosition,
-  gamepieceLocationKey,
   getUpdatedGraph,
+  getGamepieceAtLocation as gamepieceLocationLookup,
 } from "../gameLogic/gamepieces"
-import { set } from "core-js/fn/dict"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -29,91 +25,19 @@ const BoardStyle = styled.div`
 
 /**
  * Hook to get + update gamepiece positions.
- * Use location to look up gamepiece
- * Or use gamepiece to lookup location
  *
  * @param {Object} [initialGamepiecePositions]
- * @returns {Object}
+ * @returns {Array}
  */
 function useGamepiecePositions(
-  initialGamepiecePositions = initialGamepiecePositions,
-  graph
+  initialGamepiecePositions = initialGamepiecePositions
 ) {
   console.log("useGamepiecePositions hook called")
   const [gamepiecePositions, setGamepiecePositions] = useState(
     initialGamepiecePositions
   )
 
-  // Helpers based on gamepiece state follow
-  // The data is already there, these just provide a way to look it up.
-
-  // Create a map of (row, col) -> gamepiece ids
-  // Keys are "row col" strings
-  const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
-
-  // Function to lookup (row, col) -> gamepiece id
-  const getGamepieceAtLocation = (col, row) => {
-    const key = gamepieceLocationKey(col, row)
-    return positionToId.get(key)
-  }
-
-  /**
-   * @func getOtherGamepiecesInRow
-   *
-   * Lookup other gamepieces that might be in North South travel path.
-   *
-   * @param {Number} destRow
-   * @param {Number} playerId
-   * @returns {Set} Gamepiece ids that are not the player, and are in same col
-   */
-  const getOtherGamepiecesInRow = (destRow, playerId) => {
-    const sameRowGamepieces = new Set()
-
-    for (const id in gamepiecePositions) {
-      if (id == playerId) {
-        continue
-      }
-
-      const { row } = gamepiecePositions[id]
-      if (row === destRow) {
-        sameRowGamepieces.add(id)
-      }
-    }
-    return sameRowGamepieces
-  }
-
-  /**
-   * @func getOtherGamepiecesInCol
-   *
-   * Lookup other gamepieces that might be in North South travel path.
-   *
-   * @param {Number} destCol
-   * @param {Number} playerId
-   * @returns {Set} Gamepiece ids that are not the player, and are in same col
-   */
-  const getOtherGamepiecesInCol = (destCol, playerId) => {
-    const sameColGamepieces = new Set()
-
-    for (const id in gamepiecePositions) {
-      if (id == playerId) {
-        continue
-      }
-
-      const { col } = gamepiecePositions[id]
-      if (col === destCol) {
-        sameColGamepieces.add(id)
-      }
-    }
-    return sameColGamepieces
-  }
-
-  return {
-    gamepiecePositions,
-    setGamepiecePositions,
-    getGamepieceAtLocation,
-    getOtherGamepiecesInCol,
-    getOtherGamepiecesInRow,
-  }
+  return [gamepiecePositions, setGamepiecePositions]
 }
 
 /**
@@ -123,7 +47,7 @@ function useGamepiecePositions(
  *
  * @returns {Array<Object, func>}
  */
-function useGraph(gamepiecePositions) {
+function useGraph() {
   console.log("useGraph hook called")
   const [graph, setGraph] = useState(getUpdatedGraph(initialGamepiecePositions))
   return [graph, setGraph]
@@ -131,29 +55,29 @@ function useGraph(gamepiecePositions) {
 
 export default function Board(props) {
   const [graph, setGraph] = useGraph()
-  const { getGamepieceAtLocation, ...gamepieceInfo } = useGamepiecePositions(
-    initialGamepiecePositions,
-    graph
-  )
-
-  const tileComponents = tiles
-    .flat()
-    .map(({ col, row, north, south, east, west, target }, i) => {
-      const gamepieceId = getGamepieceAtLocation(col, row)
-      return (
-        <BoardTile
-          key={`${col} ${row} ${gamepieceId}`}
-          col={col}
-          row={row}
-          target={target}
-          walls={{ north, east, south, west }}
-          gamepieceId={gamepieceId}
-          gamepieceInfo={gamepieceInfo}
-          graph={graph}
-          setGraph={setGraph}
-        />
-      )
-    })
-
-  return <BoardStyle>{tileComponents}</BoardStyle>
+  const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
+  // const getGamepieceAtLocation = gamepieceLocationLookup.bind(
+  //   gamepiecePositions
+  // )
+  // const tileComponents = tiles
+  //   .flat()
+  //   .map(({ col, row, north, south, east, west, target }, i) => {
+  //     const gamepieceId = getGamepieceAtLocation(col, row)
+  //     return (
+  //       <BoardTile
+  //         key={`${col} ${row} ${gamepieceId}`}
+  //         col={col}
+  //         row={row}
+  //         target={target}
+  //         walls={{ north, east, south, west }}
+  //         gamepieceId={gamepieceId}
+  //         gamepiecePositions={gamepiecePositions}
+  //         setGamepiecePositions={setGamepiecePositions}
+  //         graph={graph}
+  //         setGraph={setGraph}
+  //       />
+  //     )
+  //   })
+  return <div>hi</div>
+  // return <BoardStyle>{tileComponents}</BoardStyle>
 }

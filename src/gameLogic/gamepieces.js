@@ -9,6 +9,76 @@ let gamepieces = {
   3: { id: 3, icon: "🦘", col: 2, row: 0 },
 }
 
+// ----------------------------------------------------------
+// Gamepiece position state helpers
+
+// The data is already there, these just provide a way to look it up.
+
+// Create a map of (row, col) -> gamepiece ids
+// Keys are "row col" strings
+// fix here
+// const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
+
+// Function to lookup (row, col) -> gamepiece id
+const getGamepieceAtLocation = (gamepiecePositions, col, row) => {
+  const key = gamepieceLocationKey(col, row)
+  // Create a map of (row, col) -> gamepiece ids
+  const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
+  return positionToId.get(key)
+}
+
+/**
+ * @func getOtherGamepiecesInRow
+ *
+ * Lookup other gamepieces that might be in North South travel path.
+ *
+ * @param {Number} destRow
+ * @param {Number} playerId
+ * @returns {Set} Gamepiece ids that are not the player, and are in same col
+ */
+const getOtherGamepiecesInRow = (destRow, playerId) => {
+  const sameRowGamepieces = new Set()
+
+  for (const id in gamepiecePositions) {
+    if (id == playerId) {
+      continue
+    }
+
+    const { row } = gamepiecePositions[id]
+    if (row === destRow) {
+      sameRowGamepieces.add(id)
+    }
+  }
+  return sameRowGamepieces
+}
+
+/**
+ * @func getOtherGamepiecesInCol
+ *
+ * Lookup other gamepieces that might be in North South travel path.
+ *
+ * @param {Number} destCol
+ * @param {Number} playerId
+ * @returns {Set} Gamepiece ids that are not the player, and are in same col
+ */
+const getOtherGamepiecesInCol = (destCol, playerId) => {
+  const sameColGamepieces = new Set()
+
+  for (const id in gamepiecePositions) {
+    if (id == playerId) {
+      continue
+    }
+
+    const { col } = gamepiecePositions[id]
+    if (col === destCol) {
+      sameColGamepieces.add(id)
+    }
+  }
+  return sameColGamepieces
+}
+// ----------------------------------------------------------
+// Logic Helpers
+
 /**
  * Update base graph based on gamepiece positions.
  *
@@ -16,7 +86,6 @@ let gamepieces = {
  * @returns {Object}
  */
 function getUpdatedGraph(gamepiecePositions) {
-  debugger
   // Create a 'fresh' graph object to mutate
   const graph = basegraph()
 
@@ -202,9 +271,9 @@ function isValidMove({
   playerId,
   gamepiecePositions,
   setGamepiecePositions,
-  getGamepieceAtLocation,
-  getOtherGamepiecesInCol,
-  getOtherGamepiecesInRow,
+  //getGamepieceAtLocation, // fix dependency
+  //getOtherGamepiecesInCol, // fix dep
+  //getOtherGamepiecesInRow, // fix dep
   destCol,
   destRow,
   graph,
@@ -224,25 +293,9 @@ function isValidMove({
   // build stateful graph for each gamepiece based on walls graph
   //
   // look in direction of travel for:
-  // other gamepieces
-  // walls
+  // valid destinations (updated graph based on walls + gamepieces)
   // target
 
-  if (inSameCol) {
-    const otherPlayersInCol = getOtherGamepiecesInCol(destCol)
-    const { north, south } = graph[pieceRow][pieceCol]
-    const sameTargetCol = targetCol === destCol
-
-    const locations = new Map()
-
-    if (!otherPlayersInCol.size === 0) {
-    }
-  }
-
-  const otherPlayersInRow = getOtherGamepiecesInRow(destRow)
-
-  //
-  //
   // Check if can reach target
   // if (gamepiece.isPlayer && isEqualLocation({ destCol, destRow }, target)) {
   if (isEqualLocation([destCol, destRow], [targetCol, targetRow])) {
@@ -265,4 +318,5 @@ export {
   target,
   gamepieceLocationKey,
   lookupGamepieceFromPosition,
+  getGamepieceAtLocation,
 }

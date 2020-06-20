@@ -24,23 +24,14 @@ const TileStyle = styled.div`
 function BoardTile({
   col,
   row,
-  // gamepiecePositions,
-  // setGamepiecePositions,
+  gamepiecePositions,
+  setGamepiecePositions,
   walls,
   gamepieceId,
   target,
-  gamepieceInfo,
   graph,
   setGraph,
 }) {
-  const {
-    gamepiecePositions,
-    setGamepiecePositions,
-    getGamepieceAtLocation,
-    getOtherGamepiecesInCol,
-    getOtherGamepiecesInRow,
-  } = gamepieceInfo
-
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
@@ -57,9 +48,6 @@ function BoardTile({
       return isValidMove({
         playerId,
         gamepiecePositions,
-        getGamepieceAtLocation,
-        getOtherGamepiecesInCol,
-        getOtherGamepiecesInRow,
         destCol,
         destRow,
         graph,
