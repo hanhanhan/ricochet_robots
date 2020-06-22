@@ -12,9 +12,22 @@ let gamepieces = {
 // ----------------------------------------------------------
 // Gamepiece position state helpers
 
-// Function to lookup (row, col) -> gamepiece id
-const getGamepieceAtLocation = (col, row) => {
-  return gamepieceLocationKey(col, row)
+/**
+ * @func buildLookup
+ *
+ * Yes, the data's there, but this is faster than making each tile location
+ * iterate through all of each object.
+  
+ *
+ * @param {Object} gamepiecePositions by Id
+ * @returns {Set} Return function to lookup (row, col) -> gamepiece id
+ */
+const buildLookup = (gamepiecePositions) => {
+  const positionToGamepiece = lookupGamepieceFromPosition(gamepiecePositions)
+  return (col, row) => {
+    const key = gamepieceLocationKey(col, row)
+    return positionToGamepiece.get(key)
+  }
 }
 
 /**
@@ -165,23 +178,18 @@ function gamepieceLocationKey(col, row) {
 }
 
 /**
- * Convenience function to lookup gamepiece id from tile position.
- * Yes, the data's there, but this is faster than making each tile location
- * iterate through all of each object.
+ * Build lookup for gamepiece id from tile position.
  *
  * @param {Object} gamepiecePositions
  * @returns {Map}
  */
 function lookupGamepieceFromPosition(gamepiecePositions) {
   const positions = new Map()
-  console.log("gamepiecePositions in lookups")
-  console.log(gamepiecePositions)
   for (const id in gamepiecePositions) {
     const { col, row } = gamepiecePositions[id]
     positions.set(gamepieceLocationKey(col, row), id)
   }
-  console.log("positions")
-  console.log(positions)
+
   return positions
 }
 
@@ -310,6 +318,5 @@ export {
   isEqualLocation,
   target,
   gamepieceLocationKey,
-  lookupGamepieceFromPosition,
-  getGamepieceAtLocation,
+  buildLookup,
 }

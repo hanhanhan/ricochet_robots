@@ -8,11 +8,7 @@ import {
   tiles,
   initialGamepiecePositions,
 } from "../gameLogic/BoardSetup"
-import {
-  getUpdatedGraph,
-  lookupGamepieceFromPosition,
-  getGamepieceAtLocation,
-} from "../gameLogic/gamepieces"
+import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
 import basegraph from "../gameLogic/basegraph"
 
 const BoardStyle = styled.div`
@@ -59,17 +55,15 @@ export default function Board(props) {
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
   // Make map - keys are string based on position
   // Todo: refactor
-  const positionToGamepiece = lookupGamepieceFromPosition(gamepiecePositions)
+  const positionToGamepiece = buildLookup(gamepiecePositions)
+
   const graph = useGraph()
   console.log("graph")
   console.log(graph)
   const tileComponents = tiles
     .flat()
     .map(({ col, row, north, south, east, west, target }, i) => {
-      const gamepieceId = positionToGamepiece.get(
-        getGamepieceAtLocation(col, row)
-      )
-      console.log(gamepieceId)
+      const gamepieceId = positionToGamepiece(col, row)
       return (
         <BoardTile
           key={`${col} ${row} ${gamepieceId}`}
