@@ -44,7 +44,7 @@ function BoardTile({
       const playerId = item.id
       const destCol = col
       const destRow = row
-      console.log("canDrop called")
+
       return isValidMove({
         playerId,
         gamepiecePositions,

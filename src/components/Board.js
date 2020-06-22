@@ -53,13 +53,11 @@ function useGraph() {
 export default function Board(props) {
   // const [graph, setGraph] = useGraph()
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
-  // Make map - keys are string based on position
-  // Todo: refactor
+  // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
 
   const graph = useGraph()
-  console.log("graph")
-  console.log(graph)
+
   const tileComponents = tiles
     .flat()
     .map(({ col, row, north, south, east, west, target }, i) => {

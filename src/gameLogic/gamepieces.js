@@ -91,10 +91,19 @@ const getOtherGamepiecesInCol = (destCol, playerId) => {
 function getUpdatedGraph(gamepiecePositions) {
   // Create a 'fresh' graph object to mutate
   const graph = basegraph()
+  console.log("basegraph")
+  console.log(graph)
+  console.log("gamepiecePositions before loop")
+  console.log(gamepiecePositions)
 
-  for (let [id, { col: gamepieceCol, row: gamepieceRow }] of Object.entries(
-    gamepiecePositions
-  )) {
+  for (let [gamepiece, position] of Object.entries(gamepiecePositions)) {
+    // Todo: This is what I expect to work, since position is {col: int, row: int}
+    // const { col: gamepieceCol, row: gamepieceRow } = position
+    // this is what actually works
+    console.log("position")
+    console.log(position)
+    const [gamepieceCol, gamepieceRow] = position
+
     // Update South destinations for tiles north of gamepiece
     for (let row = 0; row < gamepieceRow; row++) {
       let [destRow, destCol] = graph[gamepieceCol][row].south
