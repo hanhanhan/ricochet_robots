@@ -12,19 +12,9 @@ let gamepieces = {
 // ----------------------------------------------------------
 // Gamepiece position state helpers
 
-// The data is already there, these just provide a way to look it up.
-
-// Create a map of (row, col) -> gamepiece ids
-// Keys are "row col" strings
-// fix here
-// const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
-
 // Function to lookup (row, col) -> gamepiece id
-const getGamepieceAtLocation = (gamepiecePositions, col, row) => {
-  const key = gamepieceLocationKey(col, row)
-  // Create a map of (row, col) -> gamepiece ids
-  const positionToId = lookupGamepieceFromPosition(gamepiecePositions)
-  return positionToId.get(key)
+const getGamepieceAtLocation = (col, row) => {
+  return gamepieceLocationKey(col, row)
 }
 
 /**
@@ -109,12 +99,12 @@ function getUpdatedGraph(gamepiecePositions) {
     }
 
     // Update East destinations for tiles west of gamepiece
-    // for (let col = 0; col < gamepieceCol; col++) {
-    //   let [destRow, destCol] = graph[col][gamepieceRow].east
-    //   if (destCol >= gamepieceCol) {
-    //     graph[gamepieceRow][col] = [destRow, gamepieceCol - 1]
-    //   }
-    // }
+    for (let col = 0; col < gamepieceCol; col++) {
+      let [destRow, destCol] = graph[col][gamepieceRow].east
+      if (destCol >= gamepieceCol) {
+        graph[gamepieceRow][col] = [destRow, gamepieceCol - 1]
+      }
+    }
 
     // Update West destinations
     for (let col = gamepieceCol + 1; col < dimensions.x; col++) {
@@ -184,11 +174,14 @@ function gamepieceLocationKey(col, row) {
  */
 function lookupGamepieceFromPosition(gamepiecePositions) {
   const positions = new Map()
-
+  console.log("gamepiecePositions in lookups")
+  console.log(gamepiecePositions)
   for (const id in gamepiecePositions) {
     const { col, row } = gamepiecePositions[id]
     positions.set(gamepieceLocationKey(col, row), id)
   }
+  console.log("positions")
+  console.log(positions)
   return positions
 }
 

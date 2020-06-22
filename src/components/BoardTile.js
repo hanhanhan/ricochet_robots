@@ -55,7 +55,7 @@ function BoardTile({
     },
     end: (item, monitor) => {
       // update graph here
-      setGraph(getUpdatedGraph(gamepiecePositions))
+      // setGraph(getUpdatedGraph(gamepiecePositions))
     },
   })
   // if (collectedProps.id) {

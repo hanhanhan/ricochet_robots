@@ -9,8 +9,7 @@ import { func } from "prop-types"
 function Game(props) {
   return (
     <DndProvider backend={HTML5Backend}>
-      {/* <Board /> */}
-      <div>hi there</div>
+      <Board />
     </DndProvider>
   )
 }

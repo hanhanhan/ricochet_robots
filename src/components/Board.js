@@ -10,8 +10,10 @@ import {
 } from "../gameLogic/BoardSetup"
 import {
   getUpdatedGraph,
-  getGamepieceAtLocation as gamepieceLocationLookup,
+  lookupGamepieceFromPosition,
+  getGamepieceAtLocation,
 } from "../gameLogic/gamepieces"
+import basegraph from "../gameLogic/basegraph"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -29,10 +31,8 @@ const BoardStyle = styled.div`
  * @param {Object} [initialGamepiecePositions]
  * @returns {Array}
  */
-function useGamepiecePositions(
-  initialGamepiecePositions = initialGamepiecePositions
-) {
-  console.log("useGamepiecePositions hook called")
+function useGamepiecePositions() {
+  // Bizarrely not working when passed as default value, and then not passed in hook call
   const [gamepiecePositions, setGamepiecePositions] = useState(
     initialGamepiecePositions
   )
@@ -48,36 +48,43 @@ function useGamepiecePositions(
  * @returns {Array<Object, func>}
  */
 function useGraph() {
-  console.log("useGraph hook called")
-  const [graph, setGraph] = useState(getUpdatedGraph(initialGamepiecePositions))
-  return [graph, setGraph]
+  // console.log("useGraph hook called")
+  return React.useMemo(() => basegraph())
+  // const [graph, setGraph] = useState(getUpdatedGraph(initialGamepiecePositions))
+  // return [graph, setGraph]
 }
 
 export default function Board(props) {
-  const [graph, setGraph] = useGraph()
+  // const [graph, setGraph] = useGraph()
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
-  // const getGamepieceAtLocation = gamepieceLocationLookup.bind(
-  //   gamepiecePositions
-  // )
-  // const tileComponents = tiles
-  //   .flat()
-  //   .map(({ col, row, north, south, east, west, target }, i) => {
-  //     const gamepieceId = getGamepieceAtLocation(col, row)
-  //     return (
-  //       <BoardTile
-  //         key={`${col} ${row} ${gamepieceId}`}
-  //         col={col}
-  //         row={row}
-  //         target={target}
-  //         walls={{ north, east, south, west }}
-  //         gamepieceId={gamepieceId}
-  //         gamepiecePositions={gamepiecePositions}
-  //         setGamepiecePositions={setGamepiecePositions}
-  //         graph={graph}
-  //         setGraph={setGraph}
-  //       />
-  //     )
-  //   })
-  return <div>hi</div>
-  // return <BoardStyle>{tileComponents}</BoardStyle>
+  // Make map - keys are string based on position
+  // Todo: refactor
+  const positionToGamepiece = lookupGamepieceFromPosition(gamepiecePositions)
+  const graph = useGraph()
+  console.log("graph")
+  console.log(graph)
+  const tileComponents = tiles
+    .flat()
+    .map(({ col, row, north, south, east, west, target }, i) => {
+      const gamepieceId = positionToGamepiece.get(
+        getGamepieceAtLocation(col, row)
+      )
+      console.log(gamepieceId)
+      return (
+        <BoardTile
+          key={`${col} ${row} ${gamepieceId}`}
+          col={col}
+          row={row}
+          target={target}
+          walls={{ north, east, south, west }}
+          gamepieceId={gamepieceId}
+          gamepiecePositions={gamepiecePositions}
+          setGamepiecePositions={setGamepiecePositions}
+          graph={graph}
+          // setGraph={setGraph}
+        />
+      )
+    })
+
+  return <BoardStyle>{tileComponents}</BoardStyle>
 }
