@@ -44,19 +44,14 @@ function useGamepiecePositions() {
  * @returns {Array<Object, func>}
  */
 function useGraph() {
-  // console.log("useGraph hook called")
   return React.useMemo(() => basegraph())
-  // const [graph, setGraph] = useState(getUpdatedGraph(initialGamepiecePositions))
-  // return [graph, setGraph]
 }
 
 export default function Board(props) {
-  // const [graph, setGraph] = useGraph()
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
   // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
-
-  const graph = useGraph()
+  const graph = getUpdatedGraph(initialGamepiecePositions)
 
   const tileComponents = tiles
     .flat()
@@ -73,7 +68,6 @@ export default function Board(props) {
           gamepiecePositions={gamepiecePositions}
           setGamepiecePositions={setGamepiecePositions}
           graph={graph}
-          // setGraph={setGraph}
         />
       )
     })
