@@ -3,13 +3,13 @@ import { useDrop } from "react-dnd"
 import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
-import { isValidMove, getUpdatedGraph } from "../gameLogic/gamepieces"
+import { isValidMove } from "../gameLogic/gamepieces"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
 
 const TileStyle = styled.div`
-  background-color: ${(props) => (props.target ? `orange` : `aliceblue`)};
+  background-color: ${(props) => props.bgColor};
   border-top: ${(props) => (props.walls.north ? wallStyle : boardGridStyle)};
   border-right: ${(props) => (props.walls.east ? wallStyle : boardGridStyle)};
   border-bottom: ${(props) => (props.walls.south ? wallStyle : boardGridStyle)};
@@ -53,14 +53,47 @@ function BoardTile({
         graph,
       })
     },
+    isDragging: (monitor) => {
+      monitor.getItem().id
+      const { col, row } = gamepiecePositions[id]
+      const highlightPositions = graph[row][col]
+      return highlightPositions
+    },
+    collect: (monitor, props) => {
+      return {
+        validDest: monitor.canDrop(),
+      }
+    },
   })
+
+  const bgColor = getBackgroundColor(collectedProps.validDest, target)
+
   return (
-    // target converted due to this issue (becomes string instead of bool):
+    // bool converted to 1/0 due to this issue (becomes string instead of bool):
     // https://github.com/styled-components/styled-components/issues/1198
-    <TileStyle walls={walls} target={target ? 1 : 0} ref={drop}>
+    <TileStyle
+      walls={walls}
+      bgColor={bgColor}
+      target={target ? 1 : 0}
+      ref={drop}
+    >
       {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
     </TileStyle>
   )
 }
 
 export default BoardTile
+
+function getBackgroundColor(validDest, target) {
+  if (validDest && target) {
+    return `gold`
+  }
+  if (validDest) {
+    return `yellow`
+  }
+  if (target) {
+    return `orange`
+  }
+  // Regular old tiles
+  return `aliceblue`
+}
