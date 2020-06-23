@@ -53,14 +53,7 @@ function BoardTile({
         graph,
       })
     },
-    end: (item, monitor) => {
-      // update graph here
-      // setGraph(getUpdatedGraph(gamepiecePositions))
-    },
   })
-  // if (collectedProps.id) {
-  //   // console.log("collectedProps", collectedProps)
-  // }
   return (
     // target converted due to this issue (becomes string instead of bool):
     // https://github.com/styled-components/styled-components/issues/1198
