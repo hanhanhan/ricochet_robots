@@ -82,8 +82,6 @@ function BoardTile({
   )
 }
 
-export default BoardTile
-
 function getBackgroundColor(validDest, target) {
   if (validDest && target) {
     return `gold`
@@ -97,3 +95,5 @@ function getBackgroundColor(validDest, target) {
   // Regular old tiles
   return `aliceblue`
 }
+
+export default BoardTile
