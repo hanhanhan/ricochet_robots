@@ -7,7 +7,7 @@ import {
   dimensions,
   tiles,
   initialGamepiecePositions,
-} from "../gameLogic/BoardSetup"
+} from "../gameLogic/boardSetup"
 import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
 import basegraph from "../gameLogic/basegraph"
 
@@ -51,7 +51,8 @@ export default function Board(props) {
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
   // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
-  const graph = getUpdatedGraph(initialGamepiecePositions)
+  const graph = getUpdatedGraph(gamepiecePositions)
+  console.log(graph)
 
   const tileComponents = tiles
     .flat()

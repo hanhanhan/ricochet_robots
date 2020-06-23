@@ -1,4 +1,4 @@
-import { tiles, dimensions } from "./BoardSetup"
+import { tiles, dimensions } from "./boardSetup"
 // Define the basic board graph depending on wall locations and dimensions
 
 // --------------------------------------------------------------------

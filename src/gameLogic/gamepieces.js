@@ -1,5 +1,5 @@
 import basegraph from "../gameLogic/basegraph"
-import { tiles, target, dimensions } from "./BoardSetup"
+import { tiles, target, dimensions } from "./boardSetup"
 
 const { col: targetCol, row: targetRow } = target
 
@@ -17,7 +17,6 @@ let gamepieces = {
  *
  * Yes, the data's there, but this is faster than making each tile location
  * iterate through all of each object.
-  
  *
  * @param {Object} gamepiecePositions by Id
  * @returns {Set} Return function to lookup (row, col) -> gamepiece id
@@ -258,23 +257,10 @@ function canReachTarget(startRow, startCol, graph) {
  * @param {number} destRow
  * @returns {boolean}
  *
- * Options:
- * Create 3 graphs based on base graph.
- * Update each one.
- *
- * Create special rules to check each gamepiece position.
- * Check target is same row or col, and no walls or other gamepieces between
- * Check wall is same row or col, and no gamepieces between
- * Check gamepiece is acting as wall
- *
  */
 function isValidMove({
   playerId,
   gamepiecePositions,
-  setGamepiecePositions,
-  //getGamepieceAtLocation, // fix dependency
-  //getOtherGamepiecesInCol, // fix dep
-  //getOtherGamepiecesInRow, // fix dep
   destCol,
   destRow,
   graph,
@@ -289,13 +275,6 @@ function isValidMove({
   if (!(inSameCol || inSameRow) || (inSameCol && inSameRow)) {
     return false
   }
-
-  // get valid locations a gamepiece can travel to from destination
-  // build stateful graph for each gamepiece based on walls graph
-  //
-  // look in direction of travel for:
-  // valid destinations (updated graph based on walls + gamepieces)
-  // target
 
   // Check if can reach target
   // if (gamepiece.isPlayer && isEqualLocation({ destCol, destRow }, target)) {
