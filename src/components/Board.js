@@ -10,6 +10,7 @@ import {
 } from "../gameLogic/boardSetup"
 import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
 import basegraph from "../gameLogic/basegraph"
+import { PlayerContext } from "./Game"
 
 const BoardStyle = styled.div`
   width: 95vmin;

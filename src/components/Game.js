@@ -6,12 +6,22 @@ import Board from "./board"
 import gamepieces from "../gameLogic/gamepieces"
 import { func } from "prop-types"
 
+const PlayerContext = createContext()
+
 function Game(props) {
+  // Gamepiece id for current main player
+  const [myTurn, setMyTurn] = React.useState(1)
   return (
     <DndProvider backend={HTML5Backend}>
-      <Board />
+      <PlayerContext.Provider value={{ myTurn, setMyTurn }}>
+        <Board />
+      </PlayerContext.Provider>
     </DndProvider>
   )
 }
 
-export default Game
+console.log("PlayerContext at game")
+console.log(PlayerContext)
+
+// export default Game
+export { Game, PlayerContext }

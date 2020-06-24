@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
 import { isValidMove } from "../gameLogic/gamepieces"
+import { PlayerContext } from "./Game"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
@@ -32,6 +33,7 @@ function BoardTile({
   graph,
   setGraph,
 }) {
+  const { myTurn, setMyTurn } = React.useContext(PlayerContext)
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
@@ -47,6 +49,7 @@ function BoardTile({
 
       return isValidMove({
         playerId,
+        myTurn,
         gamepiecePositions,
         destCol,
         destRow,
