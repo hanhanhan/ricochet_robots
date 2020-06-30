@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
 
+import ErrorBoundary from "./errorBoundary"
 import BoardTile from "./boardTile"
 import {
   getTarget,
@@ -11,7 +12,6 @@ import {
 } from "../gameLogic/boardSetup"
 import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
 import basegraph from "../gameLogic/basegraph"
-import { PlayerContext } from "./Game"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -75,5 +75,9 @@ export default function Board(props) {
       )
     })
 
-  return <BoardStyle>{tileComponents}</BoardStyle>
+  return (
+    <ErrorBoundary>
+      <BoardStyle>{tileComponents}</BoardStyle>
+    </ErrorBoundary>
+  )
 }

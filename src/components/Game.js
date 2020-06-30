@@ -8,9 +8,14 @@ import { func } from "prop-types"
 
 const PlayerContext = createContext()
 
+const usePlayerTurn = () => {
+  const [myTurn, setMyTurn] = React.useState(1)
+  return { myTurn, setMyTurn }
+}
+
 function Game(props) {
   // Gamepiece id for current main player
-  const [myTurn, setMyTurn] = React.useState(1)
+  const { myTurn, setMyTurn } = usePlayerTurn()
   return (
     <DndProvider backend={HTML5Backend}>
       <PlayerContext.Provider value={{ myTurn, setMyTurn }}>
@@ -21,4 +26,4 @@ function Game(props) {
 }
 
 // export default Game
-export { Game, PlayerContext }
+export { Game, PlayerContext, usePlayerTurn }
