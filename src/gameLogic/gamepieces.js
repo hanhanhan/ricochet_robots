@@ -1,7 +1,7 @@
 import basegraph from "../gameLogic/basegraph"
-import { tiles, target, dimensions } from "./boardSetup"
+import { getTarget, dimensions } from "./boardSetup"
 
-const { col: targetCol, row: targetRow } = target
+const { col: targetCol, row: targetRow } = getTarget()
 
 let gamepieces = {
   1: { id: 1, icon: "🤖", col: 0, row: 0 },
@@ -298,7 +298,6 @@ export {
   sameRowOrCol,
   isValidMove,
   isEqualLocation,
-  target,
   gamepieceLocationKey,
   buildLookup,
 }

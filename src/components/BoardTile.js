@@ -29,7 +29,7 @@ function BoardTile({
   setGamepiecePositions,
   walls,
   gamepieceId,
-  target,
+  isTarget,
   graph,
   setGraph,
 }) {
@@ -69,7 +69,7 @@ function BoardTile({
     },
   })
 
-  const bgColor = getBackgroundColor(collectedProps.validDest, target)
+  const bgColor = getBackgroundColor(collectedProps.validDest, isTarget)
 
   return (
     // bool converted to 1/0 due to this issue (becomes string instead of bool):
@@ -77,7 +77,7 @@ function BoardTile({
     <TileStyle
       walls={walls}
       bgColor={bgColor}
-      target={target ? 1 : 0}
+      isTarget={isTarget ? 1 : 0}
       ref={drop}
     >
       {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
@@ -85,14 +85,14 @@ function BoardTile({
   )
 }
 
-function getBackgroundColor(validDest, target) {
-  if (validDest && target) {
+function getBackgroundColor(validDest, isTarget) {
+  if (validDest && isTarget) {
     return `gold`
   }
   if (validDest) {
     return `yellow`
   }
-  if (target) {
+  if (isTarget) {
     return `orange`
   }
   // Regular old tiles

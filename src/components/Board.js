@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 
 import BoardTile from "./BoardTile"
 import {
+  getTarget,
   dimensions,
   tiles,
   initialGamepiecePositions,
@@ -50,6 +51,8 @@ function useGraph() {
 
 export default function Board(props) {
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
+  const target = getTarget()
+
   // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
   const graph = getUpdatedGraph(gamepiecePositions)
@@ -57,14 +60,15 @@ export default function Board(props) {
 
   const tileComponents = tiles
     .flat()
-    .map(({ col, row, north, south, east, west, target }, i) => {
+    .map(({ col, row, north, south, east, west }, i) => {
       const gamepieceId = positionToGamepiece(col, row)
+      const isTarget = target.row == row && target.col == col
       return (
         <BoardTile
           key={`${col} ${row} ${gamepieceId}`}
           col={col}
           row={row}
-          target={target}
+          isTarget={isTarget}
           walls={{ north, east, south, west }}
           gamepieceId={gamepieceId}
           gamepiecePositions={gamepiecePositions}

@@ -2,7 +2,7 @@
 const dimensions = { x: 16, y: 16 }
 
 // Move your player to this tile location to win!
-const getTarget = () => ({ col: 1, row: 1 })
+const getTarget = ({ row = 1, col = 1 } = {}) => ({ row, col })
 const target = getTarget()
 
 // ID and location for gamepieces for game start
@@ -154,4 +154,10 @@ const tiles = buildTileLocations({
 })
 
 const tileLocations = tiles.flat()
-export { dimensions, target, initialGamepiecePositions, tileLocations, tiles }
+export {
+  dimensions,
+  getTarget,
+  initialGamepiecePositions,
+  tileLocations,
+  tiles,
+}
