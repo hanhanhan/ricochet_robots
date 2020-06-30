@@ -29,11 +29,8 @@ const BoardStyle = styled.div`
  * @param {Object} [initialGamepiecePositions]
  * @returns {Array}
  */
-function useGamepiecePositions() {
-  // Bizarrely not working when passed as default value, and then not passed in hook call
-  const [gamepiecePositions, setGamepiecePositions] = useState(
-    initialGamepiecePositions
-  )
+function useGamepiecePositions(initialValue = initialGamepiecePositions) {
+  const [gamepiecePositions, setGamepiecePositions] = useState(initialValue)
 
   return [gamepiecePositions, setGamepiecePositions]
 }
