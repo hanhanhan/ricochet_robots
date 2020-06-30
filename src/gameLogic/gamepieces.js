@@ -1,7 +1,5 @@
 import basegraph from "../gameLogic/basegraph"
-import { getTarget, dimensions } from "./boardSetup"
-
-const { col: targetCol, row: targetRow } = getTarget()
+import { dimensions } from "./boardSetup"
 
 let gamepieces = {
   1: { id: 1, icon: "🤖", col: 0, row: 0 },
@@ -206,7 +204,7 @@ function lookupGamepieceFromPosition(gamepiecePositions) {
  * @param {number} startCol
  * @returns {boolean}
  */
-function canReachTarget(startRow, startCol, graph) {
+function canReachTarget(startRow, startCol, targetRow, targetCol, graph) {
   // dependency inject target? tiles?
 
   const destinations = graph[startRow][startCol]
@@ -264,6 +262,7 @@ function isValidMove({
   gamepiecePositions,
   destCol,
   destRow,
+  isTarget,
   graph,
 }) {
   const { col: pieceCol, row: pieceRow } = gamepiecePositions[playerId]
@@ -278,11 +277,8 @@ function isValidMove({
   }
 
   // Only the main player whose turn it is can reach target
-  if (
-    myTurn == playerId &&
-    isEqualLocation([destRow, destCol], [targetRow, targetCol])
-  ) {
-    return canReachTarget(pieceRow, pieceCol, graph)
+  if (myTurn == playerId && isTarget) {
+    return canReachTarget(pieceRow, pieceCol, destRow, destCol, graph)
   }
 
   // Get valid locations gamepiece can travel to from current location.

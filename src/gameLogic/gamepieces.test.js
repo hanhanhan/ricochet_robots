@@ -1,4 +1,4 @@
-import { isValidMove, getUpdatedGraph, target } from "./gamepieces"
+import { isValidMove, getUpdatedGraph, getTarget } from "./gamepieces"
 import make_graph from "./basegraph"
 
 describe(`
@@ -51,27 +51,92 @@ and further gamepiece can travel to`, () => {
   })
 })
 
+const isValidMoveSetup = (dest, gamepiecePositions, overrides) => {
+  return {
+    playerId: 1, // gamepiece being moved
+    myTurn: 1, // player ID whose turn it is
+    gamepiecePositions,
+    destCol: dest.col,
+    destRow: dest.row,
+    isTarget: true,
+    graph: make_graph(),
+    ...overrides,
+  }
+}
+
 describe(`Test 'isValidMove':
 Show that the gamepiece can travel an open path to target
-on the gamepiece player's turn`, () => {
-  const setup = (target, gamepiecePositions, overrides) => {
-    return {
-      playerId: 1, // gamepiece being moved
-      myTurn: 1, // player ID whose turn it is
-      gamepiecePositions,
-      destCol: target.col,
-      destRow: target.row,
-      graph: make_graph(),
-      ...overrides,
-    }
-  }
-
+if it's gamepiece player's turn,
+without another boundary`, () => {
   test("to north", () => {
     const gamepiecePositions = { 1: { row: 3, col: 0 } }
-    const target = { row: 1, col: 0 }
-    const moveToTarget = setup(target, gamepiecePositions)
-    debugger
+    const dest = { row: 1, col: 0 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions)
     const is_valid = isValidMove(moveToTarget)
     expect(is_valid).toEqual(true)
+  })
+  test("to south", () => {
+    const gamepiecePositions = { 1: { row: 0, col: 0 } }
+    const dest = { row: 1, col: 0 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions)
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(true)
+  })
+  test("to east", () => {
+    const gamepiecePositions = { 1: { row: 0, col: 0 } }
+    const dest = { row: 0, col: 2 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions)
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(true)
+  })
+  test("to west", () => {
+    const gamepiecePositions = { 1: { row: 0, col: 3 } }
+    const dest = { row: 0, col: 1 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions)
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(true)
+  })
+})
+
+describe(`Test 'isValidMove':
+Show that the gamepiece can not travel an open path to destination
+if it's not the target
+and doesn't have another boundary`, () => {
+  const isTarget = false
+  test("to north", () => {
+    const gamepiecePositions = { 1: { row: 3, col: 0 } }
+    const dest = { row: 1, col: 0 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions, {
+      isTarget,
+    })
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(false)
+  })
+  test("to south", () => {
+    const gamepiecePositions = { 1: { row: 0, col: 0 } }
+    const dest = { row: 1, col: 0 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions, {
+      isTarget,
+    })
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(false)
+  })
+  test("to east", () => {
+    const gamepiecePositions = { 1: { row: 0, col: 0 } }
+    const dest = { row: 0, col: 2 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions, {
+      isTarget,
+    })
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(false)
+  })
+  test("to west", () => {
+    const gamepiecePositions = { 1: { row: 0, col: 3 } }
+    const dest = { row: 0, col: 1 }
+    const moveToTarget = isValidMoveSetup(dest, gamepiecePositions, {
+      isTarget,
+    })
+    const is_valid = isValidMove(moveToTarget)
+    expect(is_valid).toEqual(false)
   })
 })

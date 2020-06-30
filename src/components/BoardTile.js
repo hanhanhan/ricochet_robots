@@ -53,6 +53,7 @@ function BoardTile({
         gamepiecePositions,
         destCol,
         destRow,
+        isTarget,
         graph,
       })
     },

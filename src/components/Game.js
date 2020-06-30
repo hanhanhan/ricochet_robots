@@ -20,8 +20,5 @@ function Game(props) {
   )
 }
 
-console.log("PlayerContext at game")
-console.log(PlayerContext)
-
 // export default Game
 export { Game, PlayerContext }
