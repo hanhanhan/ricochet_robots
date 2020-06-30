@@ -13,4 +13,8 @@ module.exports = {
   },
   testURL: `http://localhost`,
   setupFiles: [`<rootDir>/loadershim.js`],
+  collectCoverageFrom: [
+    // `src/components/**.{js,jsx}`,
+    `src/gameLogic/**.{js,jsx}`,
+  ],
 }

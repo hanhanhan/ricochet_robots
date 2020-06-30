@@ -106,7 +106,7 @@ function getUpdatedGraph(gamepiecePositions) {
     for (let row = gamepieceRow + 1; row < dimensions.y; row++) {
       let [destRow, destCol] = graph[row][gamepieceCol].north
       if (destRow <= gamepieceRow) {
-        graph[row][gamepieceCol].south = [gamepieceRow + 1, destCol]
+        graph[row][gamepieceCol].north = [gamepieceRow + 1, destCol]
       }
     }
 
@@ -280,7 +280,7 @@ function isValidMove({
   // Only the main player whose turn it is can reach target
   if (
     myTurn == playerId &&
-    isEqualLocation([destCol, destRow], [targetCol, targetRow])
+    isEqualLocation([destRow, destCol], [targetRow, targetCol])
   ) {
     return canReachTarget(pieceRow, pieceCol, graph)
   }

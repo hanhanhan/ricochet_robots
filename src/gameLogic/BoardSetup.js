@@ -2,14 +2,14 @@
 const dimensions = { x: 16, y: 16 }
 
 // Move your player to this tile location to win!
-const getTarget = () => ({ col: 2, row: 0 })
+const getTarget = () => ({ col: 1, row: 1 })
 const target = getTarget()
 
 // ID and location for gamepieces for game start
 const initialGamepiecePositions = {
-  1: { col: 2, row: 2 },
-  2: { col: 2, row: 5 },
-  3: { col: 7, row: 2 },
+  1: { row: 2, col: 1 },
+  2: { row: 3, col: 0 },
+  3: { row: 2, col: 7 },
 }
 
 /*
@@ -80,63 +80,78 @@ tile has occupied state/component: empty, robot a/b/c/d
 child component onclick, drag, moves component
 */
 
-const tiles = []
-for (let row = 0; row < dimensions.y; row += 1) {
-  const oneRow = []
-  for (let col = 0; col < dimensions.x; col += 1) {
-    oneRow.push({
-      row: row,
-      col: col,
-      // walls
-      north: false,
-      south: false,
-      east: false,
-      west: false,
-      // move robot here to win
-      target: false,
-    })
+function buildTileLocations({
+  verticalBarriers,
+  horizontalBarriers,
+  dimensions,
+  target,
+}) {
+  const tiles = []
+  for (let row = 0; row < dimensions.y; row += 1) {
+    const oneRow = []
+    for (let col = 0; col < dimensions.x; col += 1) {
+      oneRow.push({
+        row: row,
+        col: col,
+        // walls
+        north: false,
+        south: false,
+        east: false,
+        west: false,
+        // move robot here to win
+        target: false,
+      })
+    }
+    tiles.push(oneRow)
   }
-  tiles.push(oneRow)
+
+  tiles[target.row][target.col].target = true
+
+  for (const indices of verticalBarriers) {
+    const [row, col] = indices
+    tiles[row][col - 1].east = true
+    tiles[row][col].west = true
+  }
+
+  for (const indices of horizontalBarriers) {
+    const [row, col] = indices
+    tiles[row - 1][col].south = true
+    tiles[row][col].north = true
+  }
+
+  /*
+   * Tile at walls are starting/ending points.
+   */
+
+  // North Wall
+  for (let row = 0, col = 0; col < dimensions.x; col++) {
+    tiles[row][col].north = true
+  }
+
+  // South Wall
+  for (let row = dimensions.y - 1, col = 0; col < dimensions.x; col++) {
+    tiles[row][col].south = true
+  }
+
+  // East Wall
+  for (let row = 0, col = dimensions.x - 1; row < dimensions.y; row++) {
+    tiles[row][col].east = true
+  }
+
+  // West Wall
+  for (let row = 0, col = 0; row < dimensions.y; row++) {
+    tiles[row][col].west = true
+  }
+
+  return tiles
 }
 
-tiles[target.row][target.col].target = true
-
-for (const indices of verticalBarriers) {
-  const [row, col] = indices
-  tiles[row][col - 1].east = true
-  tiles[row][col].west = true
-}
-
-for (const indices of horizontalBarriers) {
-  const [row, col] = indices
-  tiles[row - 1][col].south = true
-  tiles[row][col].north = true
-}
-
-/*
- * Tile at walls are starting/ending points.
- */
-
-// North Wall
-for (let row = 0, col = 0; col < dimensions.x; col++) {
-  tiles[row][col].north = true
-}
-
-// South Wall
-for (let row = dimensions.y - 1, col = 0; col < dimensions.x; col++) {
-  tiles[row][col].south = true
-}
-
-// East Wall
-for (let row = 0, col = dimensions.x - 1; row < dimensions.y; row++) {
-  tiles[row][col].east = true
-}
-
-// West Wall
-for (let row = 0, col = 0; row < dimensions.y; row++) {
-  tiles[row][col].west = true
-}
+const tiles = buildTileLocations({
+  verticalBarriers,
+  horizontalBarriers,
+  dimensions,
+  target,
+})
 
 const tileLocations = tiles.flat()
-
 export { dimensions, target, initialGamepiecePositions, tileLocations, tiles }
