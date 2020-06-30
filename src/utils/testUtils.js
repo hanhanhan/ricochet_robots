@@ -11,12 +11,14 @@ import { PlayerContext, usePlayerTurn } from "../components/game"
 
 const AllTheProviders = ({ children }) => {
   const { myTurn, setMyTurn } = usePlayerTurn()
-  //   return (
-  //     <DragDropContext backend={HTML5Backend}>
-  //       <PlayerContext value={{ myTurn, setMyTurn }}>{children}</PlayerContext>
-  //     </DragDropContext>
-  //   )
-  return <>{children}</>
+  return (
+    //     <DragDropContext backend={HTML5Backend}>
+    <PlayerContext.Provider value={{ myTurn, setMyTurn }}>
+      {children}
+    </PlayerContext.Provider>
+    //     </DragDropContext>
+  )
+  // return <>{children}</>
 }
 
 // const customRender = (ui, options) =>

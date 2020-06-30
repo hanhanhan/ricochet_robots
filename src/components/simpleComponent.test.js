@@ -7,4 +7,5 @@ test("Simple component renders", () => {
   const simple = render(<SimpleComponent />)
   console.log("simple component")
   console.log(simple)
+  expect(simple).not.toBeNull()
 })
