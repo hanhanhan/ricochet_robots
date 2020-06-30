@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
 
-import BoardTile from "./BoardTile"
+import BoardTile from "./boardTile"
 import {
   getTarget,
   dimensions,
