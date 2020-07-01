@@ -5,7 +5,8 @@ import SimpleComponent from "./simpleComponent"
 
 test("Simple component renders", () => {
   const simple = render(<SimpleComponent />)
-  console.log("simple component")
-  console.log(simple)
+  // simple.debug()
+
+  // console.log(simple.debug())
   expect(simple).not.toBeNull()
 })
