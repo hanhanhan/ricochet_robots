@@ -19,8 +19,8 @@ const BoardStyle = styled.div`
   display: grid;
   border: 5px solid thistle;
   gap: 0;
-  grid-template-columns: repeat(${dimensions.x}, 1fr);
-  grid-template-rows: repeat(${dimensions.y}, 1fr);
+  grid-template-columns: repeat(${dimensions.col}, 1fr);
+  grid-template-rows: repeat(${dimensions.row}, 1fr);
 `
 
 /**

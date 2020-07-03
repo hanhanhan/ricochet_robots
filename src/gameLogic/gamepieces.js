@@ -101,7 +101,7 @@ function getUpdatedGraph(gamepiecePositions) {
     }
 
     // Update North destinations for tiles south of gamepiece
-    for (let row = gamepieceRow + 1; row < dimensions.y; row++) {
+    for (let row = gamepieceRow + 1; row < dimensions.row; row++) {
       let [destRow, destCol] = graph[row][gamepieceCol].north
       if (destRow <= gamepieceRow) {
         graph[row][gamepieceCol].north = [gamepieceRow + 1, destCol]
@@ -117,7 +117,7 @@ function getUpdatedGraph(gamepiecePositions) {
     }
 
     // Update West destinations
-    for (let col = gamepieceCol + 1; col < dimensions.x; col++) {
+    for (let col = gamepieceCol + 1; col < dimensions.col; col++) {
       let [destRow, destCol] = graph[gamepieceRow][col].west
       if (destCol <= gamepieceCol) {
         graph[gamepieceRow][col].west = [destRow, gamepieceCol + 1]

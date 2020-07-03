@@ -23,8 +23,8 @@ const TileStyle = styled.div`
 `
 
 function BoardTile({
-  col,
   row,
+  col,
   gamepiecePositions,
   setGamepiecePositions,
   walls,
@@ -39,13 +39,13 @@ function BoardTile({
     drop: (item, monitor) => {
       const id = item.id
       const nextState = {}
-      nextState[id] = { col, row }
+      nextState[id] = { row, col }
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
       const playerId = item.id
-      const destCol = col
       const destRow = row
+      const destCol = col
 
       return isValidMove({
         playerId,
@@ -59,7 +59,7 @@ function BoardTile({
     },
     isDragging: (monitor) => {
       monitor.getItem().id
-      const { col, row } = gamepiecePositions[id]
+      const { row, col } = gamepiecePositions[id]
       const highlightPositions = graph[row][col]
       return highlightPositions
     },

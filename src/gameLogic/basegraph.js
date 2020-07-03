@@ -15,7 +15,7 @@ const checkNorth = (startRow, startCol, destRow = 0, destCol) => {
   return [startRow, startCol]
 }
 
-const checkSouth = (startRow, startCol, destRow = dimensions.y, destCol) => {
+const checkSouth = (startRow, startCol, destRow = dimensions.row, destCol) => {
   for (let row = startRow; row <= destRow; row += 1) {
     const tile = tiles[row][startCol]
     if (tile.south) {
@@ -24,7 +24,7 @@ const checkSouth = (startRow, startCol, destRow = dimensions.y, destCol) => {
   }
 }
 
-const checkEast = (startRow, startCol, destRow, destCol = dimensions.x) => {
+const checkEast = (startRow, startCol, destRow, destCol = dimensions.col) => {
   for (let col = startCol; col <= destCol; col += 1) {
     const tile = tiles[startRow][col]
     if (tile.east) {
@@ -49,9 +49,9 @@ const checkWest = (startRow, startCol, destRow, destCol = 0) => {
 
 const buildAdjacency = (tiles) => {
   const adjacency = []
-  for (let row = 0; row < dimensions.x; row += 1) {
+  for (let row = 0; row < dimensions.col; row += 1) {
     adjacency.push([])
-    for (let col = 0; col < dimensions.y; col += 1) {
+    for (let col = 0; col < dimensions.row; col += 1) {
       adjacency[row].push({
         north: checkNorth(row, col),
         south: checkSouth(row, col),

@@ -1,5 +1,5 @@
 // Game board dimensions
-const dimensions = { x: 16, y: 16 }
+const dimensions = { row: 16, col: 16 }
 
 // Move your player to this tile location to win!
 const getTarget = ({ row = 1, col = 1 } = {}) => ({ row, col })
@@ -87,9 +87,9 @@ function buildTileLocations({
   target,
 }) {
   const tiles = []
-  for (let row = 0; row < dimensions.y; row += 1) {
+  for (let row = 0; row < dimensions.row; row += 1) {
     const oneRow = []
-    for (let col = 0; col < dimensions.x; col += 1) {
+    for (let col = 0; col < dimensions.col; col += 1) {
       oneRow.push({
         row: row,
         col: col,
@@ -124,22 +124,22 @@ function buildTileLocations({
    */
 
   // North Wall
-  for (let row = 0, col = 0; col < dimensions.x; col++) {
+  for (let row = 0, col = 0; col < dimensions.col; col++) {
     tiles[row][col].north = true
   }
 
   // South Wall
-  for (let row = dimensions.y - 1, col = 0; col < dimensions.x; col++) {
+  for (let row = dimensions.row - 1, col = 0; col < dimensions.col; col++) {
     tiles[row][col].south = true
   }
 
   // East Wall
-  for (let row = 0, col = dimensions.x - 1; row < dimensions.y; row++) {
+  for (let row = 0, col = dimensions.col - 1; row < dimensions.row; row++) {
     tiles[row][col].east = true
   }
 
   // West Wall
-  for (let row = 0, col = 0; row < dimensions.y; row++) {
+  for (let row = 0, col = 0; row < dimensions.row; row++) {
     tiles[row][col].west = true
   }
 
@@ -153,11 +153,4 @@ const tiles = buildTileLocations({
   target,
 })
 
-const tileLocations = tiles.flat()
-export {
-  dimensions,
-  getTarget,
-  initialGamepiecePositions,
-  tileLocations,
-  tiles,
-}
+export { dimensions, getTarget, initialGamepiecePositions, tiles }
