@@ -15,6 +15,6 @@ module.exports = {
   setupFiles: [`<rootDir>/loadershim.js`],
   collectCoverageFrom: [
     // `src/components/**.{js,jsx}`,
-    `src/gameLogic/**.{js,jsx}`,
+    `src/components/**.{js,jsx}`,
   ],
 }

@@ -1,6 +1,6 @@
 import React from "react"
 import { render } from "@testing-library/react"
-
+import "@testing-library/jest-dom"
 // React DND test contexts
 // https://react-dnd.github.io/react-dnd/docs/testing
 // import { wrapInTestContext } from "react-dnd-test-utils"
