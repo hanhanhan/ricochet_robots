@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import PropTypes from "prop-types"
 
 import ErrorBoundary from "./errorBoundary"
 import BoardTile from "./boardTile"
@@ -53,7 +52,6 @@ export default function Board(props) {
   // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
   const graph = getUpdatedGraph(gamepiecePositions)
-  console.log(graph)
 
   const tileComponents = tiles
     .flat()
@@ -66,7 +64,7 @@ export default function Board(props) {
           col={col}
           row={row}
           isTarget={isTarget}
-          walls={{ north, east, south, west }}
+          walls={{ north, south, east, west }}
           gamepieceId={gamepieceId}
           gamepiecePositions={gamepiecePositions}
           setGamepiecePositions={setGamepiecePositions}
