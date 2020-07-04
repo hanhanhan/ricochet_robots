@@ -2,9 +2,9 @@ import basegraph from "../gameLogic/basegraph"
 import { dimensions } from "./boardSetup"
 
 let gamepieces = {
-  1: { id: 1, icon: "🤖", col: 0, row: 0 },
-  2: { id: 2, icon: "🎱", col: 1, row: 0 },
-  3: { id: 3, icon: "🦘", col: 2, row: 0 },
+  1: { id: 1, icon: "🤖" },
+  2: { id: 2, icon: "🎱" },
+  3: { id: 3, icon: "🦘" },
 }
 
 // ----------------------------------------------------------
