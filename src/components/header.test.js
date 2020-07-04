@@ -4,7 +4,7 @@ import { render } from "../utils/testUtils"
 
 describe("Header", () => {
   it("renders correctly", () => {
-    const header = render(<Header siteTitle="Default Starter" />)
+    const header = render(<Header siteTitle="Default Starter" />).baseElement
     expect(header).toMatchSnapshot()
   })
 })
