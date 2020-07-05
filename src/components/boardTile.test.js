@@ -1,19 +1,15 @@
 import React from "react"
-import { render } from "../utils/testUtils"
+import { render, cleanup, screen, fireEvent } from "../utils/testUtils"
 import BoardTile from "./boardTile"
 
 import basegraph from "../gameLogic/basegraph"
 
-const setup = (overrides = {}) => {
+const setup = (overrides) => {
   // No walls by default
-  const north = false
-  const south = false
-  const east = false
-  const west = false
-  const walls = { north, south, east, west }
+  const walls = { north: false, south: false, east: false, west: false }
 
-  let gamepieceRow = 0
-  let gamepieceCol = 1
+  const gamepieceRow = 0
+  const gamepieceCol = 1
   const gamepiecePositions = {
     1: { row: gamepieceRow, col: gamepieceCol },
   }
@@ -32,11 +28,22 @@ const setup = (overrides = {}) => {
   }
 }
 
+afterEach(cleanup)
+
 describe("BoardTile", () => {
   it("renders", () => {
     const props = setup()
-    const view = render(<BoardTile props={props}></BoardTile>)
-    view.debug()
-    expect(false).toBeTruthy()
+    render(<BoardTile {...props}></BoardTile>)
+
+    let tile = screen.getByRole("gridcell")
+    // screen.debug(tile)
+
+    // fireEvent.drop()
+    // fireEvent.drop(tile, { dataTransfer: {} })
+
+    // drop, candrop, isdragging
+    // let tile = screen.queryByRole("")
+    // fireEvent.drop()
+    expect(true).toBeTruthy()
   })
 })

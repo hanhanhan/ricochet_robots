@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from "../utils/testUtils"
 import SimpleComponent from "./simpleComponent"
 
 test("Simple component renders", () => {
-  const simple = render(<SimpleComponent />)
+  const view = render(<SimpleComponent />)
   let h = screen.queryByRole("heading")
 
   fireEvent.dragStart(h)

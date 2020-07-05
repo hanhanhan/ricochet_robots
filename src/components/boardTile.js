@@ -11,10 +11,10 @@ const boardGridStyle = "2px solid snow"
 
 const TileStyle = styled.div`
   background-color: ${(props) => props.bgColor};
-  border-top: ${(props) => (props.north ? wallStyle : boardGridStyle)};
-  border-right: ${(props) => (props.east ? wallStyle : boardGridStyle)};
-  border-bottom: ${(props) => (props.south ? wallStyle : boardGridStyle)};
-  border-left: ${(props) => (props.west ? wallStyle : boardGridStyle)};
+  border-top: ${(props) => (props.walls.north ? wallStyle : boardGridStyle)};
+  border-right: ${(props) => (props.walls.east ? wallStyle : boardGridStyle)};
+  border-bottom: ${(props) => (props.walls.south ? wallStyle : boardGridStyle)};
+  border-left: ${(props) => (props.walls.west ? wallStyle : boardGridStyle)};
   padding: 0em;
   display: flex;
   justify-content: center;
@@ -31,7 +31,6 @@ function BoardTile({
   gamepieceId,
   isTarget,
   graph,
-  setGraph,
 }) {
   const { myTurn, setMyTurn } = React.useContext(PlayerContext)
   const [collectedProps, drop] = useDrop({
@@ -70,19 +69,16 @@ function BoardTile({
     },
   })
 
-  const { north, south, east, west } = walls
   const bgColor = getBackgroundColor(collectedProps.validDest, isTarget)
 
   return (
     // bool converted to 1/0 due to this issue (becomes string instead of bool):
     // https://github.com/styled-components/styled-components/issues/1198
     <TileStyle
-      north={north ? 1 : 0}
-      south={south ? 1 : 0}
-      east={east ? 1 : 0}
-      west={west ? 1 : 0}
+      walls={walls}
       bgColor={bgColor}
       isTarget={isTarget ? 1 : 0}
+      role="gridcell"
       ref={drop}
     >
       {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
