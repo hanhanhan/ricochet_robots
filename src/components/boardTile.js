@@ -80,6 +80,7 @@ function BoardTile({
       isTarget={isTarget ? 1 : 0}
       role="gridcell"
       ref={drop}
+      className={`row${row} col${col}`}
     >
       {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
     </TileStyle>

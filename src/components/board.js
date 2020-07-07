@@ -45,7 +45,7 @@ function useGraph() {
   return React.useMemo(() => basegraph())
 }
 
-export default function Board(props) {
+export default function Board() {
   const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
   const target = getTarget()
 
