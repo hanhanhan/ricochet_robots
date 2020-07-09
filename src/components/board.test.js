@@ -8,10 +8,20 @@ import basegraph from "../gameLogic/basegraph"
 // https://spectrum.chat/testing-library/help/testing-react-dnd~def83ae5-cbbd-4d30-9769-9000e55f95a6
 // https://github.com/react-dnd/react-dnd/blob/760cef336a18da3156e62f6c9ac7b78ae2399ea0/packages/documentation-examples/src/01%20Dustbin/Single%20Target/__tests__/integration.spec.tsx#L23
 // https://www.freecodecamp.org/news/how-to-write-better-tests-for-drag-and-drop-operations-in-the-browser-f9a131f0b281/
+// https://html.spec.whatwg.org/multipage/dnd.html#dnd
+
+// https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/dropEffect
 
 afterEach(cleanup)
 
 const createBubbledEvent = (type, props = {}) => {
+  if (type == "dragstart") {
+    // JSDOM DataTransfer is not defined
+    let dataTransfer = {}
+    dataTransfer.setData("application/json", "1")
+    dataTransfer.dropEffect = "move"
+    props["dataTransfer"] = dataTransfer
+  }
   // DragEvent is not defined for JSDOM
   const event = new Event(type, { bubbles: true })
   Object.assign(event, props)

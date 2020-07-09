@@ -36,6 +36,7 @@ function BoardTile({
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
+      console.log("drop called from useDrop hook")
       const id = item.id
       const nextState = {}
       nextState[id] = { row, col }
@@ -80,6 +81,16 @@ function BoardTile({
       isTarget={isTarget ? 1 : 0}
       role="gridcell"
       ref={drop}
+      // onDrop={(event) => {
+      // console.log(event.dataTransfer)
+      // console.log(event.dataTransfer.items[0])
+      // DataTransferItem
+      //   kind: "string"
+      //   type: "application/json"
+      // console.log(event.dataTransfer.types[0])
+      // console.log(JSON.stringify(event.dataTransfer.getData("text")))
+      // application/json
+      // }}
       className={`row${row} col${col}`}
     >
       {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
