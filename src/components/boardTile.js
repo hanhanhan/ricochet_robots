@@ -66,6 +66,7 @@ function BoardTile({
     collect: (monitor, props) => {
       return {
         validDest: monitor.canDrop(),
+        m: monitor,
       }
     },
   })

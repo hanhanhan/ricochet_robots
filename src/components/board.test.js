@@ -15,13 +15,13 @@ import basegraph from "../gameLogic/basegraph"
 afterEach(cleanup)
 
 const createBubbledEvent = (type, props = {}) => {
-  if (type == "dragstart") {
-    // JSDOM DataTransfer is not defined
-    let dataTransfer = {}
-    dataTransfer.setData("application/json", "1")
-    dataTransfer.dropEffect = "move"
-    props["dataTransfer"] = dataTransfer
-  }
+  // if (type == "dragstart") {
+  //   // JSDOM DataTransfer is not defined
+  //   let dataTransfer = {}
+  //   dataTransfer.setData("application/json", "1")
+  //   dataTransfer.dropEffect = "move"
+  //   props["dataTransfer"] = dataTransfer
+  // }
   // DragEvent is not defined for JSDOM
   const event = new Event(type, { bubbles: true })
   Object.assign(event, props)
@@ -69,7 +69,7 @@ describe("Board", () => {
 
       dropTile.dispatchEvent(createBubbledEvent("dragover"))
 
-      dragItem.dispatchEvent(createBubbledEvent("drop"))
+      dropTile.dispatchEvent(createBubbledEvent("drop"))
     })
 
     // screen.debug(dragItem)

@@ -22,11 +22,27 @@ function Gamepiece({ id, ...props }) {
   const [collectedProps, drag] = useDrag({
     item: { id, type: DragTypes.GAMEPIECE },
     collect: (monitor, props) => ({
-      exampley: "moledcollectgamepiece",
-      mon: monitor.getItem(),
+      itemId: monitor.getItem(),
+      dragSourceId: monitor.getSourceId(),
+      targetIds: monitor.getTargetIds(),
+      dropResult: monitor.getDropResult(),
+      didDrop: monitor.didDrop(),
+      // public: monitor.isSourcePublic(),
       collProps: props,
     }),
   })
+
+  // console.log("useDrag hook")
+  // console.log("itemId")
+  // console.log(collectedProps.itemId)
+  // console.log("dragSourceId")
+  // console.log(collectedProps.dragSourceId)
+  // console.log("targetIds")
+  // console.log(collectedProps.targetIds)
+  // console.log("dropResult")
+  // console.log(collectedProps.dropResult)
+  // console.log("didDrop")
+  // console.log(collectedProps.didDrop)
 
   return (
     <div

@@ -13,11 +13,18 @@ const usePlayerTurn = () => {
   return { myTurn, setMyTurn }
 }
 
+// export const HTML5Backend: BackendFactory = function createBackend(
+// 	manager: DragDropManager,
+// 	context?: HTML5BackendContext,
+// ): HTML5BackendImpl {
+// 	return new HTML5BackendImpl(manager, context)
+// }
+
 function Game(props) {
   // Gamepiece id for current main player
   const { myTurn, setMyTurn } = usePlayerTurn()
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider debugMode={true} backend={HTML5Backend}>
       <PlayerContext.Provider value={{ myTurn, setMyTurn }}>
         <Board />
       </PlayerContext.Provider>

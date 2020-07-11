@@ -1,0 +1,327 @@
+let dragStartEvent = new Event("dragstart", {bubbles: true})
+let dragEnterEvent = new Event("dragenter", {bubbles: true})
+let dragOverEvent = new Event("dragover", {bubbles: true})
+let dropEvent = new Event("drop", {bubbles: true})
+let dragItem = document.querySelector(".row0.col1").firstChild
+let dropTile = document.querySelector(".row0.col0")
+
+dragItem.dispatchEvent(dragStartEvent);
+
+dropTile.dispatchEvent(dragEnterEvent);
+dropTile.dispatchEvent(dragOverEvent);
+dropTile.dispatchEvent(dropEvent);
+
+--------
+
+let dragStartEvent = new Event("dragstart")
+let dragEnterEvent = new Event("dragenter")
+let dragOverEvent = new Event("dragover")
+let dropEvent = new Event("drop")
+let dragItem = document.querySelector(".row0.col1").firstChild
+let dropTile = document.querySelector(".row0.col0")
+
+// each of these calls returns true
+// dragItem.dispatchEvent(dragEvent);
+dragItem.dispatchEvent(dragStartEvent);
+
+dropTile.dispatchEvent(dragEnterEvent);
+dropTile.dispatchEvent(dragOverEvent);
+dropTile.dispatchEvent(dropEvent);
+
+// nothing happens, but there is a big difference between how these events look "in actual"
+// and their properties here
+// no drag highlight of targets
+----------------
+let dragStartEvent = new Event("dragstart", {bubbles: true})
+let dragEnterEvent = new Event("dragenter", {bubbles: true})
+let dragOverEvent = new Event("dragover", {bubbles: true})
+let dropEvent = new Event("drop", {bubbles: true})
+let dragItem = document.querySelector(".row0.col1").firstChild
+let dropTile = document.querySelector(".row0.col0")
+
+dragItem.dispatchEvent(dragStartEvent);
+
+dropTile.dispatchEvent(dragEnterEvent);
+dropTile.dispatchEvent(dragOverEvent);
+dropTile.dispatchEvent(dropEvent);
+
+// nope - but I now see the drag event's highlighting the destination tiles
+---------------
+let dragEvent = new DragEvent("drag")
+let dragStartEvent = new DragEvent("dragstart", {bubbles: true})
+let dragEnterEvent = new DragEvent("dragenter", {bubbles: true})
+let dragOverEvent = new DragEvent("dragover", {bubbles: true})
+let dropEvent = new DragEvent("drop", {bubbles: true})
+let dragItem = document.querySelector(".row0.col1").firstChild
+let dropTile = document.querySelector(".row0.col0")
+
+
+// nope
+---------------
+let d = new DataTransfer();
+d.dropEffect = "move";
+
+let eventprops = {
+dataTransfer: d,
+altKey: false,
+bubbles: true,
+button: 0,
+buttons: 1,
+cancelBubble: false,
+cancelable: true,
+composed: true,
+ctrlKey: false,
+currentTarget: null,
+defaultPrevented: false,
+detail: 0,
+eventPhase: 0,
+layerX: 84,
+layerY: 50,
+metaKey: false,
+movementX: 0,
+movementY: 0,
+offsetX: 85,
+offsetY: 51,
+pageX: 84,
+pageY: 50,
+relatedTarget: null,
+returnValue: true,
+screenX: 109,
+screenY: 206,
+shiftKey: false,
+which: 1,
+};
+
+let dragStartEvent = new Event("dragstart", eventprops);
+let dragEnterEvent = new Event("dragenter", eventprops);
+let dragOverEvent = new Event("dragover", eventprops);
+let dropEvent = new Event("drop", eventprops);
+let dragItem = document.querySelector(".row0.col1").firstChild;
+let dropTile = document.querySelector(".row0.col0");
+dragItem.dispatchEvent(dragStartEvent);
+dropTile.dispatchEvent(dragEnterEvent);
+dropTile.dispatchEvent(dragOverEvent);
+
+dragItem.dispatchEvent(dropEvent);
+
+// everything returns false!
+// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
+// The return value is false if event is cancelable and at least one of the event handlers which handled this event called Event.preventDefault(). Otherwise it returns true.
+
+
+---------------
+Try:
+dataTransfer: DataTransfer
+dropEffect: "move"
+// I can set dropEffect to "move" in firefox but not chrome
+// cancelling events is needed to happen (but I assume react dnd should do that?
+
+let d = new DataTransfer()
+d.dropEffect = "move"
+---------------
+ACTUAL drag events
+
+dragstart
+altKey: false
+bubbles: true
+button: 0
+buttons: 1
+cancelBubble: false
+cancelable: true
+clientX: 84
+clientY: 50
+composed: true
+ctrlKey: false
+currentTarget: null
+dataTransfer: DataTransfer {dropEffect: "move", effectAllowed: "uninitialized", items: DataTransferItemList, types: Array(0), files: FileList}
+defaultPrevented: false
+detail: 0
+eventPhase: 0
+fromElement: null
+isTrusted: true
+layerX: 84
+layerY: 50
+metaKey: false
+movementX: 0
+movementY: 0
+offsetX: 85
+offsetY: 51
+pageX: 84
+pageY: 50
+path: (11) [div, div.boardTile__TileStyle-sc-1qqbdtl-0.hzbRhk.row0.col1, div.board__BoardStyle-m7p6hi-0.fQuHWm, main, div, div#gatsby-focus-wrapper, div#___gatsby, body, html, document, Window]
+relatedTarget: null
+returnValue: true
+screenX: 109
+screenY: 206
+shiftKey: false
+sourceCapabilities: InputDeviceCapabilities {firesTouchEvents: false}
+srcElement: div
+target: div
+timeStamp: 89092.5050000078
+toElement: div
+type: "dragstart"
+view: Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+which: 1
+x: 84
+y: 50
+__proto__: DragEvent
+
+dragenter
+altKey: false
+bubbles: true
+button: 0
+buttons: 1
+cancelBubble: false
+cancelable: true
+clientX: 65
+clientY: 50
+composed: true
+ctrlKey: false
+currentTarget: null
+dataTransfer: DataTransfer {dropEffect: "move", effectAllowed: "all", items: DataTransferItemList, types: Array(0), files: FileList}
+defaultPrevented: true
+detail: 0
+eventPhase: 0
+fromElement: div.boardTile__TileStyle-sc-1qqbdtl-0.hzbRhk.row0.col1
+isTrusted: true
+layerX: 65
+layerY: 50
+metaKey: false
+movementX: 0
+movementY: 0
+offsetX: 66
+offsetY: 50
+pageX: 65
+pageY: 50
+path: (10) [div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0, div.board__BoardStyle-m7p6hi-0.fQuHWm, main, div, div#gatsby-focus-wrapper, div#___gatsby, body, html, document, Window]
+relatedTarget: div.boardTile__TileStyle-sc-1qqbdtl-0.hzbRhk.row0.col1
+returnValue: false
+screenX: 90
+screenY: 206
+shiftKey: false
+sourceCapabilities: InputDeviceCapabilities {firesTouchEvents: false}
+srcElement: div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0
+target: div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0
+timeStamp: 89493.08500002371
+toElement: div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0
+type: "dragenter"
+view: Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+which: 1
+x: 65
+y: 50
+__proto__: DragEvent
+
+
+drop
+altKey: false
+bubbles: true
+button: 0
+buttons: 0
+cancelBubble: false
+cancelable: true
+clientX: 52
+clientY: 48
+composed: true
+ctrlKey: false
+currentTarget: null
+dataTransfer: DataTransfer {dropEffect: "none", effectAllowed: "all", items: DataTransferItemList, types: Array(0), files: FileList}
+defaultPrevented: true
+detail: 0
+eventPhase: 0
+fromElement: null
+isTrusted: true
+layerX: 52
+layerY: 48
+metaKey: false
+movementX: 0
+movementY: 0
+offsetX: 52
+offsetY: 48
+pageX: 52
+pageY: 48
+path: (10) [div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0, div.board__BoardStyle-m7p6hi-0.fQuHWm, main, div, div#gatsby-focus-wrapper, div#___gatsby, body, html, document, Window]
+relatedTarget: null
+returnValue: false
+screenX: 77
+screenY: 204
+shiftKey: false
+sourceCapabilities: InputDeviceCapabilities {firesTouchEvents: false}
+srcElement: div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0
+target: div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0
+timeStamp: 89773.6600000062
+toElement: div.boardTile__TileStyle-sc-1qqbdtl-0.iyhRnn.row0.col0
+type: "drop"
+view: Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+which: 1
+x: 52
+y: 48
+__proto__: DragEvent
+
+---------------
+default values
+dragStartEvent:
+bubbles: false
+cancelBubble: false
+cancelable: false
+composed: false
+currentTarget: null
+defaultPrevented: false
+eventPhase: 0
+isTrusted: false
+path: []
+returnValue: true
+srcElement: null
+target: null
+timeStamp: 3237167.8899999824
+type: "drop"
+__proto__: Event
+
+dragEnterEvent
+bubbles: false
+cancelBubble: false
+cancelable: false
+composed: false
+currentTarget: null
+defaultPrevented: false
+eventPhase: 0
+isTrusted: false
+path: []
+returnValue: true
+srcElement: null
+target: null
+timeStamp: 3237167.8850000026
+type: "dragenter"
+__proto__: Event
+
+dragOverEvent
+bubbles: false
+cancelBubble: false
+cancelable: false
+composed: false
+currentTarget: null
+defaultPrevented: false
+eventPhase: 0
+isTrusted: false
+path: []
+returnValue: true
+srcElement: null
+target: null
+timeStamp: 3237167.8850000026
+type: "dragover"
+__proto__: Event
+
+drop
+bubbles: false
+cancelBubble: false
+cancelable: false
+composed: false
+currentTarget: null
+defaultPrevented: false
+eventPhase: 0
+isTrusted: false
+path: []
+returnValue: true
+srcElement: null
+target: null
+timeStamp: 3237167.8899999824
+type: "drop"

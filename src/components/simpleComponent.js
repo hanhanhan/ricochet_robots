@@ -1,8 +1,8 @@
 import React from "react"
-import { useDrag } from "react-dnd"
+import { useDrop } from "react-dnd"
 import { DragTypes } from "./constants"
 
-import { SimpleComponentChild } from "./SimpleComponentChild"
+import { SimpleComponentDragItem } from "./SimpleComponentChild"
 /**
  * This component is to get tests running.
  *
@@ -18,18 +18,18 @@ import { SimpleComponentChild } from "./SimpleComponentChild"
 function SimpleComponent({ items, ...props }) {
   const [whatsHappening, setWhatsHappening] = React.useState("I'm not moving")
 
-  const [collectedProps, drag] = useDrag({
-    item: { id: 1, type: DragTypes.GAMEPIECE },
-    begin: (monitor) => {
-      setWhatsHappening("I'm moving!")
-    },
+  const [collectedProps, drag] = useDrop({
+    accept: DragTypes.GAMEPIECE,
   })
+
   // const a = items.forEach((b) => b)
   return (
-    <h1 ref={drag}>
-      Hello {props.name} {whatsHappening}
-      <SimpleComponentChild />
-    </h1>
+    <div>
+      <h1 ref={drag}>
+        Hello {props.name} {whatsHappening}
+        <SimpleComponentDragItem />
+      </h1>
+    </div>
   )
 }
 
