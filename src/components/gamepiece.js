@@ -32,18 +32,6 @@ function Gamepiece({ id, ...props }) {
     }),
   })
 
-  // console.log("useDrag hook")
-  // console.log("itemId")
-  // console.log(collectedProps.itemId)
-  // console.log("dragSourceId")
-  // console.log(collectedProps.dragSourceId)
-  // console.log("targetIds")
-  // console.log(collectedProps.targetIds)
-  // console.log("dropResult")
-  // console.log(collectedProps.dropResult)
-  // console.log("didDrop")
-  // console.log(collectedProps.didDrop)
-
   return (
     <div
       ref={drag}
