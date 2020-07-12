@@ -15,7 +15,8 @@ describe("Board", () => {
   //   expect(board).toMatchSnapshot()
   // })
 
-  const args = {
+  let tiles, dropTile, dragItem
+  const moveSetup = {
     playerId: 1,
     myTurn: false,
     // These positions are also built into how the board is initialized.
@@ -25,36 +26,31 @@ describe("Board", () => {
     isTarget: false,
     graph: basegraph(),
   }
-  let tiles, dropTile, dragItem
 
-  render(<Board />)
+  beforeEach(() => {
+    render(<Board />)
+    tiles = screen.getAllByRole("gridcell")
+    dropTile = tiles[0]
+    dragItem = tiles[1].firstChild
+  })
 
   it("is setup for a valid move", () => {
-    const isValid = isValidMove(args)
+    const isValid = isValidMove(moveSetup)
     expect(isValid).toEqual(true)
   })
 
   it("destination tile is empty", () => {
-    render(<Board />)
-    tiles = screen.getAllByRole("gridcell")
-    let dropTile = tiles[0]
     expect(dropTile).toBeEmptyDOMElement()
   })
 
   it("drags and drops for a valid move", () => {
-    render(<Board />)
-    tiles = screen.getAllByRole("gridcell")
-    dropTile = tiles[0]
-    dragItem = tiles[1].firstChild //ball at col: 0 row: 3
     // Drag and Drop
     fireEvent.dragStart(dragItem)
     fireEvent.dragEnter(dropTile)
     fireEvent.dragOver(dropTile)
     fireEvent.drop(dropTile)
     // React update means element reference has changed.
-
     dropTile = screen.getAllByRole("gridcell")[0]
-    expect(dropTile).not.toBeEmptyDOMElement()
     expect(dropTile).toHaveTextContent("🤖")
   })
 })
