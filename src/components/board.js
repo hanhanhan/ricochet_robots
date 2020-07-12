@@ -53,7 +53,6 @@ export default function Board(props) {
   // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
   const graph = getUpdatedGraph(gamepiecePositions)
-  console.log(graph)
 
   const tileComponents = tiles
     .flat()

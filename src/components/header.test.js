@@ -1,11 +1,10 @@
 import React from "react"
-import renderer from "react-test-renderer"
 import Header from "./header"
+import { render } from "../utils/testUtils"
+
 describe("Header", () => {
   it("renders correctly", () => {
-    const tree = renderer
-      .create(<Header siteTitle="Default Starter" />)
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const header = render(<Header siteTitle="Default Starter" />).baseElement
+    expect(header).toMatchSnapshot()
   })
 })

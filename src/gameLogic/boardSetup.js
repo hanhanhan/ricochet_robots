@@ -7,7 +7,7 @@ const target = getTarget()
 
 // ID and location for gamepieces for game start
 const initialGamepiecePositions = {
-  1: { row: 2, col: 1 },
+  1: { row: 0, col: 1 },
   2: { row: 3, col: 0 },
   3: { row: 2, col: 7 },
 }
