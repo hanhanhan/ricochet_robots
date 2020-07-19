@@ -39,7 +39,7 @@ function BoardTile({
       const id = item.id
       const nextState = {}
       nextState[id] = { row, col }
-      dispatch({ action: "move" })
+      dispatch({ type: "move" })
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
