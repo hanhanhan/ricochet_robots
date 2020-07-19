@@ -31,15 +31,15 @@ function BoardTile({
   gamepieceId,
   isTarget,
   graph,
-  setGraph,
 }) {
-  const { myTurn, setMyTurn } = React.useContext(PlayerContext)
+  const { myTurn, setMyTurn, dispatch } = React.useContext(PlayerContext)
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
       const id = item.id
       const nextState = {}
       nextState[id] = { row, col }
+      dispatch({ action: "move" })
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
@@ -80,7 +80,7 @@ function BoardTile({
       bgColor={bgColor}
       isTarget={isTarget ? 1 : 0}
       ref={drop}
-      role={"gridcell"}
+      role="gridcell"
     >
       {gamepieceId ? <Gamepiece id={gamepieceId} /> : null}
     </TileStyle>
