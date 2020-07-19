@@ -21,6 +21,13 @@ const TileStyle = styled.div`
   align-items: center;
   flex-grow: 1;
 `
+function usePlayerState() {
+  const context = React.useContext(PlayerContext)
+  if (context === undefined) {
+    throw new Error("useGameState must be used within a GameStateProvider")
+  }
+  return context
+}
 
 function BoardTile({
   row,
@@ -32,7 +39,7 @@ function BoardTile({
   isTarget,
   graph,
 }) {
-  const { myTurn, setMyTurn, dispatch } = React.useContext(PlayerContext)
+  const { myTurn, setMyTurn, dispatch } = usePlayerState()
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
