@@ -1,5 +1,4 @@
 import React from "react"
-import { FaRobot } from "react-icons/fa"
 import { useDrag } from "react-dnd"
 import { DragTypes } from "./Constants"
 import { gamepieces } from "../gameLogic/gamepieces"

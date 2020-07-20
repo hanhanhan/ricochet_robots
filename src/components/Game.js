@@ -1,6 +1,7 @@
 import React, { useReducer, useState, createContext } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
+import styled from "styled-components"
 import Board from "./board"
 import Panel from "./panel"
 // Required ? deleting this makes dnd not work -- no errors -- why?
@@ -18,6 +19,10 @@ const initialGamestate = {
 }
 
 function moveReducer(state, action) {
+  // console.log("state")
+  // console.log(state)
+  // console.log("action:")
+  // console.log(action)
   switch (action.type) {
     case "move": {
       // push move onto list of moves - then check it's not undoing and pop operation
@@ -40,18 +45,24 @@ const usePlayerTurn = () => {
   return { myTurn, setMyTurn }
 }
 
+function useGameState() {
+  const context = React.useContext(GameStateContext)
+  if (context === undefined) {
+    throw new Error("useGameState must be used within a GameStateProvider")
+  }
+  return context
+}
+
 const GamePlayProvider = ({ children }) => {
   const { myTurn, setMyTurn } = usePlayerTurn()
   const [gamestate, dispatch] = useReducer(moveReducer, initialGamestate)
 
   return (
-    <GameStateContext.Provider>
-      <PlayerContext.Provider
-        value={{ myTurn, setMyTurn, gamestate, dispatch }}
-      >
+    <PlayerContext.Provider value={{ myTurn, setMyTurn, gamestate, dispatch }}>
+      <GameStateContext.Provider value={{ myTurn, gamestate, dispatch }}>
         {children}
-      </PlayerContext.Provider>
-    </GameStateContext.Provider>
+      </GameStateContext.Provider>
+    </PlayerContext.Provider>
   )
 }
 
@@ -68,17 +79,23 @@ update move history
 history player/score
 */
 
+const Layout = styled.div`
+  display: flex;
+`
+
 function Game(props) {
   // Gamepiece id for current main player
   return (
     <DndProvider backend={HTML5Backend}>
       <GamePlayProvider>
-        <Board />
-        <Panel />
+        <Layout>
+          <Panel />
+          <Board />
+        </Layout>
       </GamePlayProvider>
     </DndProvider>
   )
 }
 
 // export default Game
-export { Game, usePlayerTurn, PlayerContext }
+export { Game, PlayerContext, GameStateContext, useGameState }

@@ -1,10 +1,11 @@
 import React from "react"
 import { useDrop } from "react-dnd"
 import styled from "styled-components"
+
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
 import { isValidMove } from "../gameLogic/gamepieces"
-import { PlayerContext } from "./Game"
+import { PlayerContext } from "./game"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
@@ -39,7 +40,7 @@ function BoardTile({
   isTarget,
   graph,
 }) {
-  const { myTurn, setMyTurn, dispatch } = usePlayerState()
+  const { myTurn, dispatch } = usePlayerState()
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
@@ -108,4 +109,5 @@ function getBackgroundColor(validDest, isTarget) {
   return `aliceblue`
 }
 
+export { usePlayerState }
 export default BoardTile
