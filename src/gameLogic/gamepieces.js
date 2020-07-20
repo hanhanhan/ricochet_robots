@@ -258,7 +258,7 @@ function canReachTarget(startRow, startCol, targetRow, targetCol, graph) {
  */
 function isValidMove({
   playerId, // gamepiece being moved
-  myTurn, // player ID whose turn it is
+  turnPlayerId, // player ID whose turn it is
   gamepiecePositions,
   destCol,
   destRow,
@@ -277,7 +277,7 @@ function isValidMove({
   }
 
   // Only the main player whose turn it is can reach target
-  if (myTurn == playerId && isTarget) {
+  if (turnPlayerId == playerId && isTarget) {
     return canReachTarget(pieceRow, pieceCol, destRow, destCol, graph)
   }
 

@@ -16,20 +16,35 @@ const initialGamestate = {
   moves: [],
   turnPlayerId: 1,
   score: 0,
+  scoreHistory: [],
+}
+
+function rotatePlayer(id) {
+  let playerCount = 3
+  const next = id + 1
+  return next > playerCount ? 1 : next
 }
 
 function moveReducer(state, action) {
-  // console.log("state")
-  // console.log(state)
-  // console.log("action:")
-  // console.log(action)
+  const { moves, turnPlayerId, score, scoreHistory } = state
   switch (action.type) {
     case "move": {
       // push move onto list of moves - then check it's not undoing and pop operation
-      return { ...state, score: state.score + 1 }
+      // moves.push({id: [position]})
+      return { ...state, score: score + 1 }
     }
     case "win": {
-      return { ...state }
+      let nextScore = 0
+      let nextMoves = []
+      let nextPlayerId = rotatePlayer(turnPlayerId)
+      let nextScoreHistory = [...scoreHistory, { turnPlayerId: score + 1 }]
+      return {
+        ...state,
+        moves: nextMoves,
+        score: nextScore,
+        scoreHistory: nextScoreHistory,
+        turnPlayerId: nextPlayerId,
+      }
     }
     case "restart": {
       return { ...state }
@@ -54,12 +69,12 @@ function useGameState() {
 }
 
 const GamePlayProvider = ({ children }) => {
-  const { myTurn, setMyTurn } = usePlayerTurn()
   const [gamestate, dispatch] = useReducer(moveReducer, initialGamestate)
+  const { moves, turnPlayerId, score, scoreHistory } = gamestate
 
   return (
-    <PlayerContext.Provider value={{ myTurn, setMyTurn, gamestate, dispatch }}>
-      <GameStateContext.Provider value={{ myTurn, gamestate, dispatch }}>
+    <PlayerContext.Provider value={{ turnPlayerId, dispatch }}>
+      <GameStateContext.Provider value={{ turnPlayerId, gamestate, dispatch }}>
         {children}
       </GameStateContext.Provider>
     </PlayerContext.Provider>

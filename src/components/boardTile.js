@@ -40,14 +40,18 @@ function BoardTile({
   isTarget,
   graph,
 }) {
-  const { myTurn, dispatch } = usePlayerState()
+  const { turnPlayerId, dispatch } = usePlayerState()
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
       const id = item.id
       const nextState = {}
       nextState[id] = { row, col }
-      dispatch({ type: "move" })
+      if (isTarget) {
+        dispatch({ type: "win" })
+      } else {
+        dispatch({ type: "move" })
+      }
       setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
@@ -57,7 +61,7 @@ function BoardTile({
 
       return isValidMove({
         playerId,
-        myTurn,
+        turnPlayerId,
         gamepiecePositions,
         destCol,
         destRow,
