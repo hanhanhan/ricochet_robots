@@ -7,12 +7,12 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import { PlayerContext, usePlayerTurn } from "../components/game"
 
 const AllTheProviders = ({ children }) => {
-  const { myTurn, setMyTurn } = usePlayerTurn()
+  // const { myTurn, setMyTurn } = usePlayerTurn()
   return (
     <DndProvider backend={HTML5Backend}>
-      <PlayerContext.Provider value={{ myTurn, setMyTurn }}>
-        {children}
-      </PlayerContext.Provider>
+      {/* <PlayerContext.Provider value={{ myTurn, setMyTurn }}> */}
+      {children}
+      {/* </PlayerContext.Provider> */}
     </DndProvider>
   )
 }

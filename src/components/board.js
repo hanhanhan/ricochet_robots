@@ -4,12 +4,8 @@ import PropTypes from "prop-types"
 
 import ErrorBoundary from "./errorBoundary"
 import BoardTile from "./boardTile"
-import {
-  getTarget,
-  dimensions,
-  tiles,
-  initialGamepiecePositions,
-} from "../gameLogic/boardSetup"
+import { useGamepiecePositionsContext } from "./providers"
+import { getTarget, dimensions, tiles } from "../gameLogic/boardSetup"
 import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
 import basegraph from "../gameLogic/basegraph"
 
@@ -23,33 +19,32 @@ const BoardStyle = styled.div`
   grid-template-rows: repeat(${dimensions.row}, 1fr);
 `
 
-/**
- * Hook to get + update gamepiece positions.
- *
- * @param {Object} [initialGamepiecePositions]
- * @returns {Array}
- */
-function useGamepiecePositions(initialValue = initialGamepiecePositions) {
-  const [gamepiecePositions, setGamepiecePositions] = useState(initialValue)
+// /**
+//  * Hook to get + update gamepiece positions.
+//  *
+//  * @param {Object} [initialGamepiecePositions]
+//  * @returns {Array}
+//  */
+// function useGamepiecePositions(initialValue = initialGamepiecePositions) {
+//   const [gamepiecePositions, setGamepiecePositions] = useState(initialValue)
 
-  return [gamepiecePositions, setGamepiecePositions]
-}
+//   return [gamepiecePositions, setGamepiecePositions]
+// }
 
-/**
- * Hook to update graph.
- * Not part of hook to update gamepiece positions
- * because it is instead managed by React DND lifecycle.
- *
- * @returns {Array<Object, func>}
- */
-function useGraph() {
-  return React.useMemo(() => basegraph())
-}
+// /**
+//  * Hook to update graph.
+//  * Not part of hook to update gamepiece positions
+//  * because it is instead managed by React DND lifecycle.
+//  *
+//  * @returns {Array<Object, func>}
+//  */
+// function useGraph() {
+//   return React.useMemo(() => basegraph())
+// }
 
 export default function Board(props) {
-  const [gamepiecePositions, setGamepiecePositions] = useGamepiecePositions()
   const target = getTarget()
-
+  const { gamepiecePositions } = useGamepiecePositionsContext()
   // Function to lookup id of an occupying gamepiece by tile col, row
   const positionToGamepiece = buildLookup(gamepiecePositions)
   const graph = getUpdatedGraph(gamepiecePositions)
@@ -67,8 +62,6 @@ export default function Board(props) {
           isTarget={isTarget}
           walls={{ north, east, south, west }}
           gamepieceId={gamepieceId}
-          gamepiecePositions={gamepiecePositions}
-          setGamepiecePositions={setGamepiecePositions}
           graph={graph}
         />
       )

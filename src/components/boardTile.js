@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
 import { isValidMove } from "../gameLogic/gamepieces"
-import { PlayerContext } from "./game"
+import { useGameStateContext } from "./providers"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
@@ -22,37 +22,21 @@ const TileStyle = styled.div`
   align-items: center;
   flex-grow: 1;
 `
-function usePlayerState() {
-  const context = React.useContext(PlayerContext)
-  if (context === undefined) {
-    throw new Error("useGameState must be used within a GameStateProvider")
-  }
-  return context
-}
 
-function BoardTile({
-  row,
-  col,
-  gamepiecePositions,
-  setGamepiecePositions,
-  walls,
-  gamepieceId,
-  isTarget,
-  graph,
-}) {
-  const { turnPlayerId, dispatch } = usePlayerState()
+function BoardTile({ row, col, walls, gamepieceId, isTarget, graph }) {
+  const { turnPlayerId, dispatch, gamepiecePositions } = useGameStateContext()
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
       const id = item.id
       const nextState = {}
       nextState[id] = { row, col }
+      const nextGamepiecePositions = { ...gamepiecePositions, ...nextState }
       if (isTarget) {
         dispatch({ type: "win" })
       } else {
-        dispatch({ type: "move" })
+        dispatch({ type: "move", gamepiecePositions: nextGamepiecePositions })
       }
-      setGamepiecePositions({ ...gamepiecePositions, ...nextState })
     },
     canDrop: (item, monitor) => {
       const playerId = item.id
@@ -113,5 +97,4 @@ function getBackgroundColor(validDest, isTarget) {
   return `aliceblue`
 }
 
-export { usePlayerState }
 export default BoardTile
