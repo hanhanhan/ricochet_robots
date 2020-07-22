@@ -7,7 +7,6 @@ import BoardTile from "./boardTile"
 import { useGamepiecePositionsContext } from "./providers"
 import { getTarget, dimensions, tiles } from "../gameLogic/boardSetup"
 import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
-import basegraph from "../gameLogic/basegraph"
 
 const BoardStyle = styled.div`
   width: 95vmin;
@@ -18,29 +17,6 @@ const BoardStyle = styled.div`
   grid-template-columns: repeat(${dimensions.col}, 1fr);
   grid-template-rows: repeat(${dimensions.row}, 1fr);
 `
-
-// /**
-//  * Hook to get + update gamepiece positions.
-//  *
-//  * @param {Object} [initialGamepiecePositions]
-//  * @returns {Array}
-//  */
-// function useGamepiecePositions(initialValue = initialGamepiecePositions) {
-//   const [gamepiecePositions, setGamepiecePositions] = useState(initialValue)
-
-//   return [gamepiecePositions, setGamepiecePositions]
-// }
-
-// /**
-//  * Hook to update graph.
-//  * Not part of hook to update gamepiece positions
-//  * because it is instead managed by React DND lifecycle.
-//  *
-//  * @returns {Array<Object, func>}
-//  */
-// function useGraph() {
-//   return React.useMemo(() => basegraph())
-// }
 
 export default function Board(props) {
   const target = getTarget()

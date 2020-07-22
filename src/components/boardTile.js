@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
 import { isValidMove } from "../gameLogic/gamepieces"
-import { useGameStateContext } from "./providers"
+import { useGamePlayContext } from "./providers"
 
 const wallStyle = "3px solid thistle"
 const boardGridStyle = "2px solid snow"
@@ -24,7 +24,7 @@ const TileStyle = styled.div`
 `
 
 function BoardTile({ row, col, walls, gamepieceId, isTarget, graph }) {
-  const { turnPlayerId, dispatch, gamepiecePositions } = useGameStateContext()
+  const { turnPlayerId, dispatch, gamepiecePositions } = useGamePlayContext()
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {

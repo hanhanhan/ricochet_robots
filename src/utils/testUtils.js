@@ -4,15 +4,15 @@ import "@testing-library/jest-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 
-import { PlayerContext, usePlayerTurn } from "../components/game"
+import { PanelContext, usePlayerTurn } from "../components/game"
 
 const AllTheProviders = ({ children }) => {
   // const { myTurn, setMyTurn } = usePlayerTurn()
   return (
     <DndProvider backend={HTML5Backend}>
-      {/* <PlayerContext.Provider value={{ myTurn, setMyTurn }}> */}
+      {/* <PanelContext.Provider value={{ myTurn, setMyTurn }}> */}
       {children}
-      {/* </PlayerContext.Provider> */}
+      {/* </PanelContext.Provider> */}
     </DndProvider>
   )
 }

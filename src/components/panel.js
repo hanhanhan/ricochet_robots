@@ -1,28 +1,25 @@
 import React from "react"
 import styled from "styled-components"
 
-import { GameStateContext, useGameStateContext } from "./providers"
-import { usePlayerState } from "./boardTile"
+import { usePanelContext } from "./providers"
 // import Gamepiece from "./gamepiece"
 import { gamepieces } from "../gameLogic/gamepieces"
 
-const Display = styled.li``
+const StyledPanel = styled.div``
+const PanelItem = styled.li``
 
 function Panel(props) {
-  // const { myTurn, gamestate, dispatch } = React.useContext(GameStateContext)
-  const { turnPlayerId, gamestate, dispatch } = useGameStateContext()
-  console.log("gamestate")
-  console.log(gamestate)
-  const { score } = gamestate
+  // const { myTurn, gamestate, dispatch } = React.useContext(GamePlayContext)
+  const { turnPlayerId, score, scoreHistory, moves } = usePanelContext()
   return (
-    <div>
+    <StyledPanel>
       Panel
       <ul>
-        <Display>Turn: {gamepieces[turnPlayerId].icon}</Display>
-        <Display>Score: {gamestate.score}</Display>
-        <Display>Moves: </Display>
+        <PanelItem>Turn: {gamepieces[turnPlayerId].icon}</PanelItem>
+        <PanelItem>Score: {score}</PanelItem>
+        {/* <PanelItem>Moves: {JSON.stringify(moves)}</PanelItem> */}
       </ul>
-    </div>
+    </StyledPanel>
   )
 }
 

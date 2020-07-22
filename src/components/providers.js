@@ -1,9 +1,9 @@
 import React, { useReducer, createContext } from "react"
 import { initialGamepiecePositions } from "../gameLogic/boardSetup"
 
-const GameStateContext = createContext()
+const GamePlayContext = createContext()
 const GamepiecePositionsContext = createContext()
-const PlayerContext = createContext()
+const PanelContext = createContext()
 
 const initialGamestate = {
   moves: [],
@@ -19,32 +19,57 @@ function rotatePlayer(id) {
   return next > playerCount ? 1 : next
 }
 
+function areSameGamepieceLocations(loc1, loc2) {
+  // Stringify won't work if order is different
+  // There's a lodash isEqual function or I could write my own
+  // Compare as two hashes stored in moves array? Two strings?
+  // JSON.stringify(loc1) === JSON.stringify(loc2)
+  for (let [id, [row1, col1]] of Object.entries(loc1)) {
+    let [row2, col2] = loc2[id]
+
+    if (!(row2 == row1 && col2 == col1)) {
+      return false
+    }
+    return true
+  }
+}
+
 function moveReducer(state, action) {
   const { moves, turnPlayerId, score, scoreHistory } = state
   switch (action.type) {
     case "move": {
-      if (!action.gamepiecePositions) {
+      // Track moves
+      let { gamepiecePositions } = action
+      if (!gamepiecePositions) {
         throw Error("Move should be called with gamepiece positions.")
       }
+      const length = moves.length
 
-      // if move is == second to last move, pop and reduce score
-      //
+      if (length > 0) {
+        isMoveBack = areSameGamepieceLocations(
+          gamepiecePositions,
+          moves[length - 1]
+        )
+      } else {
+        var isMoveBack = false
+      }
 
-      // Do I need to be careful of state mutation with hooks the same way with class components?
-      // const lastMoveAt = moves.length - 1
-      // a -> b
-      // check if move is to a
-      //
-      // moves[lastMoveAt] === moves[lastMoveAt - 2]
-      // const nextMoves = moves up through moves - 2
-      // nextScore = score - 1
-      // moves.push(action.nextGamepiecePositions)
+      // Note: Not a deep copy (even though this is not Redux) per:
+      // https://twitter.com/dan_abramov/status/688087202312491008
+      // https://stackoverflow.com/questions/43151622/in-redux-is-it-necessary-to-do-deep-copy
+      if (isMoveBack) {
+        var nextMoves = moves.slice(0, length - 1)
+        var nextScore = score - 1
+      } else {
+        var nextMoves = [...moves, gamepiecePositions]
+        var nextScore = score + 1
+      }
 
       return {
         ...state,
-        score: score + 1,
+        score: nextScore,
         gamepiecePositions: action.gamepiecePositions,
-        moves,
+        moves: nextMoves,
       }
     }
     case "win": {
@@ -70,20 +95,20 @@ function moveReducer(state, action) {
   }
 }
 
-function usePlayerContext() {
-  const context = React.useContext(PlayerContext)
+function usePanelContext() {
+  const context = React.useContext(PanelContext)
   if (context === undefined) {
     throw new Error(
-      "usePlayerContext must be used within a PlayerContextProvider"
+      "usePanelContext must be used within a PanelContextProvider"
     )
   }
   return context
 }
 
-function useGameStateContext() {
-  const context = React.useContext(GameStateContext)
+function useGamePlayContext() {
+  const context = React.useContext(GamePlayContext)
   if (context === undefined) {
-    throw new Error("useGameState must be used within a GameStateProvider")
+    throw new Error("useGamePlay must be used within a GamePlayProvider")
   }
   return context
 }
@@ -109,23 +134,22 @@ const GamePlayProvider = ({ children }) => {
   } = gamestate
 
   return (
-    <PlayerContext.Provider value={{ turnPlayerId, dispatch }}>
-      {/* This provider is for updating from gamepiece / board / tile actions */}
-      <GameStateContext.Provider
+    // Todo: possibly combine providers if state overlaps enough
+    <PanelContext.Provider value={{ turnPlayerId, score, scoreHistory, moves }}>
+      <GamePlayContext.Provider
         value={{ turnPlayerId, gamepiecePositions, gamestate, dispatch }}
       >
-        {/* Todo: Possibly combine gamepiecepositions + gamestate */}
         <GamepiecePositionsContext.Provider value={{ gamepiecePositions }}>
           {children}
         </GamepiecePositionsContext.Provider>
-      </GameStateContext.Provider>
-    </PlayerContext.Provider>
+      </GamePlayContext.Provider>
+    </PanelContext.Provider>
   )
 }
 
 export {
   GamePlayProvider,
-  useGameStateContext,
+  useGamePlayContext,
   useGamepiecePositionsContext,
-  usePlayerContext,
+  usePanelContext,
 }
