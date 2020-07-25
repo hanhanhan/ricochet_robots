@@ -1,37 +1,32 @@
 import React, { useReducer, createContext } from "react"
 import { initialGamepiecePositions } from "../gameLogic/boardSetup"
+import { gamepieces } from "../gameLogic/gamepieces"
 
 const GamePlayContext = createContext()
 const GamepiecePositionsContext = createContext()
 const PanelContext = createContext()
 
+/**
+ *
+ * Sort and give gamepieces scores.
+ * Low is "winning" so start with a large number that won't be displayed.
+ * @returns Map
+ */
+function getInitialGampieceScores() {
+  const sortedIdPairs = Object.keys(gamepieces)
+    .sort()
+    .map(
+      (id) => [id, Number.MAX_SAFE_INTEGER] // big enough and a few less bits
+    )
+  return new Map(sortedIdPairs)
+}
+
 const initialGamestate = {
   moves: [],
   turnPlayerId: 1,
   score: 0,
-  scoreHistory: [],
+  scoreHistory: getInitialGampieceScores(), //from gamepieces to Number.MAX_VALUE
   gamepiecePositions: initialGamepiecePositions,
-}
-
-function rotatePlayer(id) {
-  let playerCount = 3
-  const next = id + 1
-  return next > playerCount ? 1 : next
-}
-
-function areSameGamepieceLocations(loc1, loc2) {
-  // Stringify won't work if order is different
-  // There's a lodash isEqual function or I could write my own
-  // Compare as two hashes stored in moves array? Two strings?
-  // JSON.stringify(loc1) === JSON.stringify(loc2)
-  for (let [id, [row1, col1]] of Object.entries(loc1)) {
-    let [row2, col2] = loc2[id]
-
-    if (!(row2 == row1 && col2 == col1)) {
-      return false
-    }
-    return true
-  }
 }
 
 function moveReducer(state, action) {
@@ -72,16 +67,19 @@ function moveReducer(state, action) {
         moves: nextMoves,
       }
     }
+
     case "win": {
-      let nextScore = 0
-      let nextMoves = []
       let nextPlayerId = rotatePlayer(turnPlayerId)
-      let nextScoreHistory = [...scoreHistory, { turnPlayerId: score + 1 }]
-      // gamepiecePositions -- send winning piece back to start position
+      let nextScoreHistory = updateBestScores(
+        scoreHistory,
+        turnPlayerId,
+        score + 1
+      )
+      // TODO: add gamepiecePositions -- send winning piece back to start position
       return {
         ...state,
-        moves: nextMoves,
-        score: nextScore,
+        moves: [],
+        score: 0,
         scoreHistory: nextScoreHistory,
         turnPlayerId: nextPlayerId,
       }
@@ -146,6 +144,66 @@ const GamePlayProvider = ({ children }) => {
     </PanelContext.Provider>
   )
 }
+
+/*******************************************************************************
+ * Helper functions
+ */
+
+/**
+ *
+ * Next player -- cycles back to first player.
+ * @param {Number} id
+ * @returns Number
+ */
+function rotatePlayer(id) {
+  let playerCount = 3
+  const next = id + 1
+  return next > playerCount ? 1 : next
+}
+
+/**
+ *
+ * Check if row and column of two gamepiece locations are equal.
+ * @param {Object} loc1
+ * @param {Object} loc2
+ * @returns boolean
+ */
+function areSameGamepieceLocations(loc1, loc2) {
+  // Stringify won't work if order is different
+  // There's a lodash isEqual function or I could write my own
+  // Compare as two hashes stored in moves array? Two strings?
+  // JSON.stringify(loc1) === JSON.stringify(loc2)
+  for (let [id, [row1, col1]] of Object.entries(loc1)) {
+    let [row2, col2] = loc2[id]
+
+    if (!(row2 == row1 && col2 == col1)) {
+      return false
+    }
+    return true
+  }
+}
+
+/**
+ *
+ * Help keep track of each player's lowest score for all rounds.
+ * @param {Map} scoreHistory
+ * @param {Object} newScore
+ * returns Map
+ */
+function updateBestScores(scoreHistory, id, newScore) {
+  let oldScore = scoreHistory.get(`${id}`)
+  console.log(oldScore, "oldscore")
+  console.log(newScore, "newscore")
+  if (oldScore > newScore) {
+    console.log("updating score history")
+    const nextScoreHistory = new Map(scoreHistory).set(id, newScore)
+    return nextScoreHistory
+  } else {
+    return scoreHistory
+  }
+}
+
+/******************************************************************************/
 
 export {
   GamePlayProvider,
