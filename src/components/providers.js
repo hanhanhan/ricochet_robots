@@ -10,7 +10,7 @@ const PanelContext = createContext()
  *
  * Sort and give gamepieces scores.
  * Low is "winning" so start with a large number that won't be displayed.
- * @returns Map
+ * @returns Object
  */
 function getInitialGampieceScores() {
   const sortedIdPairs = Object.keys(gamepieces)
@@ -18,7 +18,7 @@ function getInitialGampieceScores() {
     .map(
       (id) => [id, Number.MAX_SAFE_INTEGER] // big enough and a few less bits
     )
-  return new Map(sortedIdPairs)
+  return Object.fromEntries(sortedIdPairs)
 }
 
 const initialGamestate = {
@@ -191,13 +191,9 @@ function areSameGamepieceLocations(loc1, loc2) {
  * returns Map
  */
 function updateBestScores(scoreHistory, id, newScore) {
-  let oldScore = scoreHistory.get(`${id}`)
-  console.log(oldScore, "oldscore")
-  console.log(newScore, "newscore")
+  let oldScore = scoreHistory[id]
   if (oldScore > newScore) {
-    console.log("updating score history")
-    const nextScoreHistory = new Map(scoreHistory).set(id, newScore)
-    return nextScoreHistory
+    return { ...scoreHistory, ...{ [id]: newScore } }
   } else {
     return scoreHistory
   }

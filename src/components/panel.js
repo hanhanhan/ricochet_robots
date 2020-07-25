@@ -19,13 +19,16 @@ const Value = styled.dd``
 
 function Panel(props) {
   const { turnPlayerId, score, scoreHistory, moves } = usePanelContext()
-  // const best = Object.keys(scoreHistory).map((id) => (
-  //   <div>
-  //     {gamepieces[id].icon} {scoreHistory[id] ? scoreHistory[id] : "-"}
-  //   </div>
-  // ))
-
-  const best = scoreHistory
+  const best = Object.entries(scoreHistory)
+    .sort(([id1, score1], [id2, score2]) => score1 < score2)
+    .map(([id, score]) => {
+      const hasValue = score < Number.MAX_SAFE_INTEGER && score
+      return (
+        <div key={id}>
+          {gamepieces[id].icon} {hasValue ? score : "-"}
+        </div>
+      )
+    })
 
   console.log(best)
   return (
@@ -35,7 +38,7 @@ function Panel(props) {
       <Description>Moves So Far: </Description>
       <Value>{score}</Value>
       <Description>Best Score: </Description>
-      <Value>{}</Value>
+      <Value>{best}</Value>
     </StyledPanel>
   )
 }
