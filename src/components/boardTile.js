@@ -5,17 +5,18 @@ import styled from "styled-components"
 import { DragTypes } from "./Constants"
 import Gamepiece from "./gamepiece"
 import { isValidMove } from "../gameLogic/gamepieces"
-import { useGamePlayContext } from "./providers"
-
-const wallStyle = "3px solid thistle"
-const boardGridStyle = "2px solid snow"
+import { useGamePlayContext, useTheme } from "./providers"
 
 const TileStyle = styled.div`
   background-color: ${(props) => props.bgColor};
-  border-top: ${(props) => (props.walls.north ? wallStyle : boardGridStyle)};
-  border-right: ${(props) => (props.walls.east ? wallStyle : boardGridStyle)};
-  border-bottom: ${(props) => (props.walls.south ? wallStyle : boardGridStyle)};
-  border-left: ${(props) => (props.walls.west ? wallStyle : boardGridStyle)};
+  border-top: ${(props) =>
+    props.walls.north ? props.theme.wallStyle : props.theme.boardGridStyle};
+  border-right: ${(props) =>
+    props.walls.east ? props.theme.wallStyle : props.theme.boardGridStyle};
+  border-bottom: ${(props) =>
+    props.walls.south ? props.theme.wallStyle : props.theme.boardGridStyle};
+  border-left: ${(props) =>
+    props.walls.west ? props.theme.wallStyle : props.theme.boardGridStyle};
   padding: 0em;
   display: flex;
   justify-content: center;
@@ -25,6 +26,8 @@ const TileStyle = styled.div`
 
 function BoardTile({ row, col, walls, gamepieceId, isTarget, graph }) {
   const { turnPlayerId, dispatch, gamepiecePositions } = useGamePlayContext()
+  const { tiles: tileStyles } = useTheme()
+
   const [collectedProps, drop] = useDrop({
     accept: DragTypes.GAMEPIECE,
     drop: (item, monitor) => {
@@ -66,7 +69,11 @@ function BoardTile({ row, col, walls, gamepieceId, isTarget, graph }) {
     },
   })
 
-  const bgColor = getBackgroundColor(collectedProps.validDest, isTarget)
+  const bgColor = getBackgroundColor(
+    collectedProps.validDest,
+    isTarget,
+    tileStyles
+  )
 
   return (
     // bool converted to 1/0 due to this issue (becomes string instead of bool):
@@ -83,18 +90,20 @@ function BoardTile({ row, col, walls, gamepieceId, isTarget, graph }) {
   )
 }
 
-function getBackgroundColor(validDest, isTarget) {
+function getBackgroundColor(validDest, isTarget, tileColors) {
+  const { tileColor, tileDestColor, tileWinColor, tileTargetColor } = tileColors
+
   if (validDest && isTarget) {
-    return `gold`
+    return tileWinColor
   }
   if (validDest) {
-    return `yellow`
+    return tileDestColor
   }
   if (isTarget) {
-    return `orange`
+    return tileTargetColor
   }
   // Regular old tiles
-  return `aliceblue`
+  return tileColor
 }
 
 export default BoardTile

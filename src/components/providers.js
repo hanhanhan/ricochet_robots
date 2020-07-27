@@ -1,4 +1,6 @@
 import React, { useReducer, createContext } from "react"
+import { ThemeContext } from "styled-components"
+
 import { initialGamepiecePositions } from "../gameLogic/boardSetup"
 import { gamepieces } from "../gameLogic/gamepieces"
 
@@ -93,34 +95,6 @@ function moveReducer(state, action) {
   }
 }
 
-function usePanelContext() {
-  const context = React.useContext(PanelContext)
-  if (context === undefined) {
-    throw new Error(
-      "usePanelContext must be used within a PanelContextProvider"
-    )
-  }
-  return context
-}
-
-function useGamePlayContext() {
-  const context = React.useContext(GamePlayContext)
-  if (context === undefined) {
-    throw new Error("useGamePlay must be used within a GamePlayProvider")
-  }
-  return context
-}
-
-function useGamepiecePositionsContext() {
-  const context = React.useContext(GamepiecePositionsContext)
-  if (context === undefined) {
-    throw new Error(
-      "useGamepiecePositions must be used within a GamepiecePositionsProvider"
-    )
-  }
-  return context
-}
-
 const GamePlayProvider = ({ children }) => {
   const [gamestate, dispatch] = useReducer(moveReducer, initialGamestate)
   const {
@@ -199,6 +173,46 @@ function updateBestScores(scoreHistory, id, newScore) {
   }
 }
 
+/*******************************************************************************
+ * Context wrapper functions
+ */
+
+function usePanelContext() {
+  const context = React.useContext(PanelContext)
+  if (context === undefined) {
+    throw new Error(
+      "usePanelContext must be used within a PanelContextProvider"
+    )
+  }
+  return context
+}
+
+function useGamePlayContext() {
+  const context = React.useContext(GamePlayContext)
+  if (context === undefined) {
+    throw new Error("useGamePlay must be used within a GamePlayProvider")
+  }
+  return context
+}
+
+function useGamepiecePositionsContext() {
+  const context = React.useContext(GamepiecePositionsContext)
+  if (context === undefined) {
+    throw new Error(
+      "useGamepiecePositions must be used within a GamepiecePositionsProvider"
+    )
+  }
+  return context
+}
+
+function useTheme() {
+  const context = React.useContext(ThemeContext)
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider")
+  }
+  return context
+}
+
 /******************************************************************************/
 
 export {
@@ -206,4 +220,5 @@ export {
   useGamePlayContext,
   useGamepiecePositionsContext,
   usePanelContext,
+  useTheme,
 }

@@ -9,10 +9,11 @@ import { getTarget, dimensions, tiles } from "../gameLogic/boardSetup"
 import { getUpdatedGraph, buildLookup } from "../gameLogic/gamepieces"
 
 const BoardStyle = styled.div`
-  width: 95vmin;
-  height: 95vmin;
+  width: 75vmin;
+  height: 75vmin;
   display: grid;
-  border: 5px solid thistle;
+  /* background-color: ${(props) => props.theme.color}; */
+  border: ${(props) => props.theme.wallStyle};
   gap: 0;
   grid-template-columns: repeat(${dimensions.col}, 1fr);
   grid-template-rows: repeat(${dimensions.row}, 1fr);

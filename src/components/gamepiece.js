@@ -1,7 +1,8 @@
 import React from "react"
 import { useDrag } from "react-dnd"
 import { DragTypes } from "./Constants"
-import { gamepieces } from "../gameLogic/gamepieces"
+import { useTheme } from "./providers"
+
 // NOTE: CSS issue for dragging
 // http://react-dnd.github.io/react-dnd/docs/api/drag-source
 
@@ -18,6 +19,7 @@ function collect(connect, monitor) {
 }
 
 function Gamepiece({ id, ...props }) {
+  const { gamepieces } = useTheme()
   const [collectedProps, drag] = useDrag({
     item: { id, type: DragTypes.GAMEPIECE },
     collect: (monitor, props) => ({

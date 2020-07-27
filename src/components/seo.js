@@ -77,7 +77,12 @@ function SEO({ description, lang, meta, keywords, title }) {
             : []
         )
         .concat(meta)}
-    />
+    >
+      <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&family=Gayathri&family=Orbitron:wght@700;800&family=Play:wght@400;700&display=swap"
+        rel="stylesheet"
+      ></link>
+    </Helmet>
   )
 }
 
