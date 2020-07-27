@@ -42,10 +42,10 @@ function moveReducer(state, action) {
       }
       const length = moves.length
 
-      if (length > 0) {
-        isMoveBack = areSameGamepieceLocations(
+      if (length > 1) {
+        var isMoveBack = areSameGamepieceLocations(
           gamepiecePositions,
-          moves[length - 1]
+          moves[length - 2]
         )
       } else {
         var isMoveBack = false
@@ -143,18 +143,18 @@ function rotatePlayer(id) {
  * @returns boolean
  */
 function areSameGamepieceLocations(loc1, loc2) {
+  console.log(loc1, loc2)
   // Stringify won't work if order is different
   // There's a lodash isEqual function or I could write my own
   // Compare as two hashes stored in moves array? Two strings?
   // JSON.stringify(loc1) === JSON.stringify(loc2)
-  for (let [id, [row1, col1]] of Object.entries(loc1)) {
-    let [row2, col2] = loc2[id]
-
+  for (const [id, { row: row1, col: col1 }] of Object.entries(loc1)) {
+    const { row: row2, col: col2 } = loc2[id]
     if (!(row2 == row1 && col2 == col1)) {
       return false
     }
-    return true
   }
+  return true
 }
 
 /**
