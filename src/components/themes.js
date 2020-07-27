@@ -73,7 +73,7 @@ const graphic = {
   wallStyle: "3px solid thistle",
   boardGridStyle: "2px solid snow",
   tiles: {
-    tileColor: `gray`,
+    tileColor: `aliceblue`,
     tileWinColor: `gold`,
     tileDestColor: `yellow`,
     tileTargetColor: `orange`,

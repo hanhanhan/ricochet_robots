@@ -30,7 +30,6 @@ function Panel(props) {
       )
     })
 
-  console.log(best)
   return (
     <StyledPanel>
       <Description>Turn: </Description>
