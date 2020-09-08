@@ -1,3 +1,5 @@
+// CSS to the game's appearance theme-able
+
 // Wall Color
 // Tile Color
 // Border Color

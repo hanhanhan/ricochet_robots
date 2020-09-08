@@ -5,14 +5,15 @@ import HTML5ToTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch"
 import styled, { ThemeProvider } from "styled-components"
 
 import { GamePlayProvider } from "./providers"
-import { graphic } from "../css.themes"
+import { graphic } from "./css/themes"
+import { fullWidthGameBreakpoint } from "./css/shared"
 import Board from "./board"
 import Panel from "./panel"
 
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  @media (min-width: 900px) {
+  @media (min-width: ${fullWidthGameBreakpoint}) {
     flex-direction: row;
   }
 `
