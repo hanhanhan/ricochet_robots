@@ -1,97 +1,113 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
-  </a>
-</p>
 <h1 align="center">
-  Gatsby's default starter
+  Ricochet Robots [Work-In-Progress]
 </h1>
 
-Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+A [board game](https://en.wikipedia.org/wiki/Ricochet_Robot) designed by Alex Randolph.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.org/docs/gatsby-starters/)._
+It's a graph search puzzle as much as a game.
+<br />
+<br />
 
-## 🚀 Quick start
+# 🛎 Gameplay
 
-1.  **Create a Gatsby site.**
+1. A player's turn lasts until they get their gamepiece to the target.
+1. A player can move ANY gamepiece.
+1. A gamepiece can travel in straight lines until it hits a wall or another gamepiece.
+1. Each gamepiece's travel in a straight line is counted as a move.
+1. The player who has the lowest numbers of moves for a turn wins.
+1. A video is worth thousands of words!
 
-    Use the Gatsby CLI to create a new site, specifying the default starter.
+   <a href="https://www.youtube.com/watch?v=fXGoWiZvKR4"><img src="https://img.youtube.com/vi/fXGoWiZvKR4/maxresdefault.jpg" alt="drawing" width="300"/></a>
+   <br />
+   <br />
 
-    ```sh
-    # create a new Gatsby site using the default starter
-    npx gatsby new my-default-starter https://github.com/gatsbyjs/gatsby-starter-default
-    ```
+# 🧐 Poking Around
 
-1.  **Start developing.**
+- The linchpin component is the [boardTile](https://github.com/hanhanhan/ricochet_robots/blob/master/src/components/boardTile.js). It controls checking whether a gamepiece can be dropped on a tile or not.
+- This functionality is [tested one level up](https://github.com/hanhanhan/ricochet_robots/blob/master/src/components/board.test.js), as a set of integration tests.
 
-    Navigate into your new site’s directory and start it up.
+  Mini Brag: It took a little bit to figure out how to do this testing. [I updated the React DND docs to share what I learned.](https://github.com/react-dnd/react-dnd/pull/2665)
 
-    ```sh
-    cd my-default-starter/
-    gatsby develop
-    ```
+- Game logic flow ->
 
-1.  **Open the source code and start editing!**
+  - The [game board is built](https://github.com/hanhanhan/ricochet_robots/blob/d4a4c5daec5a833146b7f5e7a07b2cca133c45ff/src/gameLogic/boardSetup.js#L149) based on walls and edges (the stuff that doesn't move during the game).
 
-    Your site is now running at `http://localhost:8000`!
+  - The [graph of the gameboard](https://github.com/hanhanhan/ricochet_robots/blob/d4a4c5daec5a833146b7f5e7a07b2cca133c45ff/src/gameLogic/basegraph.js#L66) is created as an adjacency object, based on walls and edges.
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
+    It's exported as a thunk so that the graph can be created fresh each turn.
 
-    Open the `my-default-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+  - The graph of the gameboard [is updated](https://github.com/hanhanhan/ricochet_robots/blob/d4a4c5daec5a833146b7f5e7a07b2cca133c45ff/src/gameLogic/gamepieces.js#L88) based on current gamepiece locations.
 
-## 🧐 What's inside?
+<br />
+<br />
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+# ⚙️ To Do
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+### Key
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+🍓 Do this
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+✅ Done
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+---
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+🍓 draw path with arrows
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.org/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+🍓 move gamepieces with arrow keys in addition to click and drag
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.org/docs/gatsby-config/) for more detail).
+🍓 get/set game state in local storage
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.org/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+🍓 animate wobble on land
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+🍓 add sounds
 
-9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
+🍓 constrain [board asect ratio on mobile](https://css-tricks.com/aspect-ratio-boxes/) [maybe by preventing flexbox children stretching](http://dcousineau.com/blog/2011/07/14/flex-box-prevent-children-from-stretching/)
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+🍓🍓 Try and find a useable way to display / interact on mobile. Touch-drag is there. Smaller gameboard? zoom?
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+🍓🍓 visual theming
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+- favicon
+- fun svg icons for gamepieces, target/dest
+- [toggle theme context for preferred appearance (maybe sounds, animations too)](https://github.com/hanhanhan/ricochet_robots/blob/master/src/components/css/themes.js#L1)
 
-## 🎓 Learning Gatsby
+🍓🍓 make solver (WASM!)
 
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.org/). Here are some places to start:
+🍓 randomize board
 
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.org/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
+🍓 randomize start/destinations
 
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.org/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
+🍓 instructions - tourguide /
+hints / tool tips
 
-## 💫 Deploy
+🍓🍓 add server w/websockets for
+shared gameplay
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
+🍓 spiff build process
 
-<!-- AUTO-GENERATED-CONTENT:END -->
+- lighthouse checklist
+- PWA
+- check render path
+- ci process
+
+🍓 changelog
+
+✅ win sequence:
+
+- save score
+- rotate player
+- new score
+
+✅ fix - n/s neighboring robots -- the south robot doesn't travel correctly
+
+✅ scoring
+Once move is complete, push onto list
+
+- increment move count / len(list)
+- win -> rotate player / set turn, update player score
+
+✅ swap click backend for touch on mobile
+
+✅ show valid travel destinations on drag end square by robot
+
+✅ move undo
