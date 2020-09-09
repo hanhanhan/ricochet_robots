@@ -5,6 +5,8 @@
 A [board game](https://en.wikipedia.org/wiki/Ricochet_Robot) designed by Alex Randolph.
 
 It's a graph search puzzle as much as a game.
+
+[Demo here](https://wonderful-hermann-ea8142.netlify.app/)
 <br />
 <br />
 
